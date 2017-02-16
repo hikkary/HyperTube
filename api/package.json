@@ -1,0 +1,26 @@
+{
+  "name": "hypertube",
+  "version": "1.0.0",
+  "description": "hypertube 42",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hikkary/hyperTube.git"
+  },
+  "keywords": [
+    "hypertube",
+    "42"
+  ],
+  "author": "asalama zkerkeb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hikkary/hyperTube/issues"
+  },
+  "homepage": "https://github.com/hikkary/hyperTube#readme",
+  "dependencies": {
+    "create-react-app": "^1.0.4"
+  }
+}
