@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './Containers/App';
-import Auth from './Containers/Auth';
+import App from './containers/App';
+import Auth from './containers/Auth';
 import './index.css';
 import { Route, Router, browserHistory, Redirect} from 'react-router';
 
