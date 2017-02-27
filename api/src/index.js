@@ -11,6 +11,8 @@ const stream = express.Router('/api/stream');
 
 movieRouter
 .get('/api/movie', movie.get)
+.get('/api/movie/read', movie.read)
+.get('/api/movie/db', movie.toDatabase)
 .post('/api/movie', movie.post)
 .put('/api/movie', movie.modify);
 
