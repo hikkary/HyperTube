@@ -1,16 +1,28 @@
-import React, { Component } from 'react';
-// import './App.css';
-import Header from "../../components/Header"
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import allTheActions from '../../Actions';
+import MovieDisplay from '../../Components/MovieDisplay';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-		  <Header/>
-    	{this.props.children}
-      </div>
-    );
-  }
-}
+const App = ({ movies, actions }) =>
+  <div>
+    <MovieDisplay movies={movies} />
+  </div>
 
-export default App;
+App.propTypes = {
+  movies: PropTypes.array.isRequired
+};
+//
+// const mapStateToProps = (state) => ({
+//   movies: state.movies,
+// });
+
+const mapStateToProps = ({ movies }) => ({ movies });
+
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    movies: bindActionCreators(allTheActions.movies, dispatch)
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
