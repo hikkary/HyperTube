@@ -8,6 +8,7 @@ const userToDatabase = (req) => {
     email: req.body.email,
     password: req.body.password,
     picture: req.body.picture,
+    key: 0,
   });
   newUser.save();
 }
@@ -20,7 +21,7 @@ export const createAccount = (req, res) => {
         .then((email) => {
           if (email) return res.send({ status: false, details: 'email already exists' });
           userToDatabase(req);
-          return res.send('user ok');
+          return res.send({ status: true, details: 'user successfully saved in database' });
         });
     });
 };

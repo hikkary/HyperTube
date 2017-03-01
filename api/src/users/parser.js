@@ -49,12 +49,13 @@ export const email = (req, res, next) => {
   }
 };
 
-// export const Password = (req, res, next) => {
-//   const pass = req.body.password;
-//   if (pass && pass.length > 5) {
-//     next();
-//   } else {
-//     return res.send({ status: false, details: 'password not valid' });
-//   }
-//   return false;
-// };
+export const password = (req, res, next) => {
+  const pass = req.body.password;
+  const confirm = req.body.confirm;
+  if(pass === confirm){
+    next();
+  }
+  else {
+    return res.send({ status: false, details: 'Passwords don\'t match' });
+  }
+};

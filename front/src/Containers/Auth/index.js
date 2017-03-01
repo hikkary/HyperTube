@@ -1,15 +1,22 @@
-import React, { Component } from 'react';
-// import logo from './logo.svg';
-// import './App.css';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import allTheActions from '../../Actions';
+import Register from '../../Components/Register';
 
-class Auth extends Component {
-  render() {
-    return (
-      <div className="App">
+const Auth = ({ users, actions }) =>
+  <div>
+    <Register users={users} actions={actions} />
+  </div>
 
-      </div>
-    );
-  }
-}
+const mapStateToProps = (state) => ({
+  users: state.users,  
+});
 
-export default Auth;
+const mapDispatchToProps = dispatch => ({
+  actions: {
+    users: bindActionCreators(allTheActions.users, dispatch)
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

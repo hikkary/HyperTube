@@ -25,7 +25,7 @@ seriesRouter
   .get('/api/series/display', series.display);
 
 users
-  .post('/api/users', parser.emptyCheck, parser.username, parser.firstname, parser.lastname, parser.email, user.createAccount);
+  .post('/api/users', parser.emptyCheck, parser.username, parser.firstname, parser.lastname, parser.email, parser.password, user.createAccount);
 
 app
   .use(cors())

@@ -5,14 +5,12 @@ import apiKey from '../../apiKey';
 import { Serie } from '../Schema';
 import mongoose from '../mongoose';
 
-const writeJson = () => {
-  let imdb = [];
-  global.series = _.flattenDepth(global.series, 1);
-  mongoose.connection.collections['series'].drop( function(err) {
+const writeJson = (allSeries) => {
+  allSeries = _.flattenDepth(allSeries, 1);
+  mongoose.connection.collections['series'].drop((err) => {
       console.log('collection dropped');
   });
-  global.series.map((serie) => {
-  imdb.push(serie.imdb_id);
+  allSeries.map((serie) => {
       const newSerie = new Serie({
         id: serie.id,
         images: serie.images,
@@ -35,7 +33,7 @@ const writeJson = () => {
   });
 };
 
-const recursiveEztv = (page) => {
+const recursiveEztv = (page, allSeries) => {
   console.log('ok entered');
   // console.log(p'http://eztvapi.ml/shows/${page}');
   console.log(page);
@@ -44,20 +42,20 @@ const recursiveEztv = (page) => {
     console.log("length", data.data.length);
     if(!data.data)
     {
-      writeJson();
+      writeJson(allSeries);
       return
     }
 
-    global.series.push(data.data);
+    allSeries.push(data.data);
     if(data.data)
-      recursiveEztv(page + 1);
+      recursiveEztv(page + 1, allSeries);
     // console.log('globallll', global.series);
   });
 }
 
 export const getSeries = (req, res) => {
-  global.series = [];
-  recursiveEztv(1);
+  let allSeries = [];
+  recursiveEztv(1, allSeries);
   res.send(true);
 }
 

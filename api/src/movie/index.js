@@ -4,13 +4,13 @@ import _ from 'lodash';
 import mongoose from 'mongoose';
 import { Movie } from '../Schema';
 
-const writeJson = () => {
-  mongoose.connection.collections['movies'].drop( function(err) {
+const writeJson = (allMovies) => {
+  mongoose.connection.collections['movies'].drop((err) => {
       console.log('collection dropped');
   });
-  global.movies = _.flattenDepth(global.movies, 1)
-  // console.log(global.movies);
-  global.movies.map((movie) => {
+  allMovies = _.flattenDepth(allMovies, 1)
+  // console.log(allMovies);
+  allMovies.map((movie) => {
     // console.log('Map');
     const newMovie = new Movie({
       id: movie.id,
@@ -34,27 +34,27 @@ const writeJson = () => {
   // });
 };
 
-const recursiveGet = (page) => {
+const recursiveGet = (page, allMovies) => {
   console.log('Page',page);
   axios.get(`https://yts.ag/api/v2/list_movies.json?limit=50&page=${Number(page)}`)
   .then((movie) => {
     if (movie.data.data.movies === undefined) {
       console.log('UNDEFINED');
-      writeJson();
+      writeJson(allMovies);
       return;
     }
     const { movies } = movie.data.data;
-    global.movies.push(movies);
-    recursiveGet(page + 1);
+    allMovies.push(movies);
+    recursiveGet(page + 1, allMovies);
   });
 }
 
-const getYts = (page = 1) => {
-  recursiveGet(page)
+const getYts = (page = 1, allMovies = []) => {
+  recursiveGet(page, allMovies)
 };
 
 export const get = (req, res) => {
-  global.movies = [];
+  // global.movies = [];
   getYts();
   // getYts(0).then( (ytsMovie) => {
   // console.log(ytsMovie.data.data.movies);
