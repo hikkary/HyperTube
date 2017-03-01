@@ -1,13 +1,17 @@
 import axios from 'axios';
 import fs from 'fs';
 import _ from 'lodash';
+import mongoose from 'mongoose';
 import { Movie } from '../Schema';
 
 const writeJson = () => {
+  mongoose.connection.collections['movies'].drop( function(err) {
+      console.log('collection dropped');
+  });
   global.movies = _.flattenDepth(global.movies, 1)
-  console.log(global.movies);
+  // console.log(global.movies);
   global.movies.map((movie) => {
-    console.log('Map');
+    // console.log('Map');
     const newMovie = new Movie({
       id: movie.id,
       imdb_code: movie.imdb_code,
@@ -23,7 +27,6 @@ const writeJson = () => {
       torrents: movie.torrents,
     });
     newMovie.save()
-      .then(console.log);
   });
   // fs.writeFile('film.json', JSON.stringify(global.movies), (err) => {
   //   if(err) console.log(err);
@@ -31,34 +34,19 @@ const writeJson = () => {
   // });
 };
 
-const recursiveGet = (page) =>{
-  // const db = connect();
+const recursiveGet = (page) => {
   console.log('Page',page);
-  axios.get('https://yts.ag/api/v2/list_movies.json?limit=50&page=' + Number(page))
+  axios.get(`https://yts.ag/api/v2/list_movies.json?limit=50&page=${Number(page)}`)
   .then((movie) => {
-    if (movie.data.data.movies === undefined || page >= 10) {
+    if (movie.data.data.movies === undefined) {
       console.log('UNDEFINED');
       writeJson();
       return;
     }
-    if (page <= 10)
-    {
-      let { movies } = movie.data.data;
-      global.movies.push(movies);
-      console.log('length',global.movies.length);
-    }
-      //
-      // fs.writeFile(`/tmp/film ${page}.json`, JSON.stringify(global.movies), (err) => {
-      //   if(err) console.log(err);
-      //   console.log('ok morray');
-      // });
-  })
-  .then(() => {
-    console.log('RELOAD');
-    if (page < 10)
-      recursiveGet(page + 1);
-
-  })
+    const { movies } = movie.data.data;
+    global.movies.push(movies);
+    recursiveGet(page + 1);
+  });
 }
 
 const getYts = (page = 1) => {
@@ -77,14 +65,6 @@ export const get = (req, res) => {
 
   // })
   res.send(true);
-};
-
-export const read = (req, res) => {
-  let movies = fs.readFileSync('/tmp/film 1.json', 'UTF-8');
-  movies = JSON.parse(movies);
-  // console.log(movies.length);
-  console.log(movies);
-  res.send('ok');
 };
 
 export const post = (req, res) => {

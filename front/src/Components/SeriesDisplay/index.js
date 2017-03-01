@@ -8,10 +8,11 @@ export default class SeriesDisplay extends Component {
   }
 
   render(){
+    let i = 0;
     return(
       <div>
         <ul>
-          {this.props.series.map(serie => <p key={serie.id}>{serie.title} </p>)}
+          {this.props.series.map(serie => <p key={i++}>{serie.title} </p>)}
         </ul>
       </div>
     )

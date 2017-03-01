@@ -6,7 +6,7 @@ import MovieDisplay from '../../Components/MovieDisplay';
 
 const App = ({ movies, actions }) =>
   <div>
-    <MovieDisplay movies={movies} />
+    <MovieDisplay movies={movies} actions={actions} />
   </div>
 
 App.propTypes = {
