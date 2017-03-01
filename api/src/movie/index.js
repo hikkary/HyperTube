@@ -5,7 +5,7 @@ import { Movie } from '../Schema';
 
 const writeJson = () => {
   global.movies = _.flattenDepth(global.movies, 1)
-
+  console.log(global.movies);
   global.movies.map((movie) => {
     console.log('Map');
     const newMovie = new Movie({

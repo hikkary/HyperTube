@@ -3,9 +3,11 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import * as movie from './movie';
 import './mongoose';
+import * as series from './series';
 
 const app = express();
 const movieRouter = express.Router('/api/movie');
+const seriesRouter = express.Router('/api/series');
 const user = express.Router('/api/user');
 const stream = express.Router('/api/stream');
 
@@ -16,11 +18,15 @@ movieRouter
   .post('/api/movie', movie.post)
   .put('/api/movie', movie.modify);
 
+seriesRouter
+  .get('/api/series', series.getSeries)
+  .get('/api/series/display', series.display)
 app
   .use(cors())
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
   .use(movieRouter)
+  .use(seriesRouter)
   .use(user)
   .use(stream);
 
