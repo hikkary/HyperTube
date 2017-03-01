@@ -49,6 +49,18 @@ export const email = (req, res, next) => {
   }
 };
 
+export const passwordRegexp = (req, res, next) => {
+  const password = req.body.password;
+  const passRegex = new RegExp('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.).*$', 'g');
+  if (password.length < 8 || password.length > 20) {
+    return res.send({ status: false, details: 'Passwords must be between 8 and 20 characters' });
+  } else if (!passRegex.test(password)) {
+    return res.send({ status: false, details: 'Passwords must contain one lowcase, one uppercase, and one number' });
+  } else {
+    next();
+  }
+};
+
 export const password = (req, res, next) => {
   const pass = req.body.password;
   const confirm = req.body.confirm;
