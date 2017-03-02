@@ -1,5 +1,6 @@
 import * as movies from './movies';
 import * as series from './series';
-import * as users from './users';
+import * as register from './register';
+import * as login from './login';
 
-export default { movies, series, users };
+export default { movies, series, register, login };

@@ -8,42 +8,46 @@ export default class Register extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
-    this.setState({ message: newProps.users.details });
-    if(newProps.users.token){
-      localStorage.setItem("token",newProps.users.token)
-  		browserHistory.push('/app/')
-  }
+    console.log('REgister newProps',newProps);
+    this.setState({ message: newProps.register.details });
   };
+
+  convertImage = async(event) => {
+    if(!event.target.file[0])
+      return
+		const file = event.target.files[0];
+		const img = new Image();
+
+		event.persist()
+		img.onload = () => {
+      this.setState({message: 'Picture Uploaded'});
+      this.setState({ image: file })
+		};
+		img.onerror = () => {
+      this.setState({message: 'The picture is not valid'});
+      event.target.value = "";
+		}
+		const _URL = window.URL || window.webkitURL;
+		img.src = _URL.createObjectURL(file);
+	}
 
   register = (e) => {
     e.preventDefault();
     // const hashPass = crypto.createHash('rmd160').update(e.target.password.value).digest('base64');
     // const confirmHash = crypto.createHash('rmd160').update(e.target.confirm.value).digest('base64');
-    const { register } = this.props.actions.users;
+    const { register } = this.props.actions.register;
     const { username, firstname, lastname, email, password, confirm } = e.target;
-    const userInfo = {
-      username: username.value,
-      firstname: firstname.value,
-      lastname: lastname.value,
-      email: email.value,
-      password: password.value,
-      confirm: confirm.value,
-    }
-    register(userInfo);
+    const { image } = this.state;
+    const form = new FormData();
+    form.append('username', username.value)
+    form.append('firstname', firstname.value)
+    form.append('lastname', lastname.value)
+    form.append('email', email.value)
+    form.append('password', password.value)
+    form.append('confirm', confirm.value)
+    form.append('image', image)
+    register(form);
   };
-
-  login = (e) =>{
-    e.preventDefault();
-    const { login } = this.props.actions.users;
-    const { username,password } = e.target;
-    const userInfo = {
-      username: username.value,
-      password: password.value,
-    }
-    login(userInfo);
-  }
-
-
   render(){
     return(
       <div>
@@ -54,17 +58,9 @@ export default class Register extends Component {
           <input type="text" placeholder="email" name="email" />
           <input type="password" placeholder="password" name="password" />
           <input type="password" placeholder="confirm password" name="confirm"  />
-          <button type="button" name="picture">Add Picture </button>
+          <input type="file"  className="imageUpload" name="imageUpload" onChange={this.convertImage}/>
           <button type="submit" name="register">Register </button>
         </form>
-        <div>
-          <span>Login</span>
-          <form onSubmit={this.login}>
-            <input type="text" placeholder="username" name="username"  />
-            <input type="password" placeholder="password" name="password" />
-            <button type="submit" name="register">Login</button>
-          </form>
-        </div>
         <div>{this.state.message}</div>
       </div>
     )

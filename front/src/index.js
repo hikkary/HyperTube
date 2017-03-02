@@ -16,7 +16,8 @@ import * as series from './Actions/series';
 const initialState = {
   movies: [],
   series: [],
-  users: [],
+  register: [],
+  login: [],
 };
 
 const store = createStore(

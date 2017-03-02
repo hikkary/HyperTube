@@ -26,9 +26,10 @@ seriesRouter
 
 users
   .post('/api/users/login', user.login)
-  .post('/api/users', parser.emptyCheck, parser.username, parser.firstname, parser.lastname, parser.email, parser.passwordRegexp, parser.password, user.createAccount);
+  .post('/api/users/register', user.createAccount);
 app
   .use(cors())
+  .use('/public', express.static(`${__dirname}/public`))
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
   .use(movieRouter)

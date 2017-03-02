@@ -1,4 +1,4 @@
-import { ADDED, ERROR } from '../Actions/users';
+import { ADDED, ERROR, REFRESH } from '../Actions/login';
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -6,6 +6,8 @@ export default (state = [], action) => {
       return  action.payload;
     case ERROR:
       return  action.payload;
+    case REFRESH:
+      return  [];
     default: return state;
   }
 };
