@@ -9,8 +9,8 @@ const movie = mongoose.Schema({
   genres: Object,
   summary: String,
   language: String,
-  medium_cover_image: String,
-  large_cover_image: String,
+  mediumImage: String,
+  largeImage: String,
   provider: String,
   torrents: Object,
 });

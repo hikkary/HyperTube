@@ -10,8 +10,8 @@ const movie = mongoose.Schema({
   summary: String,
   language: String,
   seenBy: Array,
-  medium_cover_image: String,
-  large_cover_image: String,
+  mediumImage: String,
+  largeImage: String,
   provider: String,
   torrents: Object,
 });

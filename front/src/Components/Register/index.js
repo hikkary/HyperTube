@@ -7,25 +7,30 @@ export default class Register extends Component {
     message: '',
   }
 
+  componentDidMount = () =>{
+    console.log(this.convertImage);
+  }
+
   componentWillReceiveProps = (newProps) => {
     console.log('REgister newProps',newProps);
     this.setState({ message: newProps.register.details });
   };
 
-  convertImage = async(event) => {
-    if(!event.target.file[0])
+  convertImage = async(e) => {
+    console.log(e.target);
+    if(!e.target.file[0])
       return
-		const file = event.target.files[0];
+		const file = e.target.files[0];
 		const img = new Image();
 
-		event.persist()
+		e.persist()
 		img.onload = () => {
       this.setState({message: 'Picture Uploaded'});
       this.setState({ image: file })
 		};
 		img.onerror = () => {
       this.setState({message: 'The picture is not valid'});
-      event.target.value = "";
+      e.target.value = "";
 		}
 		const _URL = window.URL || window.webkitURL;
 		img.src = _URL.createObjectURL(file);

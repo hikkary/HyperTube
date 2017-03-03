@@ -21,8 +21,8 @@ const writeJson = (allMovies) => {
       genres: movie.genres,
       summary: movie.summary,
       language: movie.language,
-      medium_cover_image: movie.medium_cover_image,
-      large_cover_image: movie.large_cover_image,
+      mediumImage: movie.medium_cover_image,
+      largeImage: movie.large_cover_image,
       provider: 'YTS',
       torrents: movie.torrents,
     });

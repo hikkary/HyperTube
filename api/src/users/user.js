@@ -22,8 +22,9 @@ const log = debug('hypertube:api:user:register');
 const storage = multer.diskStorage({
   destination: `${__dirname}/../../public`,
   filename: (req, file, cb) => {
+    const fileSplit = file.originalname.split(".")
     console.log(path.extname(file.originalname));
-    cb(null, file.originalname);
+    cb(null, file.originalname[0] + Math.random(0,999) + file.originalname[1]);
   },
 });
 
@@ -82,6 +83,7 @@ export const login = async (req, res) => {
   const passwordHash = crypto.createHash('rmd160').update(req.body.password).digest('base64');
   User.findOne({ username })
   .then((user) => {
+    if (!user) res.send({ status: false, details: 'there is an issue with the password or the username' });
     if (user) {
       if (user.password.localeCompare(passwordHash) !== 0) {
         return res.send({ status: false, details: 'there is an issue with the password or the username' });

@@ -22,13 +22,12 @@ export const refresh = () => ({
 
 export const actionlogin = (data) => (dispatch) => {
   // dispatch(refresh())
+  console.log("TEST");
   axios({
       method: 'POST',
       url: `${apiURI}/users/login`,
       data,
     }).then(({data :results, headers}) => {
-      console.log(results.token);
-      // console.log("head",head);
       if (results.status === true) {
         console.log(results);
         dispatch(success({results, headers}));
