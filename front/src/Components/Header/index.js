@@ -5,8 +5,12 @@ export default class Header extends React.Component {
 
 	render(){
 		return(
-			<div className="Header">
+    <div>
+      <div className="Header">
+        <input type="text" className="Search" placeholder="Search..."></input>
 			</div>
+      <div className="SubMenu"/>
+    </div>
 		);
 	}
 }

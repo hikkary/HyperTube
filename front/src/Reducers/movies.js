@@ -1,6 +1,9 @@
-import { GET } from '../Actions/movies';
+import { GET, SEARCH } from '../Actions/movies';
 // ANCIEN IMPORT import { GET } from '../Actions';
 
+const search = (action) =>{
+    action.payload.Map
+}
 
 export default (state = [], action) => {
   // console.log(state);
@@ -11,6 +14,8 @@ export default (state = [], action) => {
   switch (action.type) {
     case GET:
       return action.payload;
+    case GET:
+      return search(action);
       // return action.payload;
     default: return state;
   }

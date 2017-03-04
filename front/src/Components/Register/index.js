@@ -13,7 +13,7 @@ export default class Register extends Component {
 
   componentWillReceiveProps = (newProps) => {
     console.log('REgister newProps',newProps);
-    this.setState({ message: newProps.register.details });
+    // this.setState({ message: newProps.register.details });
   };
 
   convertImage = async(e) => {
@@ -54,17 +54,21 @@ export default class Register extends Component {
     register(form);
   };
   render(){
+    const {current} = this.props.translation;
     return(
       <div>
+        <button onClick={this.props.actions.translation.toFrench} >FRENCH</button>
+        <button onClick={this.props.actions.translation.toEnglish} >ENGLISH</button>
+
         <form onSubmit={this.register} >
-          <input type="text" placeholder="username" name="username"  />
-          <input type="text" placeholder="firstname" name="firstname" />
-          <input type="text" placeholder="lastname" name="lastname" />
-          <input type="text" placeholder="email" name="email" />
-          <input type="password" placeholder="password" name="password" />
-          <input type="password" placeholder="confirm password" name="confirm"  />
+          <input type="text" placeholder={current.username} name="username"  />
+          <input type="text" placeholder={current.firstname} name="firstname" />
+          <input type="text" placeholder={current.lastname} name="lastname" />
+          <input type="text" placeholder={current.email} name="email" />
+          <input type="password" placeholder={current.password} name="password" />
+          <input type="password" placeholder={current.confirm} name="confirm"  />
           <input type="file"  className="imageUpload" name="imageUpload" onChange={this.convertImage}/>
-          <button type="submit" name="register">Register </button>
+          <button type="submit" name="register">{current.register} </button>
         </form>
         <div>{this.state.message}</div>
       </div>

@@ -3,6 +3,7 @@ import api from '../apiURI';
 
 export const GET = 'MOVIE_GET';
 export const PENDING = 'MOVIE_PENDING';
+export const SEARCH = 'MOVIE_PENDING';
 
 export const pending = () => ({
   type: PENDING,
@@ -12,6 +13,11 @@ export const display = movies => ({
   type: GET,
   payload: movies,
 });
+
+export const search = keys => ({
+  type: SEARCH,
+  payload: keys,
+})
 
 export const getMovie = () => (dispatch) => {
   dispatch(pending());

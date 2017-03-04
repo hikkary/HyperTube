@@ -10,7 +10,7 @@ import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import * as movies from './Actions/movies';
+import * as translation from './Actions/translation';
 import * as series from './Actions/series';
 
 const initialState = {
@@ -18,6 +18,7 @@ const initialState = {
   series: [],
   register: [],
   login: [],
+  translation: [],
 };
 
 const store = createStore(
@@ -29,7 +30,7 @@ const store = createStore(
   ),
 );
 
-// store.dispatch(movies.getMovie());
+store.dispatch(translation.displayTranslation());
 // store.dispatch(series.getSerie());
 
 ReactDOM.render(

@@ -8,10 +8,13 @@ export default class Login extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
+
     console.log('Login newProps',newProps);
+    if(newProps.users){
     this.setState({ message: newProps.login.details });
       if(newProps.users.status === true)
         localStorage.setItem('token', newProps.login.headers['x-access-token']);
+      }
   };
 
   login = (e) =>{

@@ -30,22 +30,26 @@ export default class MovieDisplay extends Component {
   }
 
   render(){
+    const {current} = this.props.translation
     return(
       <div className="allMovie">
-        {/* <ul> */}
+                {/* <ul> */}
 
             { this.state.ready && this.state.movies.map(movie =>{
               return(
                 <div className="allInfo" key={movie.id + Math.random(10000, 50000)}>
-                    <div className="movie" key={movie.id + Math.random(10000, 50000)} onMouseOver={this.fadeIn} onMouseOut={this.fadeOut} >
-
-                      <img className="image" src={movie.largeImage} alt="" width="250px" height="400px" />
-
+                    <div
+                      className="movie"
+                      key={movie.id + Math.random(10000, 50000)}
+                      style={{ backgroundImage: `url('${movie.largeImage}')` }}
+                    >
+                      <div className="textContainer">
+                        <p key={movie.id + Math.random(10000, 50000)}>{current.rate}: {movie.rating} </p>
+                        <p key={movie.id + Math.random(10000, 50000)}>{movie.year} </p>
+                      </div>
                     </div>
                 <div className="title" key={movie.id + Math.random(10000, 50000)}>
                   <p key={movie.id + Math.random(10000, 50000)}>{movie.title} </p>
-                  {/* <p key={movie.id + Math.random(10000, 50000)}>Note: {movie.rating} </p> */}
-                  <p key={movie.id + Math.random(10000, 50000)}>{movie.year} </p>
                 </div>
               </div>
              )
