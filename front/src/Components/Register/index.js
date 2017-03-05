@@ -14,18 +14,17 @@ export default class Register extends Component {
   componentWillReceiveProps = (newProps) => {
     console.log('REgister newProps',newProps);
     // this.setState({ message: newProps.register.details });
-  };
+  }
 
   convertImage = async(e) => {
-    console.log(e.target);
-    if(!e.target.file[0])
+    if (!e.target.files[0])
       return
 		const file = e.target.files[0];
 		const img = new Image();
 
 		e.persist()
 		img.onload = () => {
-      this.setState({message: 'Picture Uploaded'});
+      this.setState({ message: 'Picture Uploaded' });
       this.setState({ image: file })
 		};
 		img.onerror = () => {
