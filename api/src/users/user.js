@@ -99,12 +99,32 @@ export const login = async (req, res) => {
 
 export const facebook = async (req, res) => {
   console.log(req.body.picture.data.url);
-  const FBUser = new User({
-    fb_id: req.body.id,
+  console.log("TYPE ID",typeof(req.body.id));
+  const data = ({
+    auth_id: req.body.id,
     firstname: req.body.first_name,
     lastname: req.body.last_name,
     picture: req.body.picture.data.url,
     provider: 'facebook',
   });
-  FBUser.save();
+
+  User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true })
+    .then((doc) => {
+      // console.log(doc);
+       /**
+        * doc.created = false
+        * doc.result = document update
+        **/
+    })
+    .catch(); // y'avais un done ici, non declarer, je l'ai enlever, demander sa servait a quoi
+
+
+  // const FBUser = new User({
+  //   fb_id: req.body.id,
+  //   firstname: req.body.first_name,
+  //   lastname: req.body.last_name,
+  //   picture: req.body.picture.data.url,
+  //   provider: 'facebook',
+  // });
+  // FBUser.save();
 };
