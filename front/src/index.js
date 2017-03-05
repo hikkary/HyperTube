@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './Containers/App';
 import Series from './Containers/Series';
@@ -35,15 +35,15 @@ store.dispatch(translation.displayTranslation());
 
 ReactDOM.render(
   <Provider store={store} >
-  	<Router history={browserHistory}>
-  		<Route path="/" component={Auth}>
-  		</Route>
-      <Route path="/app" component={App}>
-      </Route>
-      <Route path="/series" component={Series}>
-  		</Route>
-  		<Redirect from="/*" to="/" />
-  	</Router>
+    	<Router history={browserHistory}>
+    		<Route path="/" component={Auth}>
+    		</Route>
+        <Route path="/app" component={App}>
+        </Route>
+        <Route path="/series" component={Series}>
+    		</Route>
+    		<Redirect from="/*" to="/" />
+    	</Router>
   </Provider>,
   document.getElementById('root')
 );

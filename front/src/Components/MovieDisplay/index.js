@@ -17,17 +17,15 @@ export default class MovieDisplay extends Component {
     this.props.actions.movies.getMovie();
   }
 
-  fadeIn = (event) => {
-    console.log(event.parentNode);
-    event.target.style.opacity = 0.4;
-
-  }
-
-  fadeOut = (event) => {
-    // console.log(event.target);
-    event.target.style.opacity = 1;
-
-  }
+  // fadeIn = (event) => {
+  //   console.log(event.parentNode);
+  //   event.target.style.opacity = 0.4;
+  // }
+  //
+  // fadeOut = (event) => {
+  //   // console.log(event.target);
+  //   event.target.style.opacity = 1;
+  // }
 
   render(){
     const {current} = this.props.translation

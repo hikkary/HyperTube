@@ -7,6 +7,7 @@ export default class Header extends React.Component {
 		return(
     <div>
       <div className="Header">
+        <p className="logo">HYPERTUBE</p>
         <input type="text" className="Search" placeholder="Search..."></input>
 			</div>
       <div className="SubMenu"/>

@@ -71,6 +71,7 @@ export default class Register extends Component {
           <button type="submit" name="register">{current.register} </button>
         </form>
         <div>{this.state.message}</div>
+        <div className="test"/>
       </div>
     )
   }

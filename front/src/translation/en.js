@@ -1,8 +1,8 @@
 export default {
   rate: 'Rate',
   username: 'Username',
-  firstname: 'First name',
-  lastname: 'Last name',
+  firstname: 'Firstname',
+  lastname: 'Lastname',
   email: 'Email',
   password: 'Password',
   confirm: 'Confirm password',
