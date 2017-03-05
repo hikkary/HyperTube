@@ -6,11 +6,11 @@ import Register from '../../Components/Register';
 import Login from '../../Components/Login';
 import bg from '../../../public/background-hypertube.jpg';
 import './Auth.sass'
-// import OmniAuth from '../../Components/OmniAuth';
+import OmniAuth from '../../Components/OmniAuth';
 
 const Auth = ({ users, actions, translation }) =>
   <div className="auth">
-    {/* <OmniAuth /> */}
+    <OmniAuth />
     <div className="masterBG"
       style={{ backgroundImage: `url(${bg})` }}
     />

@@ -3,10 +3,10 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import debug from 'debug';
 import jwtSecret from '../../jwtSecret';
-import { User, Register, Login } from '../Schema';
+import { User, Register, Login, Facebook } from '../Schema';
 import Joi from 'joi';
 import path from 'path';
-
+import axios from 'axios';
 // const registerSchema = Joi.object().keys({
 //   username: Joi.string().regex(/^[a-zA-Z0-9]\w+$/).min(3).max(20).required(),
 //   firstname: Joi.string().regex(/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/).min(3).max(40).required(),
@@ -95,4 +95,16 @@ export const login = async (req, res) => {
       }
     }
   });
+};
+
+export const facebook = async (req, res) => {
+  console.log(req.body.picture.data.url);
+  const FBUser = new User({
+    fb_id: req.body.id,
+    firstname: req.body.first_name,
+    lastname: req.body.last_name,
+    picture: req.body.picture.data.url,
+    provider: 'facebook',
+  });
+  FBUser.save();
 };

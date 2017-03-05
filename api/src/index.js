@@ -26,7 +26,8 @@ seriesRouter
 
 users
   .post('/api/users/login', user.login)
-  .post('/api/users/register', user.createAccount);
+  .post('/api/users/register', user.createAccount)
+  .post('/api/users/facebook_auth', user.facebook);
 app
   .use(cors())
   .use('/public', express.static(`${__dirname}/public`))

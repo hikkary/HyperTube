@@ -28,7 +28,6 @@ export const firstname = (req, res, next) => {
   } else {
     return res.send({ status: false, details: 'firstname not valid' });
   }
-
 };
 
 export const lastname = (req, res, next) => {
