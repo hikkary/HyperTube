@@ -7,6 +7,8 @@ import { User, Register, Login, Facebook } from '../Schema';
 import Joi from 'joi';
 import path from 'path';
 import axios from 'axios';
+import { uid, secret } from './secret42'
+
 // const registerSchema = Joi.object().keys({
 //   username: Joi.string().regex(/^[a-zA-Z0-9]\w+$/).min(3).max(20).required(),
 //   firstname: Joi.string().regex(/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/).min(3).max(40).required(),
@@ -97,6 +99,28 @@ export const login = async (req, res) => {
   });
 };
 
+export const handleAuthorize42 = (req, res) => {
+  axios({
+    method: 'GET',
+    url: `https://api.intra.42.fr/oauth/authorize?client_id=${uid}&redirect_uri=http://localhost:3000/app&response_type=code&scope=public`,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  })
+    .then((response) =>{
+      // console.log(response);
+      // console.log("+++++++++++===========================");
+      // console.log(Object.keys(response.request));
+      // console.log(response.request._currentUrl);
+      // // res.send(response.request._currentUrl)
+
+      res.send(response.data)
+    })
+  ;
+
+
+}
+
 export const facebook = async (req, res) => {
   console.log(req.body.picture.data.url);
   console.log("TYPE ID",typeof(req.body.id));
@@ -110,11 +134,6 @@ export const facebook = async (req, res) => {
 
   User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true })
     .then((doc) => {
-      // console.log(doc);
-       /**
-        * doc.created = false
-        * doc.result = document update
-        **/
     })
     .catch(); // y'avais un done ici, non declarer, je l'ai enlever, demander sa servait a quoi
 
