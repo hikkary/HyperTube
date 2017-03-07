@@ -1,22 +1,24 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
-import Register from '../../Components/Register';
+// import Register from '../../Components/Register';
 import Login from '../../Components/Login';
+import title from '../../../public/logo.gif';
 import bg from '../../../public/background-hypertube.jpg';
-import './Auth.sass'
-import OmniAuth from '../../Components/OmniAuth';
+import './Auth.sass';
+// import OmniAuth from '../../Components/OmniAuth';
 
 const Auth = ({ users, actions, translation }) =>
-  <div className="auth">
-    <OmniAuth />
+<div className="authContainer">
+  <img src={title} className="logoTitle" />
+  <div className="authLogin">
     <div className="masterBG"
       style={{ backgroundImage: `url(${bg})` }}
     />
-    <Register users={users} actions={actions} translation={translation} />
     <Login users={users} actions={actions} translation={translation} />
   </div>
+</div>
 const mapStateToProps = (state) => ({
   users: state.users,
   translation: state.translation,
@@ -24,7 +26,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    register: bindActionCreators(allTheActions.register, dispatch),
+    // register: bindActionCreators(allTheActions.register, dispatch),
     login: bindActionCreators(allTheActions.login, dispatch),
     translation: bindActionCreators(allTheActions.translation, dispatch)
   },

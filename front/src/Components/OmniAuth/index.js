@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import apiURI from '../../apiURI';
 import axios from 'axios';
-import { uid, secret } from './secret42';
-import popup from './popup42';
+import { uid } from './secret42';
+import './OmniAuth.sass';
+import FBlogo from '../../../public/facebook_logo.png';
+import fortyTwoLogo from '../../../public/42_logo.png';
+// import popup from './popup42';
 /* global FB */
 
 export default class OmniAuth extends Component {
@@ -15,28 +18,6 @@ export default class OmniAuth extends Component {
         version    : 'v2.8' // use graph api version 2.8
       });
     }
-
-    // VERIFIE LE CODE ENVOYER APRES LA CONNEXION VIA 42, DOIT LECHANGER CONTRE UN TOKEN
-    // MAIS SA BUG
-    // if(window.location.search){
-    //   let code = window.location.search.split('=')
-    //   console.log(code[1]);
-    //   // alert('ok');
-    //   axios({
-    //     method: 'POST',
-    //     url: 'https://api.intra.42.fr/oauth/token',
-    //     data:{
-    //       grant_type: 'authorization_code',
-    //       client_id: uid,
-    //       client_secret: secret,
-    //       code: code[1],
-    //     }
-    //   })
-    //   .then((response) =>{
-    //     console.log(response);
-    //   })
-    //
-    // }
   }
 
   statusChangeCallback = (response) => {
@@ -80,28 +61,12 @@ export default class OmniAuth extends Component {
     FB.login(this.checkLoginState)
   }
 
-
-
-  // handleAuthorize42 = (e) => {
-  //
-  //   //FAIT UNE REQUETE A LAPI 42, SI TOUT EST OK ON LANCE LA FENETRE POUR SE CO
-  //   axios.get(`${apiURI}/users/42_auth`)
-  //   .then((response, err) =>{
-  //     if (err) {
-  //       console.log(err)
-  //       return
-  //     }
-  //     console.log(response);
-  //     window.open('https://api.intra.42.fr/oauth/authorize?client_id=540af455e551d8238c17215920325a8a350b087bf1762bc51f34339956719cfa&redirect_uri=http://localhost:3000&response_type=code&scope=public')
-  //   })
-  //
-  // }
-
   render() {
     return(
       <div>
-        <a href="#" onClick={this.handleClick}>FACEBOOK</a>
-        <a href='#' onClick={this.handleAuthorize42}>42</a>
+        <a href="#" onClick={this.handleClick}><img src={FBlogo} role="presentation" className="fblogo" ></img></a>
+        <a href='https://api.intra.42.fr/oauth/authorize?client_id=adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fusers%2F42_auth&response_type=code'>
+          <img src={fortyTwoLogo} role="presentation" className="fortyTwoLogo" ></img></a>
       </div>
     )
   }
@@ -134,3 +99,41 @@ export default class OmniAuth extends Component {
 //     //  })
 //     })
 // }
+
+
+    // VERIFIE LE CODE ENVOYER APRES LA CONNEXION VIA 42, DOIT LECHANGER CONTRE UN TOKEN
+    // MAIS SA BUGg
+    // if(window.location.search){
+    //   let code = window.location.search.split('=')
+    //   console.log(code[1]);
+    //   // alert('ok');
+    //   axios({
+    //     method: 'POST',
+    //     url: 'https://api.intra.42.fr/oauth/token',
+    //     data:{
+    //       grant_type: 'authorization_code',
+    //       client_id: uid,
+    //       client_secret: secret,
+    //       code: code[1],
+    //     }
+    //   })
+    //   .then((response) =>{
+    //     console.log(response);
+    //   })
+    //
+    // }
+
+    // handleAuthorize42 = (e) => {
+    //
+    //   //FAIT UNE REQUETE A LAPI 42, SI TOUT EST OK ON LANCE LA FENETRE POUR SE CO
+    //   axios.get(`${apiURI}/users/42_auth`)
+    //   .then((response, err) =>{
+    //     if (err) {
+    //       console.log(err)
+    //       return
+    //     }
+    //     console.log(response);
+    //     window.open('https://api.intra.42.fr/oauth/authorize?client_id=540af455e551d8238c17215920325a8a350b087bf1762bc51f34339956719cfa&redirect_uri=http://localhost:3000&response_type=code&scope=public')
+    //   })
+    //
+    // }

@@ -1,5 +1,5 @@
-import React, { PropTypes, Component } from 'react';
-import './moviedisplay.sass';
+import React, { Component } from 'react';
+import './MovieDisplay.sass';
 
 export default class MovieDisplay extends Component {
 
@@ -30,7 +30,7 @@ export default class MovieDisplay extends Component {
   render(){
     const {current} = this.props.translation
     return(
-      <div className="allMovie">
+      <div className="allMovies">
                 {/* <ul> */}
 
             { this.state.ready && this.state.movies.map(movie =>{

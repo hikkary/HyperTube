@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
 import { browserHistory } from 'react-router';
-import crypto from 'crypto';
+import ExtLogin from '../OmniAuth';
+import FlatButton from 'material-ui/FlatButton';
+import Register from '../../../public/AddUser.png';
+import './Login.sass';
 
 export default class Login extends Component {
   state= {
@@ -17,7 +21,7 @@ export default class Login extends Component {
       }
   };
 
-  login = (e) =>{
+  login = (e) => {
     e.preventDefault();
     const { actionlogin } = this.props.actions.login;
     const { username,password } = e.target;
@@ -29,14 +33,34 @@ export default class Login extends Component {
       actionlogin(userInfo);
   }
 
+  registerForm = () => {
+    console.log('hey');
+    browserHistory.push('/register');
+  }
+
   render() {
     return(
       <div>
-        <span>Login</span>
-          <form onSubmit={this.login}>
-            <input type="text" placeholder="username" name="username"  />
-            <input type="password" placeholder="password" name="password" />
-            <button type="submit" name="register">Login</button>
+        <div className="loginTitle">Sign in</div>
+        <hr />
+        <div>
+          <img src={Register} className="AddUser" onClick={this.registerForm} />
+        </div>
+        <div className="loginForm"/>
+          <form onSubmit={this.login} className="loginForm">
+            <ExtLogin />
+            <TextField
+              floatingLabelText="Username"
+              name="username"
+  					  type="text"
+            />
+            <TextField
+              floatingLabelText="Password"
+              type="password"
+              name="password"
+            />
+            <FlatButton type="submit" label="SIGN IN"/>
+            <FlatButton label="FORGOT PASSWORD?"/>
           </form>
         <div>{this.state.message}</div>
       </div>

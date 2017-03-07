@@ -1,5 +1,5 @@
-import axios from 'axios';
-import api from '../apiURI';
+// import axios from 'axios';
+// import api from '../apiURI';
 import translation from '../translation';
 
 export const GET = 'TRANSLATION_GET';

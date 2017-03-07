@@ -6,19 +6,26 @@
   left: 0
   filter: blur(2px)
   z-index: -1
+  // background-repeat: repeat
 
-.auth
-  display: flex
-  justify-content: center
-  flex-wrap: wrap
-
-.test
+.authLogin
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
+  background-color: white
   width: 500px
   height: 500px
-  background-color: rgba(0,0,0,0.8)
-  box-shadow: 1px 1px 10px red
+
+.authRegister
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
+  background-color: white
+  width: 500px
+  height: 630px
+  overflow: hidden
 
 
-  // background-repeat: no-repeat
-
-  // background-image: url('./public/background-hypertube.jpg')
+.authContainer
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  width: 100vw
+  height: 100vh

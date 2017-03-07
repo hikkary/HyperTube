@@ -29,7 +29,7 @@ export const actionlogin = (data) => (dispatch) => {
       data,
     }).then(({data :results, headers}) => {
       if (results.status === true) {
-        console.log(results);
+        console.log('results', results);
         dispatch(success({results, headers}));
       } else {
         dispatch(error(results));

@@ -36,7 +36,15 @@ const userToDatabase = (req) => {
   if (!req.file){
     req.file = '';
   }
-  console.log(req.file);
+  else {
+    // req.file.mimetype
+    const parts = req.file.mimetype.split("/");
+    const result = parts[parts.length - 1];
+    console.log('results', result);
+     req.file.filename = req.file.filename + '.' + result;
+  }
+  // console.log('vsdfscfvdscfvs' , req.file.filename);
+
   const passwordHash = crypto.createHash('rmd160').update(req.body.password).digest('base64');
   const newUser = new User({
     username: req.body.username,
@@ -60,7 +68,7 @@ export const createAccount = (req, res) => {
       return res.send({ status: false, details: 'cannot create image' });
     }
     // req.file === image data
-    // log(req.file);
+    console.log(req.file);
     // res.send(req.file);
     const { username, email } = req.body;
     User.findOne({ username })
@@ -99,27 +107,45 @@ export const login = async (req, res) => {
   });
 };
 
+// export const handleAuthorize42 = (req, res) => {
+//   axios({
+//     method: 'GET',
+//     url: `https://api.intra.42.fr/oauth/authorize?client_id=${uid}&redirect_uri=http://localhost:3000/app&response_type=code&scope=public`,
+//     headers: {
+//       'Access-Control-Allow-Origin': '*',
+//     },
+//   })
+//     .then((response) =>{
+//       // console.log(response);
+//       // console.log("+++++++++++===========================");
+//       // console.log(Object.keys(response.request));
+//       // console.log(response.request._currentUrl);
+//       // // res.send(response.request._currentUrl)
+//
+//       res.send(response.data)
+//     })
+//   ;
+// }
+
 export const handleAuthorize42 = (req, res) => {
+  console.log('hdhdhdhdhdhdhhddh');
+  console.log('query', req.query.code);
   axios({
-    method: 'GET',
-    url: `https://api.intra.42.fr/oauth/authorize?client_id=${uid}&redirect_uri=http://localhost:3000/app&response_type=code&scope=public`,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
+    method: 'POST',
+    url: 'https://api.intra.42.fr/oauth/token',
+    data: {
+      grant_type: 'authorization_code',
+      client_id: 'adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa',
+      client_secret: '9baa3a44316274159b85fc06a5cd0d88a44160a0fc4946a313a22216be2c548d',
+      code: '705ee8b22259ffb9df429816e148b74e48134e335a64710c7abc1904d4f64ddd',
+      redirect_uri: 'https//localhost:3000/api/users/42_auth',
     },
-  })
-    .then((response) =>{
-      // console.log(response);
-      // console.log("+++++++++++===========================");
-      // console.log(Object.keys(response.request));
-      // console.log(response.request._currentUrl);
-      // // res.send(response.request._currentUrl)
-
-      res.send(response.data)
-    })
-  ;
-
-
+  }).catch((e) => {
+    console.log(e);
+  });
+  // dans le .then ajouter a la database & res.redirect direct user if all ok user connected
 }
+
 
 export const facebook = async (req, res) => {
   console.log(req.body.picture.data.url);
