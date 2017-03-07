@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import { browserHistory } from 'react-router';
 import ExtLogin from '../OmniAuth';
-import FlatButton from 'material-ui/FlatButton';
-import Register from '../../../public/AddUser.png';
+import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+// import Register from '../../../public/AddUser.png';
 import './Login.sass';
 
 export default class Login extends Component {
@@ -42,10 +43,16 @@ export default class Login extends Component {
     return(
       <div>
         <div className="loginTitle">Sign in</div>
-        <hr />
-        <div>
-          <img src={Register} className="AddUser" onClick={this.registerForm} />
-        </div>
+        <FloatingActionButton
+          backgroundColor="#e0001b" style={{
+            marginTop: '-26px',
+            float: 'right',
+            marginRight: '10px',
+          }}
+          onClick={this.registerForm}
+        >
+          <i className="material-icons">person_add</i>
+        </FloatingActionButton>
         <div className="loginForm"/>
           <form onSubmit={this.login} className="loginForm">
             <ExtLogin />
@@ -59,8 +66,8 @@ export default class Login extends Component {
               type="password"
               name="password"
             />
-            <FlatButton type="submit" label="SIGN IN"/>
-            <FlatButton label="FORGOT PASSWORD?"/>
+            <RaisedButton type="submit" label="SIGN IN" style={{ margin: '20px 0' }}/>
+            <RaisedButton label="FORGOT PASSWORD?"/>
           </form>
         <div>{this.state.message}</div>
       </div>

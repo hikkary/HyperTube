@@ -8,7 +8,7 @@ import title from '../../../public/logo.gif';
 
 const Auth = ({ users, actions, translation }) =>
   <div className="authContainer">
-    <img src={title} className="logoTitle" />
+    <img src={title} role="presentation" className="logoTitle" />
       <div className="authRegister">
         <div className="masterBG"
           style={{ backgroundImage: `url(${bg})` }}

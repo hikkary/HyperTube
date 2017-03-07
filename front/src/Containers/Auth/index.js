@@ -4,14 +4,14 @@ import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 // import Register from '../../Components/Register';
 import Login from '../../Components/Login';
-import title from '../../../public/logo.gif';
+import title from '../../../public/logo2.png';
 import bg from '../../../public/background-hypertube.jpg';
 import './Auth.sass';
 // import OmniAuth from '../../Components/OmniAuth';
 
 const Auth = ({ users, actions, translation }) =>
 <div className="authContainer">
-  <img src={title} className="logoTitle" />
+  <img src={title} role="presentation" className="logoTitle" />
   <div className="authLogin">
     <div className="masterBG"
       style={{ backgroundImage: `url(${bg})` }}

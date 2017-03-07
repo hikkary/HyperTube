@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Register.sass';
 import { browserHistory } from 'react-router';
 import './Register.sass';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import FR from '../../../public/am-flag.gif';
@@ -58,18 +58,30 @@ export default class Register extends Component {
     form.append('password', password.value)
     form.append('confirm', confirm.value)
     form.append('image', image)
+    form.append('language', this.state.currentLanguage)
     register(form);
   };
+
+  toFrench = (e) => {
+    this.setState({ currentLanguage: 'fr' })
+    this.props.actions.translation.toFrench()
+  }
+
+  toEnglish = (e) => {
+    this.setState({ currentLanguage: 'en' })
+    this.props.actions.translation.toEnglish()
+  }
+
   render(){
     const {current} = this.props.translation;
     return(
       <div>
         <div className="translation">
-          <button className="langButton" onClick={this.props.actions.translation.toFrench}>
-            <img src={EN} className="language" />
+          <button className="langButton" onClick={this.toFrench}>
+            <img src={EN} role="presentation" className="language" />
           </button>
-          <button className="langButton" onClick={this.props.actions.translation.toEnglish}>
-            <img src={FR} className="language"/>
+          <button className="langButton" onClick={this.toEnglish}>
+            <img src={FR} role="presentation" className="language"/>
           </button>
         </div>
         <i className="fa fa-sign-in fa-2x signInIcon" aria-hidden="true" onClick={this.loginForm}></i>
@@ -105,14 +117,14 @@ export default class Register extends Component {
             type="password"
             name="confirm"
           />
-          <FlatButton
+          <RaisedButton
             label="Choose an Image"
             labelPosition="before"
             className="imageUpload"
             containerElement="label"
           >
             <input type="file" name="imageUpload" className="uploadInput" onChange={this.convertImage} />
-          </FlatButton>
+          </RaisedButton>
           <RaisedButton type="submit" label={current.register} className="registerSubmit" name="register"/>
         </form>
         <div>{this.state.message}</div>

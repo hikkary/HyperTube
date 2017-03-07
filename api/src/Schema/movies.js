@@ -8,6 +8,26 @@ const movie = mongoose.Schema({
   rating: Number,
   genres: Object,
   summary: String,
+  description: String,
+  duration: String,
+  released: String,
+  cast: Array,
+  genres: Array,
+  directors: Array,
+  writers: Array,
+  review: {
+    type: Object,
+    default: {
+      rating: {
+        type: String,
+        default: '-',
+      },
+      text: {
+        type: String,
+        default: '',
+      },
+    },
+  },
   language: String,
   seenBy: Array,
   mediumImage: String,

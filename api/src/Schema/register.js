@@ -8,6 +8,7 @@ const registerSchema = Joi.object().keys({
   password: Joi.string().regex(/^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.).*$/).min(8).max(20).required(),
   confirm: Joi.string().regex(/^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.).*$/).min(8).max(20).required(),
   image: Joi.any().optional(),
+  language: Joi.string(),
 });
 
 export default registerSchema;

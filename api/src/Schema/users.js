@@ -11,6 +11,7 @@ const user = mongoose.Schema({
   picture: String,
   key: Number,
   provider: String,
+  language: String,
 });
 
 

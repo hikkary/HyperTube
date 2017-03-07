@@ -1,11 +1,12 @@
- import React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './Containers/App';
 import Series from './Containers/Series';
+import Movies from './Containers/Movies';
 import Auth from './Containers/Auth';
 import Register from './Containers/Register';
 import './index.css';
-import { Route, Router, browserHistory, Redirect} from 'react-router';
+import { Route, Router, browserHistory } from 'react-router';
 import reducers from './Reducers';
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
@@ -42,14 +43,12 @@ ReactDOM.render(
   <Provider store={store} >
     <MuiThemeProvider>
     	<Router history={browserHistory}>
-        <Route path="/" component={Auth}>
-        </Route>
-      	<Route path="/register" component={Register}>
-      	</Route>
+        <Route path="/" component={Auth} />
+      	<Route path="/register" component={Register} />
         <Route path="/app" component={App}>
+          <Route path="/app/movies" component={Movies} />
+          <Route path="/app/series" component={Series} />
         </Route>
-        <Route path="/series" component={Series}>
-      	</Route>
       </Router>
     </MuiThemeProvider>
   </Provider>,

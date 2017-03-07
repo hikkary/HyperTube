@@ -8,7 +8,7 @@ export default class MovieDisplay extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
-    this.setState({movies:newProps.movies.slice(0,30), ready:true })
+    this.setState({ movies: newProps.movies.slice(0,30), ready:true })
 
   }
 
@@ -31,29 +31,24 @@ export default class MovieDisplay extends Component {
     const {current} = this.props.translation
     return(
       <div className="allMovies">
-                {/* <ul> */}
-
             { this.state.ready && this.state.movies.map(movie =>{
               return(
                 <div className="allInfo" key={movie.id + Math.random(10000, 50000)}>
                     <div
                       className="movie"
-                      key={movie.id + Math.random(10000, 50000)}
                       style={{ backgroundImage: `url('${movie.largeImage}')` }}
                     >
                       <div className="textContainer">
-                        <p key={movie.id + Math.random(10000, 50000)}>{current.rate}: {movie.rating} </p>
-                        <p key={movie.id + Math.random(10000, 50000)}>{movie.year} </p>
+                        <p>{current.rate}: {movie.rating} </p>
+                        <p>{movie.year} </p>
                       </div>
                     </div>
-                <div className="title" key={movie.id + Math.random(10000, 50000)}>
-                  <p key={movie.id + Math.random(10000, 50000)}>{movie.title} </p>
+                <div className="title">
+                  <p>{movie.title} </p>
                 </div>
               </div>
              )
-
              })}
-        {/* </ul> */}
       </div>
     )
   }

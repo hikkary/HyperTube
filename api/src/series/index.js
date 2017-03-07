@@ -1,72 +1,76 @@
 import axios from 'axios';
+import debug from 'debug';
 // import fs from 'fs';
 import _ from 'lodash';
 import apiKey from '../../apiKey';
 import { Serie } from '../Schema';
 import mongoose from '../mongoose';
 
+const log = debug('hypertube:api:series');
+
 const writeJson = (allSeries) => {
   allSeries = _.flattenDepth(allSeries, 1);
-  mongoose.connection.collections['series'].drop((err) => {
-      console.log('collection dropped');
+  mongoose.connection.collections.series.drop((err) => {
+    log('collection dropped');
   });
-  allSeries.map((serie) => {
-      const newSerie = new Serie({
-        id: serie.id,
-        images: serie.images,
-        // description: data.data.description,
-        // duration: data.data.duration,
-        // released: data.data.released,
-        // cast: data.data.cast,
-        // genres: data.data.genres,
-        // directors: data.data.directors,
-        // writers: data.data.writers,
-        // review: data.data.review,
-        imdb_code: serie.imdb_id,
-        num_seasons: serie.num_seasons,
-        title: serie.title,
-        year: serie.year,
-        provider: 'EZTV',
-      });
-    newSerie.save()
-      .then();
-  });
+  allSeries.forEach(serie =>
+    axios.get(`http://imdb.wemakesites.net/api/${serie.imdb_id}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
+      // arg: response.data.data
+      .then(({ data: { data } }) => {
+        if (data) {
+          const newSerie = new Serie({
+            images: serie.images,
+            description: data.description,
+            duration: data.duration,
+            released: data.released,
+            cast: data.cast,
+            genres: data.genres,
+            directors: data.directors,
+            writers: data.writers,
+            review: data.review,
+            imdb_code: serie.imdb_id,
+            num_seasons: serie.num_seasons,
+            title: serie.title,
+            year: serie.year,
+            provider: 'EZTV',
+          });
+          newSerie.save()
+            .then(() => {
+              log(`${serie.title} added !`);
+            });
+        }
+      }),
+    );
 };
 
 const recursiveEztv = (page, allSeries) => {
-  console.log('ok entered');
   // console.log(p'http://eztvapi.ml/shows/${page}');
   console.log(page);
   axios.get(`http://eztvapi.ml/shows/${page}`).then((data) => {
     // console.log("DATA", data.data[0]);
-    console.log("length", data.data.length);
-    if(!data.data)
-    {
+    if (!data.data) {
       writeJson(allSeries);
-      return
+      return;
     }
-
     allSeries.push(data.data);
-    if(data.data)
-      recursiveEztv(page + 1, allSeries);
+    if (data.data) { recursiveEztv(page + 1, allSeries); }
     // console.log('globallll', global.series);
   });
-}
+};
 
 export const getSeries = (req, res) => {
-  let allSeries = [];
+  const allSeries = [];
   recursiveEztv(1, allSeries);
   res.send(true);
-}
+};
 
 export const getInfo = (req, res) => {
-  axios.get('http://imdb.wemakesites.net/api/tt0944947?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202')
-  .then((data) => {
-    console.log(data)
-  }
-  )
-  res.send(true);
-}
+  log('coucou');
+  axios.get(`http://imdb.wemakesites.net/api/${req.body.imdb}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
+    .then((data) => {
+      res.send(data.data);
+    });
+};
 
 
 export const display = (req, res) => {

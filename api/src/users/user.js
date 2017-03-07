@@ -45,12 +45,13 @@ const userToDatabase = (req) => {
   }
   // console.log('vsdfscfvdscfvs' , req.file.filename);
 
-  const passwordHash = crypto.createHash('rmd160').update(req.body.password).digest('base64');
+  const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
     username: req.body.username,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
+    language: req.body.language,
     password: passwordHash,
     picture: req.file.filename,
     key: 0,
@@ -90,7 +91,7 @@ export const login = async (req, res) => {
   if (error) {
     return res.send({ status: false, errors: error.details });
   }
-  const passwordHash = crypto.createHash('rmd160').update(req.body.password).digest('base64');
+  const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   User.findOne({ username })
   .then((user) => {
     if (!user) res.send({ status: false, details: 'there is an issue with the password or the username' });
@@ -128,8 +129,8 @@ export const login = async (req, res) => {
 // }
 
 export const handleAuthorize42 = (req, res) => {
-  console.log('hdhdhdhdhdhdhhddh');
   console.log('query', req.query.code);
+  const code = req.query.code
   axios({
     method: 'POST',
     url: 'https://api.intra.42.fr/oauth/token',
@@ -137,13 +138,41 @@ export const handleAuthorize42 = (req, res) => {
       grant_type: 'authorization_code',
       client_id: 'adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa',
       client_secret: '9baa3a44316274159b85fc06a5cd0d88a44160a0fc4946a313a22216be2c548d',
-      code: '705ee8b22259ffb9df429816e148b74e48134e335a64710c7abc1904d4f64ddd',
-      redirect_uri: 'https//localhost:3000/api/users/42_auth',
+      code : code,
+      redirect_uri: 'http://localhost:8080/api/users/42_auth',
     },
-  }).catch((e) => {
+  })
+  .then((response) => {
+    console.log(response.data.access_token);
+    axios({
+      method: 'GET',
+      url: 'https://api.intra.42.fr/v2/me',
+      headers: {
+        Authorization: `Bearer ${response.data.access_token}`,
+      },
+    }).then((user) => {
+        const data = {
+          auth_id: user.data.id,
+          firstname: user.data.first_name,
+          lastname: user.data.last_name,
+          picture: user.data.image_url,
+          language: 'en',
+          provider: '42',
+        }
+        User.findOrCreate({ auth_id: user.data.id }, data, { upsert: true }).catch((err) => { console.log(err); });
+    });
+    const token = response.data.access_token;
+    res.header('Access-Control-Expose-Headers', 'x-access-token');
+    res.set('x-access-token', token);
+    // redirect port 3000
+    res.redirect('http://localhost:3000/app');
+    // res.send({ status: true, details: 'user connected' });
+  })
+  .catch((e) => {
     console.log(e);
+    res.redirect('http://localhost:3000/?error=42log');
+    // message d'erreur
   });
-  // dans le .then ajouter a la database & res.redirect direct user if all ok user connected
 }
 
 
@@ -154,14 +183,11 @@ export const facebook = async (req, res) => {
     auth_id: req.body.id,
     firstname: req.body.first_name,
     lastname: req.body.last_name,
+    language: 'en',
     picture: req.body.picture.data.url,
     provider: 'facebook',
   });
-
-  User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true })
-    .then((doc) => {
-    })
-    .catch(); // y'avais un done ici, non declarer, je l'ai enlever, demander sa servait a quoi
+  User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true }).catch((err) => { console.log(err); });
 
 
   // const FBUser = new User({

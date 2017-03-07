@@ -24,7 +24,18 @@ export const getMovie = () => (dispatch) => {
   axios.get(
     `${api}/movie/display`,
   )
-  .then(({ data: movies}) => {
+  .then(({ data: movies }) => {
+    dispatch(display(movies));
+  })
+  .catch(console.error)
+}
+
+export const TenBestMovies = () => (dispatch) => {
+  dispatch(pending());
+  axios.get(
+    `${api}/movie/tenBest`,
+  )
+  .then(({ data: movies }) => {
     dispatch(display(movies));
   })
   .catch(console.error)

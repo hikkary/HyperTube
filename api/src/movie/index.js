@@ -81,3 +81,13 @@ export const display = (req, res) => {
       res.send(results);
     });
 };
+
+export const tenBest = (req, res) => {
+  console.log('okkkk');
+  Movie.find().sort({ rating: -1 })
+  .limit(8)
+  .then((results) => {
+    // console.log(results);
+    res.send(results);
+  });
+};

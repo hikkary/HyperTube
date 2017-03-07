@@ -1,5 +1,6 @@
 import apiURI from '../apiURI';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 export const ADDED = "LOGGED_USER";
 export const ERROR = "LOG_ERROR";
@@ -24,13 +25,14 @@ export const actionlogin = (data) => (dispatch) => {
   // dispatch(refresh())
   console.log("TEST");
   axios({
-      method: 'POST',
+      method: 'PUT',
       url: `${apiURI}/users/login`,
       data,
     }).then(({data :results, headers}) => {
       if (results.status === true) {
         console.log('results', results);
         dispatch(success({results, headers}));
+        browserHistory.push('/app');
       } else {
         dispatch(error(results));
       }

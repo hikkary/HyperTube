@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import apiURI from '../../apiURI';
 import axios from 'axios';
-import { uid } from './secret42';
+// import { uid } from './secret42';
 import './OmniAuth.sass';
 import FBlogo from '../../../public/facebook_logo.png';
 import fortyTwoLogo from '../../../public/42_logo.png';
@@ -65,7 +65,7 @@ export default class OmniAuth extends Component {
     return(
       <div>
         <a href="#" onClick={this.handleClick}><img src={FBlogo} role="presentation" className="fblogo" ></img></a>
-        <a href='https://api.intra.42.fr/oauth/authorize?client_id=adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fusers%2F42_auth&response_type=code'>
+        <a href='https://api.intra.42.fr/oauth/authorize?client_id=adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2F42_auth&response_type=code'>
           <img src={fortyTwoLogo} role="presentation" className="fortyTwoLogo" ></img></a>
       </div>
     )

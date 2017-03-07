@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './SeriesDisplay.sass';
+import axios from 'axios';
+import apiURI from '../../apiURI';
 
 export default class SeriesDisplay extends Component {
 
@@ -17,8 +19,21 @@ export default class SeriesDisplay extends Component {
     this.setState({ series: newProps.series.slice(0, 30), ready: true });
   }
 
+  getInfo = (imdb) => {
+    axios(
+    {
+      method : 'POST',
+      url : `${apiURI}/series/getInfo`,
+      data: {
+        imdb,
+      },
+      })
+    .then((data) => {
+      // this.setState({ rating : data. })
+        console.log('data axios imdb', data.data);
+      });
+  }
   render() {
-    // let i = 0;
     return(
       <div className="allSeries">
           {this.state.ready && this.state.series.map((src, key) => {
@@ -28,6 +43,7 @@ export default class SeriesDisplay extends Component {
                 <div className="rateYear">
                   <p>Year: {src.year}</p>
                   <p>Seasons: {src.num_seasons}</p>
+                  <p>Rating: {src.review.rating || '-'}</p>
                   </div>
               </div>
               <div className="SerieTitles">

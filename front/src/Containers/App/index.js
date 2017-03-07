@@ -2,24 +2,26 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
-import MovieDisplay from '../../Components/MovieDisplay';
 import Header from '../../Components/Header';
+import BestOfMovies from '../../Components/BestOfMovies';
+// import BestOfSeries from './Components/BestOfSeries';
 
-const App = ({ movies, translation, actions }) =>
+const App = ({ translation, actions, movies }) =>
   <div>
     <Header/>
-    <MovieDisplay movies={movies} translation={translation} actions={actions} />
+    <BestOfMovies movies={movies} actions={actions} translation={translation} />
+    {/* <BestOfSeries actions={actions} translation={translation} /> */}
   </div>
 
 App.propTypes = {
-  movies: PropTypes.array.isRequired
+  movies: PropTypes.array.isRequired,
 };
 //
 // const mapStateToProps = (state) => ({
 //   movies: state.movies,
 // });
 
-const mapStateToProps = ({ movies, translation }) => ({ movies, translation });
+const mapStateToProps = ({ translation, movies }) => ({ translation, movies });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
