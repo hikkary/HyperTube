@@ -23,3 +23,14 @@ export const getSerie = () => (dispatch) => {
     // console.log(data.data);
   });
 }
+
+export const TenBestSeries = () => (dispatch) => {
+  dispatch(pending());
+  axios.get(
+    `${api}/series/tenBest`,
+  )
+  .then(({ data: series }) => {
+    dispatch(display(series));
+  })
+  .catch(console.error)
+}

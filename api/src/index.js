@@ -19,13 +19,15 @@ movieRouter
   .get('/api/movie', movie.get)
   .get('/api/movie/display', movie.display)
   .get('/api/movie/tenBest', movie.tenBest)
+  .post('/api/movie/getGenre', movie.getGenre)
   .post('/api/movie', movie.post)
   .put('/api/movie', movie.modify);
 
 seriesRouter
   .get('/api/series', series.getSeries)
-  .post('/api/series/getInfo', series.getInfo)
-  .get('/api/series/display', series.display);
+  .get('/api/series/tenBest', series.tenBest)
+  .get('/api/series/display', series.display)
+  .post('/api/series/getInfo', series.getInfo);
 
 users
   .put('/api/users/login', user.login)

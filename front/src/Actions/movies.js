@@ -40,3 +40,19 @@ export const TenBestMovies = () => (dispatch) => {
   })
   .catch(console.error)
 }
+
+export const getGenre = (genre) => (dispatch) => {
+  dispatch(pending());
+  axios({
+    method: 'POST',
+    url: `${api}/movie/getGenre`,
+    data: {
+      genre: genre,
+    }
+  }
+  )
+  .then(({ data: movies }) => {
+    dispatch(display(movies));
+  })
+  .catch(console.error)
+}

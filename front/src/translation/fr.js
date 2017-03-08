@@ -7,5 +7,7 @@ export default {
   password: 'Mot de passe',
   confirm: 'Confirmez mot de passe',
   register: 'S\'enregistrer',
+  bestMovies: 'Meilleurs Films',
+  bestSeries: 'Meilleures Series',
 
 }

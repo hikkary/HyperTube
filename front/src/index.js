@@ -45,10 +45,9 @@ ReactDOM.render(
     	<Router history={browserHistory}>
         <Route path="/" component={Auth} />
       	<Route path="/register" component={Register} />
-        <Route path="/app" component={App}>
+        <Route path="/app" component={App}/>
           <Route path="/app/movies" component={Movies} />
           <Route path="/app/series" component={Series} />
-        </Route>
       </Router>
     </MuiThemeProvider>
   </Provider>,

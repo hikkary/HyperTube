@@ -18,10 +18,17 @@ const writeJson = (allSeries) => {
       // arg: response.data.data
       .then(({ data: { data } }) => {
         if (data) {
+          let rate = '-';
+          if (data.review && data.review.rating) { rate = Number(data.review.rating.split('/')[0]); }
+          else { rate = -1; }
+
+          console.log(rate);
+
           const newSerie = new Serie({
             images: serie.images,
             description: data.description,
             duration: data.duration,
+            rating: rate,
             released: data.released,
             cast: data.cast,
             genres: data.genres,
@@ -72,6 +79,15 @@ export const getInfo = (req, res) => {
     });
 };
 
+export const tenBest = (req, res) => {
+  console.log('okkkk');
+  Serie.find().sort({ rating: -1 })
+  .limit(8)
+  .then((results) => {
+    console.log(results);
+    res.send(results);
+  });
+};
 
 export const display = (req, res) => {
   Serie.find()

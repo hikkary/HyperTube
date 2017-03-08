@@ -8,6 +8,10 @@ const serie = mongoose.Schema({
   seenBy: Array,
   title: String,
   year: Number,
+  rating: {
+    type: Number,
+    default: 0,
+  },
   description: String,
   duration: String,
   released: String,

@@ -7,4 +7,6 @@ export default {
   password: 'Password',
   confirm: 'Confirm password',
   register: 'Register',
+  bestMovies: 'Best Movies',
+  bestSeries: 'Best Series',
 }

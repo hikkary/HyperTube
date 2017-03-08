@@ -22,6 +22,10 @@ export default class BestOfMovies extends Component {
   render(){
     const {current} = this.props.translation;
     return(
+      <div>
+      <div className="BestMovies">
+        <p>{current.bestMovies}</p>
+      </div>
       <div className="TenBestMovies">
           {this.state.ready && this.state.tenBestMovies.map((movie, key) => {
             return(
@@ -43,6 +47,7 @@ export default class BestOfMovies extends Component {
           })}
 
       </div>
+    </div>
     )
   }
 }

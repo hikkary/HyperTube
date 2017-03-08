@@ -3,8 +3,9 @@ body
 
 
 
-.allMovies, .TenBestMovies
+.allMovies, .TenBestMovies, .TenBestSeries
   // background-color: #444953
+  padding-top: 15px
   background-color: #363637
   display: flex
   justify-content: space-around
@@ -16,8 +17,22 @@ body
   width: 260px
 
   // background-color: red
+.BestSeries, .BestMovies
+  height: inherit
+  position: relative
+  height: 30px
+  background-color: #363637
+  text-align: center
+  font-weight: bold
+  font-size: 30px
+  padding-bottom: 15px
+  border-bottom: 1px solid #e0001b
+  color: white
+  & p
+    -webkit-margin-before: 0em
+    -webkit-margin-after: 0em
 
-.movie
+.movie, .Serie
   height: 400px
   width: 250px
   margin: 5px
