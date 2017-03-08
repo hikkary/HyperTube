@@ -3,6 +3,7 @@ import api from '../apiURI';
 
 export const GET = 'MOVIE_GET';
 export const PENDING = 'MOVIE_PENDING';
+export const FILTER = 'MOVIE_FILTER';
 // export const SEARCH = 'MOVIE_PENDING';
 
 export const pending = () => ({
@@ -19,10 +20,20 @@ export const display = movies => ({
 //   payload: keys,
 // })
 
-export const getMovie = () => (dispatch) => {
+export const getMovie = ({
+  title = '',
+  yearMin = 1900,
+  yearMax = 2017,
+  rateMin = 0,
+  rateMax = 10,
+  genres = '',
+  page = '',
+  filter = 'title',
+  sorted = 1,
+} = {}) => (dispatch) => {
   dispatch(pending());
   axios.get(
-    `${api}/movies/display`,
+    `${api}/movies?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genres=${genres}&page=${page}&sorted=${sorted}&filter=${filter}`,
   )
   .then(({ data: movies }) => {
     dispatch(display(movies));

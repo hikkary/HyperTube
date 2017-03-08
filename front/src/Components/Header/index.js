@@ -1,6 +1,5 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import './style/header.sass';
 import logo from  '../../../public/logo.gif';
@@ -27,20 +26,32 @@ export default class Header extends React.Component {
         {/*  Quand le fichier est dans le public on a pas besoin de mettre le path*/}
         <input type="text" className="Search" placeholder="Search..."></input>
         <div className="HeaderButton">
-        <RaisedButton  className="RaisedButton" backgroundColor="#e0001b" onClick={this.toHome} style={{
-          lineHeight: '70px',
-          backgroundColor: "#e0001b"
-        }}>
+        <FlatButton
+          backgroundColor="#e0001b"
+          onClick={this.toHome}
+          style={{
+            backgroundColor: "#e0001b"
+          }}
+        >
         <i className="material-icons">home</i>
-        </RaisedButton>
-        <RaisedButton className="RaisedButton" backgroundColor="#e0001b" onClick={this.toMovies} label="Movies" style={{
-          lineHeight: '70px',
-          backgroundColor: "#e0001b"
-        }} />
-        <RaisedButton  className="RaisedButton" backgroundColor="#e0001b" onClick={this.toSeries} label="Series" style={{
-          lineHeight: '70px',
-          backgroundColor: "#e0001b"
-        }} />
+      </FlatButton>
+        <FlatButton
+          backgroundColor="#e0001b"
+          onClick={this.toMovies}
+          label="Movies"
+          style={{
+            backgroundColor: "#e0001b"
+          }}
+        />
+        <FlatButton
+          backgroundColor="#e0001b"
+          onClick={this.toSeries}
+          label="Series"
+          style={{
+            backgroundColor: "#e0001b",
+            height: '100%',
+          }}
+        />
       </div>
 			</div>
       <div className="SubMenu" />

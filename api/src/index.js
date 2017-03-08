@@ -16,8 +16,8 @@ const users = express.Router('/api/users');
 const stream = express.Router('/api/stream');
 
 movieRouter
-  .get('/api/movies', movie.get)
-  .get('/api/movies/display', movie.display)
+  .get('/api/movies', movie.display)
+  .get('/api/movies/scrap', movie.get)
   .get('/api/movies/tenBest', movie.tenBest)
   .post('/api/movies/getGenre', movie.getGenre)
   .post('/api/movies', movie.post)

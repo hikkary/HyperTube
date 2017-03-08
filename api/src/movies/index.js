@@ -4,19 +4,25 @@ import _ from 'lodash';
 import mongoose from 'mongoose';
 import { Movie } from '../Schema';
 
+const log = require('debug')('hypertube:movies.js');
+
 const writeJson = (allMovies) => {
   mongoose.connection.collections['movies'].drop((err) => {
       console.log('collection dropped');
   });
-  allMovies = _.flattenDepth(allMovies, 1)
+  allMovies = _.flattenDepth(allMovies, 1);
   // console.log(allMovies);
   allMovies.map((movie) => {
+    let rate = -1;
+    if (movie.rating) {
+      rate = Math.floor(movie.rating);
+    }
     const newMovie = new Movie({
       id: movie.id,
       imdb_code: movie.imdb_code,
       title: movie.title,
       year: movie.year,
-      rating: movie.rating,
+      rating: rate,
       genres: movie.genres,
       summary: movie.summary,
       language: movie.language,
@@ -62,10 +68,39 @@ export const modify = (req, res) => {
 };
 
 export const display = (req, res) => {
-  Movie.find()
+  const filteredData = {
+    title: req.query.title,
+    genres: req.query.genres,
+  };
+
+  const data = _.reduce(filteredData, (accu, value, key) => {
+    if (value) {
+      return { ...accu, [key]: value };
+    }
+    return accu;
+  }, {});
+
+  log(data)
+  // const test = {
+  //   title: 1,
+  // }
+  Movie.find(data)
+  .sort({ [req.query.filter]: [req.query.sorted] })
+  .exec()
     .then((results) => {
-      res.send(results);
-    });
+      log(results);
+      const yearAndRateRange = results.filter((movie) =>{
+        if ((movie.year >= req.query.yearMin && movie.year <= req.query.yearMax) &&
+        (movie.rating !== -1 &&
+          movie.rating >= req.query.rateMin && movie.rating <= req.query.rateMax)) {
+          return movie;
+        }
+      });
+      log(results);
+      // log(results);
+      res.send(yearAndRateRange);
+    })
+    .catch(log);
 };
 
 export const tenBest = (req, res) => {
