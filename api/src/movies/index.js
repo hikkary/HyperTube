@@ -80,7 +80,7 @@ export const tenBest = (req, res) => {
 
 export const getGenre = (req, res) => {
   console.log('Dans Genre');
-  Movie.find({ genres: [req.body.genre]}).sort({ rating: -1 })
+  Movie.find({ genres: req.body.genre }).sort({ title: 1 })
   .then((results) => {
     console.log(results);
     res.send(results);

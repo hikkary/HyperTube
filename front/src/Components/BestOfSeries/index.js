@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../MovieDisplay/MovieDisplay.sass';
+import '../SeriesDisplay/SeriesDisplay.sass';
 
 export default class BestOfSeries extends Component {
   state = {
