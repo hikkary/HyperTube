@@ -20,7 +20,6 @@ export const refresh = () => ({
   type: REFRESH,
 });
 
-
 export const actionlogin = (data) => (dispatch) => {
   // dispatch(refresh())
   console.log("TEST");

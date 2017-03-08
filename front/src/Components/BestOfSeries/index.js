@@ -31,7 +31,7 @@ export default class BestOfSeries extends Component {
                   <div className="rateYear">
                     <p>Year: {src.year}</p>
                     <p>Seasons: {src.num_seasons}</p>
-                    <p>Rating: {src.review.rating || '-'}</p>
+                    <p>Rating: {src.rating || '-'}</p>
                     </div>
                 </div>
                 <div className="SerieTitles">

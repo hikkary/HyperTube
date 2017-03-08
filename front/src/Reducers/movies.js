@@ -1,5 +1,4 @@
 import { GET } from '../Actions/movies';
-// ANCIEN IMPORT import { GET } from '../Actions';
 
 // const search = (action) =>{
     // action.payload.Map;

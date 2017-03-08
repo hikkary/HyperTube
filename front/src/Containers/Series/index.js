@@ -7,8 +7,8 @@ import Header from '../../Components/Header';
 
 export const Series = ({ series, actions }) =>
   <div>
-  <Header/>
-  <SeriesDisplay series={series} actions={actions} />
+    <Header/>
+    <SeriesDisplay series={series} actions={actions} />
   </div>
 
 Series.propTypes = {

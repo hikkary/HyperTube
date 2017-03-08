@@ -37,7 +37,6 @@ const store = createStore(
 );
 
 store.dispatch(translation.displayTranslation());
-// store.dispatch(series.getSerie());
 
 ReactDOM.render(
   <Provider store={store} >

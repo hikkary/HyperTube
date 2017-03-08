@@ -22,37 +22,37 @@ export const display = movies => ({
 export const getMovie = () => (dispatch) => {
   dispatch(pending());
   axios.get(
-    `${api}/movie/display`,
+    `${api}/movies/display`,
   )
   .then(({ data: movies }) => {
     dispatch(display(movies));
   })
   .catch(console.error)
-}
+};
 
 export const TenBestMovies = () => (dispatch) => {
   dispatch(pending());
   axios.get(
-    `${api}/movie/tenBest`,
+    `${api}/movies/tenBest`,
   )
   .then(({ data: movies }) => {
     dispatch(display(movies));
   })
   .catch(console.error)
-}
+};
 
 export const getGenre = (genre) => (dispatch) => {
   dispatch(pending());
   axios({
     method: 'POST',
-    url: `${api}/movie/getGenre`,
+    url: `${api}/movies/getGenre`,
     data: {
       genre: genre,
     }
-  }
-  )
+  })
   .then(({ data: movies }) => {
+    console.log('genresssss', movies);
     dispatch(display(movies));
   })
   .catch(console.error)
-}
+};

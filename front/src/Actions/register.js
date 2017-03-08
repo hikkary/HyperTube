@@ -36,4 +36,4 @@ export const register = (data) => (dispatch) => {
       dispatch(error(results));
     }
   });
-}
+};

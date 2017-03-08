@@ -7,7 +7,7 @@ import { User, Register, Login, Facebook } from '../Schema';
 import Joi from 'joi';
 import path from 'path';
 import axios from 'axios';
-import { uid, secret } from './secret42'
+import { uid, secret } from './secret42';
 
 // const registerSchema = Joi.object().keys({
 //   username: Joi.string().regex(/^[a-zA-Z0-9]\w+$/).min(3).max(20).required(),
@@ -43,8 +43,6 @@ const userToDatabase = (req) => {
     console.log('results', result);
      req.file.filename = req.file.filename + '.' + result;
   }
-  // console.log('vsdfscfvdscfvs' , req.file.filename);
-
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
     username: req.body.username,
@@ -108,26 +106,6 @@ export const login = async (req, res) => {
   });
 };
 
-// export const handleAuthorize42 = (req, res) => {
-//   axios({
-//     method: 'GET',
-//     url: `https://api.intra.42.fr/oauth/authorize?client_id=${uid}&redirect_uri=http://localhost:3000/app&response_type=code&scope=public`,
-//     headers: {
-//       'Access-Control-Allow-Origin': '*',
-//     },
-//   })
-//     .then((response) =>{
-//       // console.log(response);
-//       // console.log("+++++++++++===========================");
-//       // console.log(Object.keys(response.request));
-//       // console.log(response.request._currentUrl);
-//       // // res.send(response.request._currentUrl)
-//
-//       res.send(response.data)
-//     })
-//   ;
-// }
-
 export const handleAuthorize42 = (req, res) => {
   console.log('query', req.query.code);
   const code = req.query.code
@@ -136,8 +114,8 @@ export const handleAuthorize42 = (req, res) => {
     url: 'https://api.intra.42.fr/oauth/token',
     data: {
       grant_type: 'authorization_code',
-      client_id: 'adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa',
-      client_secret: '9baa3a44316274159b85fc06a5cd0d88a44160a0fc4946a313a22216be2c548d',
+      client_id: uid,
+      client_secret: secret,
       code : code,
       redirect_uri: 'http://localhost:8080/api/users/42_auth',
     },
@@ -175,7 +153,6 @@ export const handleAuthorize42 = (req, res) => {
   });
 }
 
-
 export const facebook = async (req, res) => {
   console.log(req.body.picture.data.url);
   console.log("TYPE ID",typeof(req.body.id));
@@ -188,7 +165,7 @@ export const facebook = async (req, res) => {
     provider: 'facebook',
   });
   User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true }).catch((err) => { console.log(err); });
-
+};
 
   // const FBUser = new User({
   //   fb_id: req.body.id,
@@ -198,4 +175,3 @@ export const facebook = async (req, res) => {
   //   provider: 'facebook',
   // });
   // FBUser.save();
-};

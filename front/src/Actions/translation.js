@@ -19,13 +19,12 @@ export const displayTranslation = () => ({
 export const toFrench = () => ({
   type: FRENCH,
   payload: translation,
-
-})
+});
 
 export const toEnglish = () => ({
   type: ENGLISH,
   payload: translation,
-})
+});
 // export const getTranslation = () => (dispatch) => {
 //   dispatch(pending());
 //   axios.get(

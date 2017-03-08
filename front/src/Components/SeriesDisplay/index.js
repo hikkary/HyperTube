@@ -37,13 +37,14 @@ export default class SeriesDisplay extends Component {
     return(
       <div className="allSeries">
           {this.state.ready && this.state.series.map((src, key) => {
+            console.log(src.rating);
             return (
               <div key={key} className="displaySeries">
               <div className="Serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
                 <div className="rateYear">
                   <p>Year: {src.year}</p>
                   <p>Seasons: {src.num_seasons}</p>
-                  <p>Rating: {src.review.rating || '-'}</p>
+                  <p>Rating: {src.rating === -1 && '-' || src.rating}</p>
                   </div>
               </div>
               <div className="SerieTitles">

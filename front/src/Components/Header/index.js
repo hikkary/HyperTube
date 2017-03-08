@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import './style/header.sass';
+import logo from  '../../../public/logo.gif';
 
 export default class Header extends React.Component {
 
@@ -22,7 +23,7 @@ export default class Header extends React.Component {
 		return(
     <div>
       <div className="Header">
-        <img className="logo" role="presentation" src="logo.gif" height="60px" width="300px"/>
+        <img className="logo" role="presentation" src={logo} height="60px" width="300px"/>
         {/*  Quand le fichier est dans le public on a pas besoin de mettre le path*/}
         <input type="text" className="Search" placeholder="Search..."></input>
         <div className="HeaderButton">

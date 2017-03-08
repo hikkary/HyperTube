@@ -2,10 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import debug from 'debug';
-import * as movie from './movie';
-import './mongoose';
+import * as movie from './movies';
 import * as series from './series';
 import * as user from './users/user';
+import './mongoose';
 
 const log = debug('hypertube:index.js');
 
@@ -16,12 +16,12 @@ const users = express.Router('/api/users');
 const stream = express.Router('/api/stream');
 
 movieRouter
-  .get('/api/movie', movie.get)
-  .get('/api/movie/display', movie.display)
-  .get('/api/movie/tenBest', movie.tenBest)
-  .post('/api/movie/getGenre', movie.getGenre)
-  .post('/api/movie', movie.post)
-  .put('/api/movie', movie.modify);
+  .get('/api/movies', movie.get)
+  .get('/api/movies/display', movie.display)
+  .get('/api/movies/tenBest', movie.tenBest)
+  .post('/api/movies/getGenre', movie.getGenre)
+  .post('/api/movies', movie.post)
+  .put('/api/movies', movie.modify);
 
 seriesRouter
   .get('/api/series', series.getSeries)

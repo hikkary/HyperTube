@@ -15,7 +15,7 @@ export default class MovieDisplay extends Component {
   componentDidMount = () => {
     console.log("PROPS",this.props);
     this.props.actions.movies.getMovie();
-    // this.props.actions.movies.getGenre('Action');
+    this.props.actions.movies.getGenre('Comedy');
   }
 
   // fadeIn = (event) => {
@@ -29,12 +29,12 @@ export default class MovieDisplay extends Component {
   // }
 
   render(){
-    const {current} = this.props.translation
+    const {current} = this.props.translation;
     return(
       <div className="allMovies">
-            { this.state.ready && this.state.movies.map(movie =>{
+            { this.state.ready && this.state.movies.map((movie, key) =>{
               return(
-                <div className="allInfo" key={movie.id + Math.random(10000, 50000)}>
+                <div className="allInfo" key={key}>
                     <div
                       className="movie"
                       style={{ backgroundImage: `url('${movie.largeImage}')` }}

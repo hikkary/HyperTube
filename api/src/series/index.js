@@ -19,11 +19,11 @@ const writeJson = (allSeries) => {
       .then(({ data: { data } }) => {
         if (data) {
           let rate = '-';
-          if (data.review && data.review.rating) { rate = Number(data.review.rating.split('/')[0]); }
-          else { rate = -1; }
-
-          console.log(rate);
-
+          if (data.review && data.review.rating !== null) { rate = Number(data.review.rating.split('/')[0]); }
+          else {
+            rate = -1;
+          }
+          console.log('rate', rate);
           const newSerie = new Serie({
             images: serie.images,
             description: data.description,
@@ -42,9 +42,9 @@ const writeJson = (allSeries) => {
             provider: 'EZTV',
           });
           newSerie.save()
-            .then(() => {
-              log(`${serie.title} added !`);
-            });
+          .then(() => {
+            log(`${serie.title} added !`);
+          });
         }
       }),
     );
@@ -61,7 +61,6 @@ const recursiveEztv = (page, allSeries) => {
     }
     allSeries.push(data.data);
     if (data.data) { recursiveEztv(page + 1, allSeries); }
-    // console.log('globallll', global.series);
   });
 };
 
@@ -74,13 +73,12 @@ export const getSeries = (req, res) => {
 export const getInfo = (req, res) => {
   log('coucou');
   axios.get(`http://imdb.wemakesites.net/api/${req.body.imdb}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
-    .then((data) => {
-      res.send(data.data);
-    });
+  .then((data) => {
+    res.send(data.data);
+  });
 };
 
 export const tenBest = (req, res) => {
-  console.log('okkkk');
   Serie.find().sort({ rating: -1 })
   .limit(8)
   .then((results) => {

@@ -22,7 +22,7 @@ export const getSerie = () => (dispatch) => {
     dispatch(display(data.data));
     // console.log(data.data);
   });
-}
+};
 
 export const TenBestSeries = () => (dispatch) => {
   dispatch(pending());
@@ -33,4 +33,4 @@ export const TenBestSeries = () => (dispatch) => {
     dispatch(display(series));
   })
   .catch(console.error)
-}
+};
