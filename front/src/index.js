@@ -22,6 +22,7 @@ injectTapEventPlugin();
 const initialState = {
   movies: [],
   series: [],
+  search: [],
   register: [],
   login: [],
   translation: [],

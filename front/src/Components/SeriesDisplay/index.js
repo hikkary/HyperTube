@@ -4,7 +4,7 @@ import MenuSeries from './MenuSeries';
 import RangeSeries from './RangeSeries';
 import SortSeries from './SortSeries';
 import _ from 'lodash';
-import SearchMenu from '../MovieDisplay/SearchMenu'
+import SearchMenu from '../SearchMenu';
 // import axios from 'axios';
 // import apiURI from '../../apiURI';
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MenuMovies from './MenuMovies';
 import RangeMovies from './RangeMovies';
 import SortMovies from './SortMovies';
-import SearchMenu from './SearchMenu';
+import SearchMenu from '../SearchMenu';
 import _ from 'lodash';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Genres from '../Genres';

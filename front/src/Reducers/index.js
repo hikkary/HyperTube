@@ -4,6 +4,7 @@ import series from './series';
 import register from './register';
 import login from './login';
 import translation from './translation';
+import search from './search';
 
 export default combineReducers({
   movies,
@@ -11,4 +12,5 @@ export default combineReducers({
   register,
   login,
   translation,
+  search,
 });
