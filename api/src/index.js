@@ -24,9 +24,9 @@ movieRouter
   .put('/api/movies', movie.modify);
 
 seriesRouter
-  .get('/api/series', series.getSeries)
+  .get('/api/series', series.display)
+  .get('/api/series/scrap', series.getSeries)
   .get('/api/series/tenBest', series.tenBest)
-  .get('/api/series/display', series.display)
   .post('/api/series/getInfo', series.getInfo);
 
 users

@@ -5,6 +5,9 @@ import './style/header.sass';
 import logo from  '../../../public/logo.gif';
 
 export default class Header extends React.Component {
+  state={
+    search: '',
+  }
 
   toMovies = () => {
     browserHistory.push('/app/movies')
@@ -23,8 +26,6 @@ export default class Header extends React.Component {
     <div>
       <div className="Header">
         <img className="logo" role="presentation" src={logo} height="60px" width="300px"/>
-        {/*  Quand le fichier est dans le public on a pas besoin de mettre le path*/}
-        <input type="text" className="Search" placeholder="Search..."></input>
         <div className="HeaderButton">
         <FlatButton
           backgroundColor="#e0001b"

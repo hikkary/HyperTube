@@ -28,7 +28,6 @@ resetDiv = (e) =>{
   e.target.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
 }
 
-
 resetColor = (e) =>{
   e.target.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
 }

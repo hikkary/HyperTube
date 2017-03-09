@@ -32,7 +32,6 @@ export default class RangeMovies extends Component {
 
   handleChangeRatingToProps = () => {
     this.props.onChange('rate', this.state.rate);
-
   }
 
   render(){

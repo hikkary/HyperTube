@@ -21,6 +21,7 @@ const writeJson = (allMovies) => {
       id: movie.id,
       imdb_code: movie.imdb_code,
       title: movie.title,
+      title_search: movie.title.toLowerCase(),
       year: movie.year,
       rating: rate,
       genres: movie.genres,
@@ -69,16 +70,24 @@ export const modify = (req, res) => {
 
 export const display = (req, res) => {
   const filteredData = {
-    title: req.query.title,
+    title_search: req.query.title_search,
     genres: req.query.genres,
   };
+  log(filteredData)
 
-  const data = _.reduce(filteredData, (accu, value, key) => {
+  let data = _.reduce(filteredData, (accu, value, key) => {
     if (value) {
       return { ...accu, [key]: value };
     }
     return accu;
   }, {});
+
+  if (data.title_search)
+  {
+    log(data)
+
+    data.title_search = { $regex: `${data.title_search}` }
+  }
 
   log(data)
   // const test = {
@@ -88,19 +97,18 @@ export const display = (req, res) => {
   .sort({ [req.query.filter]: [req.query.sorted] })
   .exec()
     .then((results) => {
-      log(results);
-      const yearAndRateRange = results.filter((movie) =>{
-        if ((movie.year >= req.query.yearMin && movie.year <= req.query.yearMax) &&
-        (movie.rating !== -1 &&
-          movie.rating >= req.query.rateMin && movie.rating <= req.query.rateMax)) {
+      // log(results);
+      const yearAndRateRange = results.filter((movie) => {
+        if (movie.year >= req.query.yearMin && movie.year <= req.query.yearMax &&
+          movie.rating >= req.query.rateMin && movie.rating <= req.query.rateMax) {
           return movie;
         }
       });
-      log(results);
+      // log(yearAndRateRange);
       // log(results);
       res.send(yearAndRateRange);
     })
-    .catch(log);
+    // .catch(log);
 };
 
 export const tenBest = (req, res) => {

@@ -38,6 +38,7 @@ const writeJson = (allSeries) => {
             imdb_code: serie.imdb_id,
             num_seasons: serie.num_seasons,
             title: serie.title,
+            title_search: serie.title.toLowerCase(),
             year: serie.year,
             provider: 'EZTV',
           });
@@ -88,8 +89,38 @@ export const tenBest = (req, res) => {
 };
 
 export const display = (req, res) => {
-  Serie.find()
+  const filteredData = {
+    title_search: req.query.title_search,
+    genres: req.query.genres,
+  };
+
+  const data = _.reduce(filteredData, (accu, value, key) => {
+    if (value) {
+      return { ...accu, [key]: value }
+    }
+    return accu;
+  }, {})
+
+  if (data.title_search)
+  {
+    log(data)
+
+    data.title_search = { $regex: `${data.title_search}` }
+  }
+
+  log(data);
+  Serie.find(data)
+  .sort({ [req.query.filter]: [req.query.sorted] })
   .then((results) => {
-    res.send(results);
+    const yearAndRateRange = results.filter((serie) => {
+      if (serie.year >= req.query.yearMin && serie.year <= req.query.yearMax &&
+        serie.rating >= req.query.rateMin && serie.rating <= req.query.rateMax) {
+        return serie;
+      }
+    },
+  )
+  log(yearAndRateRange);
+
+    res.send(yearAndRateRange);
   });
 };

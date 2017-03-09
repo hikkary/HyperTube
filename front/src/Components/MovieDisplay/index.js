@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MenuMovies from './MenuMovies';
 import RangeMovies from './RangeMovies';
 import SortMovies from './SortMovies';
+import SearchMenu from './SearchMenu';
 import _ from 'lodash';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Genres from '../Genres';
@@ -23,6 +24,7 @@ export default class MovieDisplay extends Component {
       name: 'title',
       sorted: 1,
     },
+    title_search: '',
   }
 
   componentWillReceiveProps = (newProps) => {
@@ -38,10 +40,11 @@ export default class MovieDisplay extends Component {
 
   handleChange = (key, value) => {
     this.setState({ [key]: value }, () => {
-      const { year, rate, genres , filter } = this.state;
+      const { year, rate, genres , filter, title_search } = this.state;
       // console.log("TITRE 1",filter.name);
       // console.log("TITRE 2",filter.value);
       // console.log("titre 2", title ) ;
+      console.log('dvdv', title_search);
       this.props.actions.movies.getMovie({
         yearMin: year.min,
         yearMax: year.max,
@@ -50,6 +53,7 @@ export default class MovieDisplay extends Component {
         genres,
         filter: filter.name,
         sorted: filter.value,
+        title_search,
       })
     })
   }
@@ -60,6 +64,7 @@ export default class MovieDisplay extends Component {
     const {current} = this.props.translation;
     return(
       <div className="moviesContainer">
+        <SearchMenu onKeyDown={this.handleChange}/>
         <div className="list">
           <MenuMovies onChange={this.handleChange} />
           <RangeMovies onChange={this.handleChange} />

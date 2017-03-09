@@ -13,13 +13,22 @@ export const display = (series) => ({
   payload: series,
 });
 
-export const getSerie = () => (dispatch) => {
+export const getSeries = ({
+  title_search = '',
+  genres = '',
+  yearMin = 1900,
+  yearMax = 2017,
+  rateMin = 0,
+  rateMax = 10,
+  sorted = 1,
+  filter = 'title',
+} = {}) => (dispatch) => {
   dispatch(pending());
   axios.get(
-    `${api}/series/display`,
+    `${api}/series/?title_search=${title_search}&genres=${genres}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&sorted=${sorted}&filter=${filter}`,
   )
-  .then((data) =>{
-    dispatch(display(data.data));
+  .then(({ data: data }) =>{
+    dispatch(display(data));
     // console.log(data.data);
   });
 };

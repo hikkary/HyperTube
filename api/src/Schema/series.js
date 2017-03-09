@@ -7,6 +7,7 @@ const serie = mongoose.Schema({
   num_seasons: Number,
   seenBy: Array,
   title: String,
+  title_search: String,
   year: Number,
   rating: {
     type: Number,
