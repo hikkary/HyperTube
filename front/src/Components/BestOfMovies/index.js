@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../MovieDisplay/MovieDisplay.sass';
+import './MovieDisplay.sass';
 
 export default class BestOfMovies extends Component {
   state = {

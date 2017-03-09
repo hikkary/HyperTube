@@ -19,7 +19,10 @@ export default class MovieDisplay extends Component {
       min: 0,
       max: 10,
     },
-    title: '',
+    filter: {
+      name: 'title',
+      sorted: 1,
+    },
   }
 
   componentWillReceiveProps = (newProps) => {
@@ -35,9 +38,9 @@ export default class MovieDisplay extends Component {
 
   handleChange = (key, value) => {
     this.setState({ [key]: value }, () => {
-      const { year, rate, genres, filter } = this.state;
-      console.log("TITRE 1",filter.name);
-      console.log("TITRE 2",filter.value);
+      const { year, rate, genres , filter } = this.state;
+      // console.log("TITRE 1",filter.name);
+      // console.log("TITRE 2",filter.value);
       // console.log("titre 2", title ) ;
       this.props.actions.movies.getMovie({
         yearMin: year.min,

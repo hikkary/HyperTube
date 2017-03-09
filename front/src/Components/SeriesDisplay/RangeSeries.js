@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
-import './MovieDisplay.sass';
+import './SeriesDisplay.sass';
 
-export default class RangeMovies extends Component {
+export default class RangeSeries extends Component {
   state = {
     year: {
       min: 1900,
