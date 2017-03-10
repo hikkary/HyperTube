@@ -15,7 +15,7 @@ export default class BestOfMovies extends Component {
   componentDidMount = () => {
     const { actions } = this.props;
     actions.movies.TenBestMovies();
-    console.log(this.props);
+    console.log('ten best movies props did mount', this.props);
   }
 
   render(){

@@ -13,11 +13,12 @@ export default class BestOfSeries extends Component {
   componentDidMount = () => {
     const { actions } = this.props;
     actions.series.TenBestSeries();
-    console.log(this.props);
+    console.log('hello', this.props);
   }
 
   render(){
     const {current} = this.props.translation;
+    console.log('cense etre vide this.props.series', this.props.series);
     return(
       <div>
       <div className="BestSeries">

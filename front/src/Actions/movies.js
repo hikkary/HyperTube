@@ -20,6 +20,7 @@ export const display = movies => ({
 //   payload: keys,
 // })
 export const getMovie = ({
+  id = '',
   title_search = '',
   yearMin = 1900,
   yearMax = 2017,
@@ -32,7 +33,7 @@ export const getMovie = ({
 } = {}) => (dispatch) => {
   dispatch(pending());
   axios.get(
-    `${api}/movies?title_search=${title_search}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genres=${genres}&page=${page}&sorted=${sorted}&filter=${filter}`,
+    `${api}/movies?id=${id}&title_search=${title_search}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genres=${genres}&page=${page}&sorted=${sorted}&filter=${filter}`,
   )
   .then(({ data: movies }) => {
     dispatch(display(movies));

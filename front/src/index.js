@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './Containers/App';
 import Series from './Containers/Series';
 import Movies from './Containers/Movies';
+import MoviePage from './Containers/MoviePage';
 import Auth from './Containers/Auth';
 import Register from './Containers/Register';
 import './index.css';
@@ -47,6 +48,7 @@ ReactDOM.render(
       	<Route path="/register" component={Register} />
         <Route path="/app" component={App}/>
           <Route path="/app/movies" component={Movies} />
+          <Route path="/app/movies/:id" component={MoviePage} />
           <Route path="/app/series" component={Series} />
       </Router>
     </MuiThemeProvider>

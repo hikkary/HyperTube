@@ -25,14 +25,13 @@ export default class SearchDisplay extends Component {
   }
 
   componentDidMount = () => {
-    console.log("PROPS",this.props);
-    // this.props.actions.series.getSeries();
+    // console.log("PROPS",this.props);
   }
-
+  
   componentWillReceiveProps = (newProps) => {
     if(newProps.search){
-      console.log("NOUVELLE PROPS SA MERE",newProps.search.slice(0, 30));
-      this.setState({ series: newProps.search.slice(0, 30), ready: true });
+      console.log("NOUVELLE PROPSsss",newProps.search.slice(0, 30));
+      this.setState({ search: newProps.search.slice(0, 30), ready: true });
     }
   }
 
@@ -76,21 +75,20 @@ export default class SearchDisplay extends Component {
   )
 
   render() {
-    console.log("PROPS", this.props);
+    console.log("render this.props.searchhh", this.props.search);
     return(
       <div className="searchContainer">
-
         <div className="moviesAndSeries">
-          {this.state.ready && this.props.search.map((src, key) => {
+          {this.state.ready && this.state.search.map((src, key) => {
+            console.log(src.provider);
+            // console.log(src.images.poster);
             return (
-                (src.images && src.images.poster && this.seriesDisplay(src,key)) ||
-                this.moviesDisplay(src, key)
-              )
-  })
-}
-  </div>
-</div>
-)
-
-}
+              (src.provider === 'EZTV' && this.seriesDisplay(src,key)) || src.provider === 'YTS' &&
+              this.moviesDisplay(src, key)
+            )
+          }) }
+        </div>
+      </div>
+    )
+  }
 }

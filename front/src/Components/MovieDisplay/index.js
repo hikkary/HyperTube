@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import MenuMovies from './MenuMovies';
 import RangeMovies from './RangeMovies';
 import SortMovies from './SortMovies';
@@ -25,10 +26,11 @@ export default class MovieDisplay extends Component {
       sorted: 1,
     },
     title_search: '',
+    id: '',
   }
 
   componentWillReceiveProps = (newProps) => {
-    console.log(newProps);
+    console.log('RECEIVED', newProps.movies);
     this.setState({ movies: newProps.movies.slice(0,30), ready:true })
   }
 
@@ -39,12 +41,13 @@ export default class MovieDisplay extends Component {
   }
 
   handleChange = (key, value) => {
+    console.log('yayyyyyss');
     this.setState({ [key]: value }, () => {
-      const { year, rate, genres , filter, title_search } = this.state;
+      const { year, rate, genres , filter, title_search, id } = this.state;
       // console.log("TITRE 1",filter.name);
       // console.log("TITRE 2",filter.value);
       // console.log("titre 2", title ) ;
-      console.log('dvdv', title_search);
+      console.log('dvdv', id);
       this.props.actions.movies.getMovie({
         yearMin: year.min,
         yearMax: year.max,
@@ -54,10 +57,15 @@ export default class MovieDisplay extends Component {
         filter: filter.name,
         sorted: filter.value,
         title_search,
+        id,
       })
     })
   }
 
+  goMoviePage = (id) => {
+    console.log('yayyyyyss');
+    browserHistory.push(`/app/movies/${id}`);
+  }
 
   render(){
     // console.log(this.props.actions);
@@ -74,7 +82,7 @@ export default class MovieDisplay extends Component {
               { this.state.ready && this.state.movies.map((movie, key) =>{
                 return(
                   <div className="allInfo" key={key}>
-                      <div
+                      <div onClick= {() => this.goMoviePage(movie.id)}
                         className="movie"
                         style={{ backgroundImage: `url('${movie.largeImage}')` }}
                       >
