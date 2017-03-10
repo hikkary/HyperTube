@@ -72,8 +72,9 @@ export const display = (req, res) => {
   const filteredData = {
     title_search: req.query.title_search,
     genres: req.query.genres,
+    id: req.query.id,
   };
-  log(filteredData)
+  log('title search', filteredData)
 
   let data = _.reduce(filteredData, (accu, value, key) => {
     if (value) {
@@ -84,12 +85,11 @@ export const display = (req, res) => {
 
   if (data.title_search)
   {
-    log(data)
-
+    // log(data)
     data.title_search = { $regex: `${data.title_search}` }
   }
 
-  log(data)
+  log('dataaaaaa', data)
   // const test = {
   //   title: 1,
   // }
@@ -104,7 +104,7 @@ export const display = (req, res) => {
           return movie;
         }
       });
-      // log(yearAndRateRange);
+      log('yyyyyy', yearAndRateRange);
       // log(results);
       res.send(yearAndRateRange);
     })
