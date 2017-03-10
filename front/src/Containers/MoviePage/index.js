@@ -5,10 +5,10 @@ import allTheActions from '../../Actions';
 import MoviePage from '../../Components/MoviePage';
 import Header from '../../Components/Header';
 
-const Movie = ({ translation, actions }) =>
+const Movie = ({ translation, actions, id, movies }) =>
   <div>
     <Header/>
-    <MoviePage translation={translation} actions={actions} />
+    <MoviePage movies={movies} id={id} translation={translation} actions={actions} />
   </div>
 
 //
@@ -16,7 +16,13 @@ const Movie = ({ translation, actions }) =>
 //   movies: state.movies,
 // });
 
-const mapStateToProps = ({ translation }) => ({ translation });
+// query: ownProps.location.query
+
+const mapStateToProps = (state, ownProps, movies) => ({
+  translation: state.translation,
+  id: ownProps.params.id,
+  movies: state.movies,
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: {

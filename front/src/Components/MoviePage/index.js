@@ -7,6 +7,7 @@ export default class MoviePage extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
+    console.log('heyyyykjjjjjj proppssss');
     console.log('RECEIVED', newProps.movies);
     this.setState({ movie: newProps.movies, ready:true })
   }
@@ -14,17 +15,17 @@ export default class MoviePage extends Component {
   componentDidMount() {
     console.log('PROPS AU DID', this.props);
     this.props.actions.movies.getMovie({
-      id: this.props.params.id,
+      id: this.props.id,
     })
+    console.log('movies props', this.props.movies);
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
       { this.state.ready && this.state.movie.map((movie, key) => {
         return (
-          <p key={key}>{movie.title} </p>
+          <p key={key}>{movie.title}</p>
         )
       }) }
       </div>
