@@ -34,7 +34,10 @@ Promise.all([
     `${api}/series/?title_search=${title_search}&genres=${genres}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&sorted=${sorted}&filter=${filter}`,
   )])
   .then((result) => {
-    const data = _.flattenDepth(result, 1);
+    let data = [];
+    data.push(result[0].data,result[1].data)
+    data = _.flattenDepth(data, 1);
+    console.log("DATAAAAAAA",data);
     dispatch(display(data))
     console.log(result);
   })

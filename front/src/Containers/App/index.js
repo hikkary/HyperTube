@@ -10,6 +10,8 @@ import Search from '../../Components/SearchMenu';
 
 class App extends Component {
   state={
+    displaySearch: 'none',
+    displayBest: '',
     ready: false,
     genres: '',
     year: {
@@ -36,7 +38,7 @@ class App extends Component {
   }
 
   handleChange = (key, value) => {
-    this.setState({ [key]: value }, () => {
+    this.setState({ [key]: value, displaySearch: "", displayBest: 'none' }, () => {
       const { genres, year, rate, filter, title_search } = this.state;
       this.props.actions.search.getAll({
         genres,
@@ -51,16 +53,24 @@ class App extends Component {
     })
   }
 
+  displayNone = () => {
+    this.setState({displayBest: '', displaySearch: 'none' })
+  }
 
   render() {
     const { translation, actions, movies, series, search } = this.props
+    const {displaySearch, displayBest} = this.state
     return (
       <div>
         <Header/>
-        <Search onKeyDown={this.handleChange}/>
+        <Search onKeyDown={this.handleChange} onChange={this.displayNone}/>
+        <div className="searchDiv" style={{
+          display: displaySearch,
+        }}>
         <SearchDisplay search={search} />
+      </div>
         <div className="displayApp" style={{
-          display: 'none',
+          display: displayBest,
         }}>
           <BestOfMovies movies={movies} actions={actions} translation={translation} />
           <BestOfSeries series={series} actions={actions} translation={translation} />
@@ -72,6 +82,7 @@ class App extends Component {
 App.propTypes = {
   movies: PropTypes.array.isRequired,
   series: PropTypes.array.isRequired,
+  search: PropTypes.array.isRequired,
 };
 //
 // const mapStateToProps = (state) => ({

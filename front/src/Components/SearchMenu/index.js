@@ -7,6 +7,11 @@ export default class SearchMenu extends Component {
   }
 
   handleChangeSearch = (e) => {
+    if(this.props.onChange){
+      if(e.target.value === ''){
+        this.props.onChange()
+      }
+    }
     console.log('valeur state', e.target.value);
     this.setState({ search: e.target.value });
   }
