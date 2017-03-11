@@ -1,33 +1,27 @@
 import React, { Component } from 'react';
+import './moviePage.sass';
 
 export default class MoviePage extends Component {
-  state={
-    movie: '',
-    ready: false,
-  }
-
-  componentWillReceiveProps = (newProps) => {
-    console.log('heyyyykjjjjjj proppssss');
-    console.log('RECEIVED', newProps.movies);
-    this.setState({ movie: newProps.movies, ready:true })
+  state = {
   }
 
   componentDidMount() {
-    console.log('PROPS AU DID', this.props);
-    this.props.actions.movies.getMovie({
+    this.props.actions.movie.getMoviePage({
       id: this.props.id,
     })
-    console.log('movies props', this.props.movies);
   }
 
   render() {
+    console.log(this.props.movie)
     return (
       <div>
-      { this.state.ready && this.state.movie.map((movie, key) => {
-        return (
-          <p key={key}>{movie.title}</p>
+          <div className="infoContainer">
+            <div className="displayBigPoster">
+            </div>
+            <p>{this.props.movie.title}</p>
+
+          </div>
         )
-      }) }
       </div>
     )
   }

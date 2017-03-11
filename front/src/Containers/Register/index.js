@@ -6,7 +6,7 @@ import Register from '../../Components/Register';
 import bg from '../../../public/background-hypertube.jpg';
 import title from '../../../public/logo.gif';
 
-const Auth = ({ users, actions, translation }) =>
+const RegisterContainer = ({ users, actions, translation }) =>
   <div className="authContainer">
     <img src={title} role="presentation" className="logoTitle" />
       <div className="authRegister">
@@ -16,6 +16,7 @@ const Auth = ({ users, actions, translation }) =>
         <Register users={users} actions={actions} translation={translation} />
       </div>
   </div>
+  
 const mapStateToProps = (state) => ({
   users: state.users,
   translation: state.translation,
@@ -28,4 +29,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterContainer);

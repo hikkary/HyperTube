@@ -29,10 +29,10 @@ export default class MovieDisplay extends Component {
     id: '',
   }
 
-  componentWillReceiveProps = (newProps) => {
-    console.log('RECEIVED', newProps.movies);
-    this.setState({ movies: newProps.movies.slice(0,30), ready:true })
-  }
+  // componentWillReceiveProps = (newProps) => {
+  //   console.log('RECEIVED', newProps.movies);
+  //   this.setState({ movies: newProps.movies.slice(0,30), ready:true })
+  // }
 
   componentDidMount = () => {
     console.log("PROPS",this.props);
@@ -70,6 +70,7 @@ export default class MovieDisplay extends Component {
   render(){
     // console.log(this.props.actions);
     const {current} = this.props.translation;
+    const { movies } = this.props;
     return(
       <div className="moviesContainer">
         <SearchMenu onKeyDown={this.handleChange}/>
@@ -79,7 +80,7 @@ export default class MovieDisplay extends Component {
           <SortMovies onChange={this.handleChange} />
         </div>
         <div className="allMovies">
-              { this.state.ready && this.state.movies.map((movie, key) =>{
+              {movies && movies.map((movie, key) => {
                 return(
                   <div className="allInfo" key={key}>
                       <div onClick= {() => this.goMoviePage(movie.id)}

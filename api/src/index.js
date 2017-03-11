@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import debug from 'debug';
-import * as movie from './movies';
+import * as movies from './movies';
+import * as movie from './movie';
 import * as series from './series';
 import * as user from './users/user';
 import './mongoose';
@@ -16,12 +17,13 @@ const users = express.Router('/api/users');
 const stream = express.Router('/api/stream');
 
 movieRouter
-  .get('/api/movies', movie.display)
-  .get('/api/movies/scrap', movie.get)
-  .get('/api/movies/tenBest', movie.tenBest)
-  .post('/api/movies/getGenre', movie.getGenre)
-  .post('/api/movies', movie.post)
-  .put('/api/movies', movie.modify);
+  .get('/api/movies', movies.get)
+  .get('/api/movie/:id', movie.movie)
+  .get('/api/movies/scrap', movies.scrap)
+  .get('/api/movies/tenBest', movies.tenBest);
+  // .post('/api/movies/getGenre', movies.getGenre)
+  // .post('/api/movies', movies.post)
+  // .put('/api/movies', movies.modify);
 
 seriesRouter
   .get('/api/series', series.display)

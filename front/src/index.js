@@ -22,6 +22,7 @@ injectTapEventPlugin();
 
 const initialState = {
   movies: [],
+  movie: {},
   series: [],
   search: [],
   register: [],
@@ -54,4 +55,5 @@ ReactDOM.render(
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('root')
+
 );

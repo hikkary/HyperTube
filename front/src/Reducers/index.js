@@ -5,6 +5,7 @@ import register from './register';
 import login from './login';
 import translation from './translation';
 import search from './search';
+import movie from './movie';
 
 export default combineReducers({
   movies,
@@ -13,4 +14,5 @@ export default combineReducers({
   login,
   translation,
   search,
+  movie,
 });

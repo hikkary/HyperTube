@@ -1,8 +1,10 @@
 import axios from 'axios';
 import fs from 'fs';
 import _ from 'lodash';
+import Joi from 'joi';
 import mongoose from 'mongoose';
 import { Movie } from '../Schema';
+import { getMovies } from '../Schema/search';
 
 const log = require('debug')('hypertube:movies.js');
 
@@ -37,7 +39,7 @@ const writeJson = (allMovies) => {
 };
 
 const recursiveGet = (page, allMovies) => {
-  console.log('Page',page);
+  console.log('Page', page);
   axios.get(`https://yts.ag/api/v2/list_movies.json?limit=50&page=${Number(page)}`)
   .then((movie) => {
     if (movie.data.data.movies === undefined) {
@@ -49,66 +51,53 @@ const recursiveGet = (page, allMovies) => {
     allMovies.push(movies);
     recursiveGet(page + 1, allMovies);
   });
-}
-
-const getYts = (page = 1, allMovies = []) => {
-  recursiveGet(page, allMovies)
 };
 
-export const get = (req, res) => {
-  getYts();
+export const scrap = (req, res) => {
+  recursiveGet(0, []);
   res.send(true);
 };
 
-export const post = (req, res) => {
+const RES_PER_PAGE = 30;
 
-};
+export const get = async (req, res) => {
+  const { error } = await Joi.validate(req.query, getMovies, { abortEarly: false });
 
-export const modify = (req, res) => {
-
-};
-
-export const display = (req, res) => {
-  const filteredData = {
-    title_search: req.query.title_search,
-    genres: req.query.genres,
-    id: req.query.id,
+  if (error) return res.send({ status: false, details: error.details });
+  const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
+  const searchObj = {
+    year: { $gt: (yearMin || 1900) - 1, $lt: (yearMax || 2017) + 1 },
+    rating: { $gt: (rateMin || 0) - 1, $lt: (rateMax || 10) + 1 },
   };
-  log('title search', filteredData)
-
-  let data = _.reduce(filteredData, (accu, value, key) => {
-    if (value) {
-      return { ...accu, [key]: value };
-    }
-    return accu;
-  }, {});
-
-  if (data.title_search)
-  {
-    // log(data)
-    data.title_search = { $regex: `${data.title_search}` }
+  if (genre) {
+    searchObj.genre = genre;
   }
-
-  log('dataaaaaa', data)
-  // const test = {
-  //   title: 1,
-  // }
-  Movie.find(data)
-  .sort({ [req.query.filter]: [req.query.sorted] })
-  .exec()
-    .then((results) => {
-      // log(results);
-      const yearAndRateRange = results.filter((movie) => {
-        if (movie.year >= req.query.yearMin && movie.year <= req.query.yearMax &&
-          movie.rating >= req.query.rateMin && movie.rating <= req.query.rateMax) {
-          return movie;
-        }
-      });
-      log('yyyyyy', yearAndRateRange);
-      // log(results);
-      res.send(yearAndRateRange);
+  if (title) {
+    searchObj.title = new RegExp(`/${title}/`, 'gi');
+  }
+  log(searchObj);
+  Movie.find(searchObj)
+    .skip(page * RES_PER_PAGE)
+    .limit(RES_PER_PAGE)
+    .sort(`${
+      // select asc or desc
+      (asc || 1) ? '+' : '-'
+    }${
+      // select key
+      (sort || 'title')
+    }`)
+    .exec()
+    .then((data) => {
+      res.send(data.map(movie => _.pick(movie, [
+        'title',
+        'rating',
+        'year',
+        'largeImage',
+      ])));
     })
-    // .catch(log);
+    .catch(() => {
+      res.send({ status: false, details: 'An error occurred' });
+    });
 };
 
 export const tenBest = (req, res) => {
