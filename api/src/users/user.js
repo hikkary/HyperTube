@@ -8,7 +8,7 @@ import Joi from 'joi';
 import path from 'path';
 import axios from 'axios';
 import { uid, secret } from './secret42';
-
+import mailCenter from './mailCenter';
 // const registerSchema = Joi.object().keys({
 //   username: Joi.string().regex(/^[a-zA-Z0-9]\w+$/).min(3).max(20).required(),
 //   firstname: Joi.string().regex(/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/).min(3).max(40).required(),
@@ -24,24 +24,23 @@ const log = debug('hypertube:api:user:register');
 const storage = multer.diskStorage({
   destination: `${__dirname}/../../public`,
   filename: (req, file, cb) => {
-    const fileSplit = file.originalname.split(".")
+    const fileSplit = file.originalname.split('.');
     console.log(path.extname(file.originalname));
-    cb(null, file.originalname[0] + Math.random(0,999) + file.originalname[1]);
+    cb(null, file.originalname[0] + Math.random(0, 999) + file.originalname[1]);
   },
 });
 
 const single = multer({ storage }).single('image');
 
 const userToDatabase = (req) => {
-  if (!req.file){
+  if (!req.file) {
     req.file = '';
-  }
-  else {
+  } else {
     // req.file.mimetype
-    const parts = req.file.mimetype.split("/");
+    const parts = req.file.mimetype.split('/');
     const result = parts[parts.length - 1];
     console.log('results', result);
-     req.file.filename = req.file.filename + '.' + result;
+    req.file.filename = `${req.file.filename}.${result}`;
   }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
@@ -81,7 +80,7 @@ export const createAccount = (req, res) => {
         return res.send({ status: true, details: 'user successfully saved in database' });
       });
   });
-}
+};
 
 export const login = async (req, res) => {
   const { username } = req.body;
@@ -96,19 +95,18 @@ export const login = async (req, res) => {
     if (user) {
       if (user.password.localeCompare(passwordHash) !== 0) {
         return res.send({ status: false, details: 'there is an issue with the password or the username' });
-      } else {
-        const token = jwt.sign({ username: user.username, id: user._id }, jwtSecret);
-        res.header('Access-Control-Expose-Headers', 'x-access-token');
-        res.set('x-access-token', token);
-        res.send({ status: true, details: 'user connected' });
       }
+      const token = jwt.sign({ username: user.username, id: user._id }, jwtSecret);
+      res.header('Access-Control-Expose-Headers', 'x-access-token');
+      res.set('x-access-token', token);
+      res.send({ status: true, details: 'user connected' });
     }
   });
 };
 
 export const handleAuthorize42 = (req, res) => {
   console.log('query', req.query.code);
-  const code = req.query.code
+  const code = req.query.code;
   axios({
     method: 'POST',
     url: 'https://api.intra.42.fr/oauth/token',
@@ -116,7 +114,7 @@ export const handleAuthorize42 = (req, res) => {
       grant_type: 'authorization_code',
       client_id: uid,
       client_secret: secret,
-      code : code,
+      code,
       redirect_uri: 'http://localhost:8080/api/users/42_auth',
     },
   })
@@ -129,15 +127,15 @@ export const handleAuthorize42 = (req, res) => {
         Authorization: `Bearer ${response.data.access_token}`,
       },
     }).then((user) => {
-        const data = {
-          auth_id: user.data.id,
-          firstname: user.data.first_name,
-          lastname: user.data.last_name,
-          picture: user.data.image_url,
-          language: 'en',
-          provider: '42',
-        }
-        User.findOrCreate({ auth_id: user.data.id }, data, { upsert: true }).catch((err) => { console.log(err); });
+      const data = {
+        auth_id: user.data.id,
+        firstname: user.data.first_name,
+        lastname: user.data.last_name,
+        picture: user.data.image_url,
+        language: 'en',
+        provider: '42',
+      };
+      User.findOrCreate({ auth_id: user.data.id }, data, { upsert: true }).catch((err) => { console.log(err); });
     });
     const token = response.data.access_token;
     res.header('Access-Control-Expose-Headers', 'x-access-token');
@@ -151,11 +149,57 @@ export const handleAuthorize42 = (req, res) => {
     res.redirect('http://localhost:3000/?error=42log');
     // message d'erreur
   });
+};
+
+export const forgotPassword = (req, res) => {
+  // METTRE JOI ICI
+  const { username } = req.body;
+  User.findOne({ username })
+    .then(async (result) => {
+      if (!result) {
+        res.send({ status: false, details: 'Username not found' });
+      }
+      const key = crypto.randomBytes(20).toString('hex');
+      // eslint-disable-next-line no-param-reassign
+      result.key = key;
+      result.save()
+        .then((savedUser) => {
+          log(savedUser);
+          mailCenter(result, req.headers.origin);
+          res.send({ status: true });
+        })
+        .catch(() => res.send({ status: false, details: 'An error occurred' }));
+    });
+};
+
+export const updatePassword = (req, res) => {
+  const { username, key, password, newPass } = req.body;
+  if (password.localeCompare(newPass) !== 0){
+    res.send({status: false, details: 'passwords dont match'})
+  }
+
+  User.findOne({username})
+  .then((result) => {
+    if (!result) {
+      res.send({ status: false, details: 'Username not found' });
+    }
+    if (result.key.localeCompare(key) !== 0){
+      res.send({ status: false, details: 'An issue occured' });
+    }
+    const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
+
+    // eslint-disable-next-line no-param-reassign
+    result.password = passwordHash;
+    result.save()
+    .then(() =>{
+      res.send({status:true, details : 'Password Updated'})
+    })
+  })
 }
 
 export const facebook = async (req, res) => {
   console.log(req.body.picture.data.url);
-  console.log("TYPE ID",typeof(req.body.id));
+  console.log('TYPE ID', typeof (req.body.id));
   const data = ({
     auth_id: req.body.id,
     firstname: req.body.first_name,

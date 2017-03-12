@@ -9,7 +9,7 @@ const user = mongoose.Schema({
   email: String,
   password: String,
   picture: String,
-  key: Number,
+  key: String,
   provider: String,
   language: String,
 });

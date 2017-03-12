@@ -124,7 +124,7 @@ export const get = async (req, res) => {
         'title',
         'rating',
         'year',
-        'id',
+        'imdb_code',
         'images',
       ])));
     })
@@ -132,9 +132,6 @@ export const get = async (req, res) => {
       res.send({ status: false, details: 'An error occurred' });
     });
 };
-
-
-
 // export const display = (req, res) => {
 //   const filteredData = {
 //     title_search: req.query.title_search,

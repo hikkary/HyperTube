@@ -4,7 +4,9 @@ import App from './Containers/App';
 import Series from './Containers/Series';
 import Movies from './Containers/Movies';
 import MoviePage from './Containers/MoviePage';
-import Auth from './Containers/Auth';
+import SeriePage from './Containers/SeriePage';
+import Login from './Containers/Login';
+import forgotPassword from './Containers/ForgotPassword/ForgotPassword';
 import Register from './Containers/Register';
 import './index.css';
 import { Route, Router, browserHistory } from 'react-router';
@@ -17,13 +19,14 @@ import * as translation from './Actions/translation';
 // import * as series from './Actions/series';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
+import updatePassword from './Containers/ForgotPassword/UpdatePassword'
 injectTapEventPlugin();
 
 const initialState = {
   movies: [],
   movie: {},
   series: [],
+  serie: {},
   search: [],
   register: [],
   login: [],
@@ -45,12 +48,15 @@ ReactDOM.render(
   <Provider store={store} >
     <MuiThemeProvider>
     	<Router history={browserHistory}>
-        <Route path="/" component={Auth} />
-      	<Route path="/register" component={Register} />
+        <Route path="/" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/forgotPassword" component={forgotPassword} />
+      	  <Route path="/updatePassword" component={updatePassword} />
         <Route path="/app" component={App}/>
           <Route path="/app/movies" component={Movies} />
           <Route path="/app/movies/:id" component={MoviePage} />
           <Route path="/app/series" component={Series} />
+          <Route path="/app/serie/:id" component={SeriePage} />
       </Router>
     </MuiThemeProvider>
   </Provider>,

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import './SeriesDisplay.sass';
 import MenuSeries from './MenuSeries';
 import RangeSeries from './RangeSeries';
@@ -60,6 +61,10 @@ export default class SeriesDisplay extends Component {
     })
   }
 
+  goSeriePage = (id) => {
+    browserHistory.push(`/app/movies/${id}`);
+  }
+
   render() {
     return(
       <div className="seriesContainer">
@@ -74,7 +79,7 @@ export default class SeriesDisplay extends Component {
             console.log(src.rating);
             return (
               <div key={key} className="displaySeries">
-              <div className="Serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
+              <div onClick={() => this.goSeriePage(src.imdb_code)} className="Serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
                 <div className="rateYear">
                   <p>Year: {src.year}</p>
                   <p>Seasons: {src.num_seasons}</p>

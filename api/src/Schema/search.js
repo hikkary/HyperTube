@@ -6,7 +6,7 @@ export const getMovies = Joi.object().keys({
   yearMax: Joi.number().min(1901).max(2017),
   rateMin: Joi.number().min(0).max(9),
   rateMax: Joi.number().min(1).max(10),
-  genre: Joi.string().allow(''),
+  genre: Joi.string().regex(/^[a-z-a-z]+/).allow(''),
   // genre: Joi.string().alphanum().allow(''), Cette ligne foutait la merde
   title: Joi.string().alphanum().allow(''),
   asc: Joi.number().allow(''),

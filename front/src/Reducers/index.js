@@ -6,6 +6,7 @@ import login from './login';
 import translation from './translation';
 import search from './search';
 import movie from './movie';
+import serie from './serie';
 
 export default combineReducers({
   movies,
@@ -15,4 +16,5 @@ export default combineReducers({
   translation,
   search,
   movie,
+  serie,
 });

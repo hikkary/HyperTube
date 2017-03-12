@@ -68,6 +68,16 @@ export default class MovieDisplay extends Component {
     browserHistory.push(`/app/movies/${id}`);
   }
 
+scrollDetect = (event) => {
+  console.log(event.keyCode);
+  console.log('ON EST DEDANS');
+  window.scroll(() => {
+  if(window.scrollTop() + window.height() === document.height()) {
+      alert("bottom!");
+  }
+});
+}
+
   render(){
     // console.log(this.props.actions);
     const {current} = this.props.translation;

@@ -39,6 +39,11 @@ export default class Login extends Component {
     browserHistory.push('/register');
   }
 
+  forgotPassword = () => {
+    console.log('hey');
+    browserHistory.push('/forgotPassword');
+  }
+
   render() {
     return(
       <div>
@@ -67,7 +72,7 @@ export default class Login extends Component {
               name="password"
             />
             <RaisedButton type="submit" label="SIGN IN" style={{ margin: '20px 0' }}/>
-            <RaisedButton label="FORGOT PASSWORD?"/>
+            <RaisedButton onClick={this.forgotPassword} label="FORGOT PASSWORD?"/>
           </form>
         <div>{this.state.message}</div>
       </div>
