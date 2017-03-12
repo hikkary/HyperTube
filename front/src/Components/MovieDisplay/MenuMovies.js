@@ -37,6 +37,19 @@ displayMenu = (e) => {
   this.state.genreButton === 'genreButton' ? this.setState({ genreButton: 'buttonList', operatorGenre: '+' }) : this.setState({ genreButton: 'genreButton', operatorGenre: '-' }) ;
 }
 
+all = () => (
+  <button
+    className={this.state.genreButton}
+    onClick={() => this.props.onChange('genre', '')}
+    onMouseOut={this.resetColor}
+    onMouseOver={this.colorGenre}
+    style={{
+      margin : '2px',
+    }}>
+    All
+    </button>
+)
+
   render(){
     // const {current} = this.props.translation;
     const { genreButton } = this.state;
@@ -44,12 +57,13 @@ displayMenu = (e) => {
         <div>
         <p className="genreTitle" onClick={this.displayMenu}>
         {this.state.operatorGenre} GENRES</p>
+          {this.all()}
           {Genres.map((genre, key) => {
             return(
               <div key={key}>
                 <button
                   className={genreButton}
-                  onClick={() => this.props.onChange('genres', genre)}
+                  onClick={() => this.props.onChange('genre', genre)}
                   onMouseOut={this.resetColor}
                   onMouseOver={this.colorGenre}
                   style={{

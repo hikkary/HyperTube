@@ -10,7 +10,7 @@ export const pending = () => ({
   type: PENDING,
 });
 
-export const display = movies => ({
+export const display = movies  => ({
   type: GET,
   payload: movies,
 });
@@ -28,7 +28,7 @@ export const getMovie = ({
   rateMin = 0,
   rateMax = 10,
   genre = '',
-  page = '',
+  page = 0,
   sort = 'title',
   asc = 1,
 } = {}) => (dispatch) => {
@@ -37,6 +37,8 @@ export const getMovie = ({
     `${api}/movies?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   )
   .then(({ data: movies }) => {
+    console.log("MOVieS  :" ,typeof(movies))
+    console.log("MOVieS  :" ,movies)
     dispatch(display(movies));
   })
   .catch(console.error)

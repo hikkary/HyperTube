@@ -26,8 +26,8 @@ movieRouter
   // .put('/api/movies', movies.modify);
 
 seriesRouter
-  .get('/api/series', series.display)
-  .get('/api/series/scrap', series.getSeries)
+  .get('/api/series', series.get)
+  .get('/api/series/scrap', series.scrap)
   .get('/api/series/tenBest', series.tenBest)
   .post('/api/series/getInfo', series.getInfo);
 

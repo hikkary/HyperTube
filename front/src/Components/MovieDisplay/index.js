@@ -43,20 +43,21 @@ export default class MovieDisplay extends Component {
   handleChange = (key, value) => {
     console.log('yayyyyyss');
     this.setState({ [key]: value }, () => {
-      const { year, rate, genres , filter, title_search, id } = this.state;
+      const { year, rate, genre , sort = {name : 'title', value: 1}, title, id } = this.state;
       // console.log("TITRE 1",filter.name);
       // console.log("TITRE 2",filter.value);
       // console.log("titre 2", title ) ;
-      console.log('dvdv', id);
+      console.log("SORT ",sort);
+      console.log('dvdv', title);
       this.props.actions.movies.getMovie({
         yearMin: year.min,
         yearMax: year.max,
         rateMax: rate.max,
         rateMin: rate.min,
-        genres,
-        filter: filter.name,
-        sorted: filter.value,
-        title_search,
+        genre,
+        sort: sort.name,
+        asc: sort.value,
+        title,
         id,
       })
     })
@@ -80,7 +81,7 @@ export default class MovieDisplay extends Component {
           <SortMovies onChange={this.handleChange} />
         </div>
         <div className="allMovies">
-              {movies && movies.map((movie, key) => {
+              {movies && movies.length > 0 && movies.map((movie, key) => {
                 return(
                   <div className="allInfo" key={key}>
                       <div onClick= {() => this.goMoviePage(movie.id)}

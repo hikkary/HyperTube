@@ -11,17 +11,17 @@ export default class SortSeries extends Component {
 
   sortTitle = () => {
     this.state.title === 1 ? this.setState({ title: -1 }) : this.setState({ title: 1 }) ;
-    this.props.onChange('filter', {name:'title', value: this.state.title});
+    this.props.onChange('sort', {name:'title', value: this.state.title});
   }
 
   sortYear = () => {
     this.state.year === 1 ? this.setState({ year: -1 }) : this.setState({ year: 1 }) ;
-    this.props.onChange('filter', {name:'year', value: this.state.year});
+    this.props.onChange('sort', {name:'year', value: this.state.year});
   }
 
   sortRate = () => {
     this.state.rate === 1 ? this.setState({ rate: -1 }) : this.setState({ rate: 1 }) ;
-    this.props.onChange('filter', {name:'rating', value: this.state.rate});
+    this.props.onChange('sort', {name:'rating', value: this.state.rate});
   }
 
   render(){

@@ -19,7 +19,7 @@ Movies.propTypes = {
 //   movies: state.movies,
 // });
 
-const mapStateToProps = ({ movies, translation }) => ({ movies, translation });
+const mapStateToProps = ({ movies , translation }) => ({ movies, translation });
 
 const mapDispatchToProps = dispatch => ({
   actions: {

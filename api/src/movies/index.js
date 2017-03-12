@@ -65,33 +65,34 @@ export const get = async (req, res) => {
 
   if (error) return res.send({ status: false, details: error.details });
   const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
+  log(title)
   const searchObj = {
-    year: { $gt: (yearMin || 1900) - 1, $lt: (yearMax || 2017) + 1 },
-    rating: { $gt: (rateMin || 0) - 1, $lt: (rateMax || 10) + 1 },
+    year: { $gt: (yearMin || 1900) - 1, $lt: (Number(yearMax) || Number(2017)) + Number(1) },
+    rating: { $gt: (rateMin || 0) - 1, $lt: (Number(rateMax) || Number(10)) + Number(1) },
   };
   if (genre) {
-    searchObj.genre = genre;
+    searchObj.genres = genre;
   }
   if (title) {
-    searchObj.title = new RegExp(`/${title}/`, 'gi');
+    searchObj.title = new RegExp(`${title}`, 'gi');
   }
-  log(searchObj);
+  const test = (asc || 1) ? '+' : '-';
+  const tit = (sort || 'title')
+
+  // log(tit)
+  // log(test);
+  // log(searchObj);
   Movie.find(searchObj)
     .skip(page * RES_PER_PAGE)
     .limit(RES_PER_PAGE)
-    .sort(`${
-      // select asc or desc
-      (asc || 1) ? '+' : '-'
-    }${
-      // select key
-      (sort || 'title')
-    }`)
+    .sort({ [sort]: asc })
     .exec()
     .then((data) => {
       res.send(data.map(movie => _.pick(movie, [
         'title',
         'rating',
         'year',
+        'id',
         'largeImage',
       ])));
     })
@@ -99,6 +100,14 @@ export const get = async (req, res) => {
       res.send({ status: false, details: 'An error occurred' });
     });
 };
+
+// .sort(`${
+//   // select asc or desc
+//   (asc || 1) ? '+' : '-'
+// }${
+//   // select key
+//   (sort || 'title')
+// }`)
 
 export const tenBest = (req, res) => {
   console.log('okkkk');

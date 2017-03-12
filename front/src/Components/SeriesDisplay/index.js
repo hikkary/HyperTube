@@ -39,16 +39,23 @@ export default class SeriesDisplay extends Component {
 
   handleChange = (key, value) => {
     this.setState({ [key]: value }, () => {
-      const { genres, year, rate, filter, title_search } = this.state;
+      let { genre, id, year, rate, sort = {name: 'title', value: 1}, title} = this.state;
+      // QUAND ON SELECTIONNE UN GENRE ET QU'ON LANCE UNE RECHERCHE, ON CHERCHE UNIQUEMENT DANS LE
+      // GENRE,
+      // console.log("TITRE ",title);
+      if(title){ genre = '' }
+      if(genre){ title = '' }
+
       this.props.actions.series.getSeries({
-        genres,
+        genre,
         yearMin: year.min,
         yearMax: year.max,
         rateMin: rate.min,
         rateMax: rate.max,
-        filter: filter.name,
-        sorted: filter.value,
-        title_search,
+        sort: sort.name,
+        asc: sort.value,
+        title,
+        id,
       })
     })
   }
