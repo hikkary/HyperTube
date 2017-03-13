@@ -6,6 +6,7 @@ export const ADDED = "LOGGED_USER";
 export const REGISTER = "REGISTERED_USER";
 export const ERROR = "ERROR";
 export const REFRESH = "LOG_REFRESH";
+export const GET = "GET_USER";
 
 export const successLogin = (message) => ({
   type: ADDED,
@@ -17,6 +18,10 @@ export const successRegister = (message) => ({
   payload: message ,
 });
 
+export const user = (data) => ({
+  type: GET,
+  payload: data,
+});
 
 export const error = (message) => ({
   type: ERROR,
@@ -62,3 +67,20 @@ export const register = (data) => (dispatch) => {
     }
   });
 };
+
+export const getConnectedUser = (token) => (dispatch) => {
+  axios({
+    method: 'GET',
+    url: `${apiURI}/users/connectedUser`,
+    headers: {
+         'Authorization': `Bearer ${token}`,
+       },
+  }).then(({ data: results }) => {
+    console.log('coucouuu');
+    if (results.status === true) {
+      dispatch(user(results));
+    } else {
+      dispatch(error(results));
+    }
+  })
+}

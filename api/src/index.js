@@ -8,6 +8,8 @@ import * as series from './series';
 import * as user from './users/user';
 import './mongoose';
 
+const path = require('path');
+
 const log = debug('hypertube:index.js');
 
 const app = express();
@@ -33,16 +35,20 @@ seriesRouter
 
 users
   .put('/api/users/login', user.login)
+  .post('/api/users/editProfile', user.editProfile)
   .post('/api/users/register', user.createAccount)
   .post('/api/users/facebook_auth', user.facebook)
   .post('/api/users/forgotPassword', user.forgotPassword)
   .post('/api/users/updatePassword', user.updatePassword)
-  .get('/api/users/42_auth', user.handleAuthorize42);
+  .get('/api/users/42_auth', user.handleAuthorize42)
+  .get('/api/users/connectedUser', user.connectedUser)
+  .post('/api/users/getUserInfo', user.getUserInfo);
+
 app
   .use(cors()) // connexion front back
-  .use('/public', express.static(`${__dirname}/public`))
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
+  .use('/public', express.static(`${__dirname}/../public`))
   .use(movieRouter)
   .use(seriesRouter)
   .use(users)

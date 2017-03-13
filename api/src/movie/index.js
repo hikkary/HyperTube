@@ -9,7 +9,7 @@ export const movie = (req, res) => {
   Movie.find({id: data})
   .exec()
     .then((results) => {
-      console.log('results', results);
+      // console.log('results', results);
       res.send(results);
     });
 };

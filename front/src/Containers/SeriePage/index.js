@@ -7,7 +7,6 @@ import Header from '../../Components/Header';
 
 const Series = ({ serie, translation, actions }) =>
   <div>
-    <Header/>
     <SeriePage serie={serie} translation={translation} actions={actions} />
   </div>
 

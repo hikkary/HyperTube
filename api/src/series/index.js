@@ -85,7 +85,7 @@ export const tenBest = (req, res) => {
   Serie.find().sort({ rating: -1 })
   .limit(8)
   .then((results) => {
-    console.log(results);
+    // console.log(results);
     res.send(results);
   });
 };

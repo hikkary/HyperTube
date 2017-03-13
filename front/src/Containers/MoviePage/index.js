@@ -7,7 +7,6 @@ import Header from '../../Components/Header';
 
 const Movie = ({ translation, actions, id, movie }) =>
   <div>
-    <Header/>
     <MoviePage movie={movie} id={id} translation={translation} actions={actions} />
   </div>
 

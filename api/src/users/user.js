@@ -2,23 +2,17 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import debug from 'debug';
+import _ from 'lodash';
 import jwtSecret from '../../jwtSecret';
 import { User, Facebook } from '../Schema';
-import { Register, Login, Forgot, Update } from '../Joi';
+import { Register, Login, Forgot, Update, Profile } from '../Joi';
 import Joi from 'joi';
 import path from 'path';
 import axios from 'axios';
 import { uid, secret } from './secret42';
 import mailCenter from './mailCenter';
-// const registerSchema = Joi.object().keys({
-//   username: Joi.string().regex(/^[a-zA-Z0-9]\w+$/).min(3).max(20).required(),
-//   firstname: Joi.string().regex(/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/).min(3).max(40).required(),
-//   lastname: Joi.string().regex(/^[a-zA-Z][a-zA-Z ]+[a-zA-Z]$/).min(3).max(40).required(),
-//   email: Joi.string().regex(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/).required(),
-//   password: Joi.string().regex(/^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.).*$/).min(8).max(20).required(),
-//   confirm: Joi.string().regex(/^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.).*$/).min(8).max(20).required(),
-//   image: Joi.any().optional(),
-// });
+
+/* eslint-disable-next-line no-param-reassign */
 
 const log = debug('hypertube:api:user:register');
 
@@ -27,7 +21,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const fileSplit = file.originalname.split('.');
     console.log(path.extname(file.originalname));
-    cb(null, file.originalname[0] + Math.random(0, 999) + file.originalname[1]);
+    cb(null, Math.random(100000, 9999999) +  path.extname(file.originalname));
   },
 });
 
@@ -37,11 +31,12 @@ const userToDatabase = (req) => {
   if (!req.file) {
     req.file = '';
   } else {
+    // console.log('file', req.file);
     // req.file.mimetype
-    const parts = req.file.mimetype.split('/');
-    const result = parts[parts.length - 1];
-    console.log('results', result);
-    req.file.filename = `${req.file.filename}.${result}`;
+    // const parts = req.file.mimetype.split('/');
+    // const result = parts[parts.length - 1];
+    // console.log('results', result);
+    // req.file.filename = `${req.file.filename}.${result}`;
   }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
@@ -56,6 +51,46 @@ const userToDatabase = (req) => {
   });
   newUser.save();
 };
+
+const getToken = (req) => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+        return req.headers.authorization.split(' ')[1];
+    } else if (req.query && req.query.token) {
+      return req.query.token;
+    }
+    return null;
+  };
+
+  export const connectedUser = (req,res) => {
+    const token = getToken(req);
+    jwt.verify(token, jwtSecret, (err, decoded) => {
+      res.send(decoded)
+      // console.log(decoded.username);
+    })
+
+  }
+
+  export const getUserInfo = (req, res) => {
+    const id = req.body.id;
+    // console.log('id', id);
+    User.findOne({ _id: id })
+    .then((result) => {
+      if (!result) {
+        console.log('result', result);
+        res.send({ status: false, details: 'Username not found' });
+      }
+      // const user = result.data.map(userInfo => _.pick(userInfo, [
+      //   'username',
+      //   'lastname',
+      //   'firstname',
+      //   'id',
+      //   'email',
+      //   'picture',
+      // ]));
+      res.send({ status: false, details: 'Username found', username: result.username, lastname: result.lastname, firstname: result.firstname, id: result.id, email: result.email, picture: result.picture  });
+    });
+  };
+
 
 export const createAccount = (req, res) => {
   single(req, res, async (err) => {
@@ -97,7 +132,7 @@ export const login = async (req, res) => {
       if (user.password.localeCompare(passwordHash) !== 0) {
         return res.send({ status: false, details: 'there is an issue with the password or the username' });
       }
-      const token = jwt.sign({ username: user.username, id: user._id }, jwtSecret);
+      const token = jwt.sign({ username: user.username, lastname: user.lastname, firstname: user.firstname, id: user.id, email: user.email, picture: user.picture }, jwtSecret);
       res.header('Access-Control-Expose-Headers', 'x-access-token');
       res.set('x-access-token', token);
       res.send({ status: true, details: 'user connected', user });
@@ -183,16 +218,16 @@ export const updatePassword = async (req, res) => {
     return res.send({ status: false, errors: error.details });
   }
   const { username, key, password, newPass } = req.body;
-  if (password.localeCompare(newPass) !== 0){
-    res.send({status: false, details: 'passwords dont match'})
+  if (password.localeCompare(newPass) !== 0) {
+    res.send({ status: false, details: 'passwords dont match' });
   }
 
-  User.findOne({username})
+  User.findOne({ username })
   .then((result) => {
     if (!result) {
       res.send({ status: false, details: 'Username not found' });
     }
-    if (result.key.localeCompare(key) !== 0){
+    if (result.key.localeCompare(key) !== 0) {
       res.send({ status: false, details: 'An issue occured' });
     }
     const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
@@ -200,11 +235,11 @@ export const updatePassword = async (req, res) => {
     // eslint-disable-next-line no-param-reassign
     result.password = passwordHash;
     result.save()
-    .then(() =>{
-      res.send({status:true, details : 'Password Updated'})
-    })
-  })
-}
+    .then(() => {
+      res.send({ status: true, details: 'Password Updated' });
+    });
+  });
+};
 
 export const facebook = async (req, res) => {
   console.log(req.body.picture.data.url);
@@ -220,11 +255,30 @@ export const facebook = async (req, res) => {
   User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true }).catch((err) => { console.log(err); });
 };
 
-  // const FBUser = new User({
-  //   fb_id: req.body.id,
-  //   firstname: req.body.first_name,
-  //   lastname: req.body.last_name,
-  //   picture: req.body.picture.data.url,
-  //   provider: 'facebook',
-  // });
-  // FBUser.save();
+export const editProfile = (req, res) => {
+  single(req, res, async (err) => {
+    const { error } = await Joi.validate(req.body, Profile, { abortEarly: false });
+    if (error) {
+      return res.send({ status: false, errors: error.details });
+    }
+    if (err) {
+      return res.send({ status: false, details: 'cannot create image' });
+    }
+    const { id } = req.body;
+    User.findOne({ _id: id })
+    .then((result) => {
+      if (!result) {
+        res.send({ status: false, details: 'Username not found' });
+      }
+      // eslint-disable-next-line no-param-reassign
+      result.username = req.body.username;
+      result.firstname = req.body.firstname;
+      result.lastname = req.body.lastname;
+      result.email = req.body.email;
+      result.save()
+      .then(() => {
+        res.send({ status: true, details: 'user updated' });
+      })
+    });
+  });
+};

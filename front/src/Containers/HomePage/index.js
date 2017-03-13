@@ -2,14 +2,12 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
-import Header from '../../Components/Header';
 import BestOfMovies from '../../Components/BestOfMovies';
 import BestOfSeries from '../../Components/BestOfSeries';
 import SearchDisplay from '../../Components/SearchDisplay';
 import Search from '../../Components/SearchMenu';
 
-// ADD FOOTER TO Component
-class App extends Component {
+class HomePage extends Component {
   state={
     displaySearch: 'none',
     displayBest: '',
@@ -63,15 +61,24 @@ class App extends Component {
     const {displaySearch, displayBest} = this.state;
     return (
       <div>
-        <Header user={user} actions={actions} />
-        <div>
-          {this.props.children}
+        <Search onKeyDown={this.handleChange} onChange={this.displayNone}/>
+        <div className="searchDiv" style={{
+          display: displaySearch,
+        }}>
+        <SearchDisplay search={search} />
+      </div>
+        <div className="displayApp" style={{
+          display: displayBest,
+        }}>
+          <BestOfMovies movies={movies} actions={actions} translation={translation} />
+          <BestOfSeries series={series} actions={actions} translation={translation} />
         </div>
       </div>
     )
   }
 }
-App.propTypes = {
+
+HomePage.propTypes = {
   movies: PropTypes.array.isRequired,
   series: PropTypes.array.isRequired,
   search: PropTypes.array.isRequired,
@@ -95,4 +102,4 @@ const mapDispatchToProps = dispatch => ({
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

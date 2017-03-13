@@ -17,8 +17,8 @@ export default class Login extends Component {
     console.log('Login newProps',newProps);
     if(newProps.user){
     // this.setState({ message: newProps.user.details });
-      if(newProps.user.status === true)
-        localStorage.setItem('token', newProps.login.headers['x-access-token']);
+      if(newProps.user.results.status === true)
+        localStorage.setItem('token', newProps.user.headers['x-access-token']);
       }
   };
 

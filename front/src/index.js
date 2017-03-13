@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './Containers/App';
+import HomePage from './Containers/HomePage';
 import Series from './Containers/Series';
 import Movies from './Containers/Movies';
 import MoviePage from './Containers/MoviePage';
@@ -50,16 +51,18 @@ ReactDOM.render(
     <MuiThemeProvider>
     	<Router history={browserHistory}>
         <Route path="/" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/forgotPassword" component={forgotPassword} />
-      	  <Route path="/updatePassword" component={updatePassword} />
-        <Route path="/app" component={App}/>
-          <Route path="app/user/profile" component={Profile} />
-          <Route path="app/user/editProfile" component={editProfile} />
-          <Route path="/app/movies" component={Movies} />
-          <Route path="/app/movies/:id" component={MoviePage} />
-          <Route path="/app/series" component={Series} />
-          <Route path="/app/serie/:id" component={SeriePage} />
+        <Route path="/register" component={Register} />
+        <Route path="/forgotPassword" component={forgotPassword} />
+      	<Route path="/updatePassword" component={updatePassword} />
+        <Route path="/app" component={App}>
+          <Route path="homePage" component={HomePage}/>
+          <Route path="user/profile/:id" component={Profile} />
+          <Route path="user/editProfile" component={editProfile} />
+          <Route path="movies" component={Movies} />
+          <Route path="movies/:id" component={MoviePage} />
+          <Route path="series" component={Series} />
+          <Route path="serie/:id" component={SeriePage} />
+        </Route>
       </Router>
     </MuiThemeProvider>
   </Provider>,

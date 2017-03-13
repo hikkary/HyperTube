@@ -47,7 +47,7 @@ export default class Register extends Component {
 
   register = (e) => {
     e.preventDefault();
-    const { register } = this.props.actions.register;
+    const { register } = this.props.actions.user;
     const { username, firstname, lastname, email, password, confirm } = e.target;
     const { image } = this.state;
     const form = new FormData();
@@ -59,6 +59,7 @@ export default class Register extends Component {
     form.append('confirm', confirm.value)
     form.append('image', image)
     form.append('language', this.state.currentLanguage)
+    console.log(form);
     register(form);
   };
 
