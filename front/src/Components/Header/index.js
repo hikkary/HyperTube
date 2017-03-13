@@ -17,8 +17,8 @@ export default class Header extends React.Component {
     browserHistory.push('/app/series')
   }
 
-  toHome = () => {
-    browserHistory.push('/app')
+  toProfile = () => {
+    browserHistory.push('/app/user/profile')
   }
 
 	render(){
@@ -29,7 +29,7 @@ export default class Header extends React.Component {
         <div className="HeaderButton">
         <FlatButton
           backgroundColor="#e0001b"
-          onClick={this.toHome}
+          onClick={this.toProfile}
           style={{
             backgroundColor: "#e0001b"
           }}

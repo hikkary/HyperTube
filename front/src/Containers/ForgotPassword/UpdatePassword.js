@@ -21,6 +21,7 @@ submit = (event) => {
 			}
 	 })
 	 .then((results) => {
+     console.log(results);
 		 console.log('Ok');
 		 // FAIRE LA SUITE
 	 })

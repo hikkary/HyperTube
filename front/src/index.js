@@ -8,6 +8,8 @@ import SeriePage from './Containers/SeriePage';
 import Login from './Containers/Login';
 import forgotPassword from './Containers/ForgotPassword/ForgotPassword';
 import Register from './Containers/Register';
+import Profile from './Containers/Profile';
+import editProfile from './Containers/editProfile';
 import './index.css';
 import { Route, Router, browserHistory } from 'react-router';
 import reducers from './Reducers';
@@ -28,9 +30,8 @@ const initialState = {
   series: [],
   serie: {},
   search: [],
-  register: [],
-  login: [],
   translation: [],
+  user: [],
 };
 
 const store = createStore(
@@ -53,6 +54,8 @@ ReactDOM.render(
           <Route path="/forgotPassword" component={forgotPassword} />
       	  <Route path="/updatePassword" component={updatePassword} />
         <Route path="/app" component={App}/>
+          <Route path="app/user/profile" component={Profile} />
+          <Route path="app/user/editProfile" component={editProfile} />
           <Route path="/app/movies" component={Movies} />
           <Route path="/app/movies/:id" component={MoviePage} />
           <Route path="/app/series" component={Series} />

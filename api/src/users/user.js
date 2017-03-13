@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import debug from 'debug';
 import jwtSecret from '../../jwtSecret';
-import { User, Register, Login, Facebook } from '../Schema';
+import { User, Facebook } from '../Schema';
+import { Register, Login, Forgot, Update } from '../Joi';
 import Joi from 'joi';
 import path from 'path';
 import axios from 'axios';
@@ -99,7 +100,7 @@ export const login = async (req, res) => {
       const token = jwt.sign({ username: user.username, id: user._id }, jwtSecret);
       res.header('Access-Control-Expose-Headers', 'x-access-token');
       res.set('x-access-token', token);
-      res.send({ status: true, details: 'user connected' });
+      res.send({ status: true, details: 'user connected', user });
     }
   });
 };
@@ -151,8 +152,12 @@ export const handleAuthorize42 = (req, res) => {
   });
 };
 
-export const forgotPassword = (req, res) => {
+export const forgotPassword = async (req, res) => {
   // METTRE JOI ICI
+  const { error } = await Joi.validate(req.body, Forgot, { abortEarly: false });
+  if (error) {
+    return res.send({ status: false, errors: error.details });
+  }
   const { username } = req.body;
   User.findOne({ username })
     .then(async (result) => {
@@ -172,7 +177,11 @@ export const forgotPassword = (req, res) => {
     });
 };
 
-export const updatePassword = (req, res) => {
+export const updatePassword = async (req, res) => {
+  const { error } = await Joi.validate(req.body, Update, { abortEarly: false });
+  if (error) {
+    return res.send({ status: false, errors: error.details });
+  }
   const { username, key, password, newPass } = req.body;
   if (password.localeCompare(newPass) !== 0){
     res.send({status: false, details: 'passwords dont match'})

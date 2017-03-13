@@ -1,8 +1,9 @@
 import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import api from '../../apiURI';
-// import '../css/forgotPassword.css';
+import './forgotPassword.sass';
 
 class forgotPassword extends React.Component {
   state = {
@@ -38,20 +39,19 @@ class forgotPassword extends React.Component {
   render() {
     return (
       <div className="forgot">
-      <div className="titleForgot">FORGOT YOUR PASSWORD ? </div>
-        <form className="formPass" onSubmit={this.forgotPassword}>
-          <input className="forgotInput"
-          type="text"
-          name="username"
-          placeholder="Please enter your username"
-          />
-          <input className="forgotSubmit"
-          type="submit"
-          name="submit"
-          value="Reset Password"
-          />
-        </form>
-        <div className={this.state.err}>{this.state.error}</div>
+      <div className="formCss">
+        <div className="titleForgot">FORGOT YOUR PASSWORD ? </div>
+          <form className="formPass" onSubmit={this.forgotPassword}>
+            <input className="forgotInput"
+            type="text"
+            name="username"
+            placeholder="Please enter your username"
+            />
+            <RaisedButton type="submit" name="submit" label="RESET PASSWORD"/>
+
+          </form>
+          <div className={this.state.err}>{this.state.error}</div>
+        </div>
       </div>
     )
   }

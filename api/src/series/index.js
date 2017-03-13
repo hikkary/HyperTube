@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Joi from 'joi';
 import apiKey from '../../apiKey';
 import { Serie } from '../Schema';
-import { getSeries } from '../Schema/search';
+import { getSeries } from '../Joi/search';
 import mongoose from '../mongoose';
 
 const log = debug('hypertube:api:series');

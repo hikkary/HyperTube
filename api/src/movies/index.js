@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Joi from 'joi';
 import mongoose from 'mongoose';
 import { Movie } from '../Schema';
-import { getMovies } from '../Schema/search';
+import { getMovies } from '../Joi/search';
 
 const log = require('debug')('hypertube:movies.js');
 

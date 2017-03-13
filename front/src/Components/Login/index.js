@@ -15,23 +15,23 @@ export default class Login extends Component {
   componentWillReceiveProps = (newProps) => {
 
     console.log('Login newProps',newProps);
-    if(newProps.users){
-    this.setState({ message: newProps.login.details });
-      if(newProps.users.status === true)
+    if(newProps.user){
+    // this.setState({ message: newProps.user.details });
+      if(newProps.user.status === true)
         localStorage.setItem('token', newProps.login.headers['x-access-token']);
       }
   };
 
   login = (e) => {
     e.preventDefault();
-    const { actionlogin } = this.props.actions.login;
+    const { actionLogin } = this.props.actions.user;
     const { username,password } = e.target;
     const userInfo = {
       username: username.value,
       password: password.value,
     }
     if (username && password)
-      actionlogin(userInfo);
+      actionLogin(userInfo);
   }
 
   registerForm = () => {
