@@ -270,13 +270,21 @@ export const editProfile = (req, res) => {
       if (!result) {
         res.send({ status: false, details: 'Username not found' });
       }
+      console.log('fielllllll', req.file);
+      if(!req.file){
+        req.file.filename = '';
+      }
       // eslint-disable-next-line no-param-reassign
       result.username = req.body.username;
       result.firstname = req.body.firstname;
       result.lastname = req.body.lastname;
       result.email = req.body.email;
+      result.picture = req.file.filename;
       result.save()
-      .then(() => {
+      .then((user) => {
+        const token = jwt.sign({ username: result.username, lastname: result.lastname, firstname: result.firstname, id: result.id, email: result.email, picture: result.picture }, jwtSecret);
+        res.header('Access-Control-Expose-Headers', 'x-access-token');
+        res.set('x-access-token', token);
         res.send({ status: true, details: 'user updated' });
       })
     });

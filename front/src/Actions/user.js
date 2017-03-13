@@ -75,12 +75,15 @@ export const getConnectedUser = (token) => (dispatch) => {
     headers: {
          'Authorization': `Bearer ${token}`,
        },
-  }).then(({ data: results }) => {
-    console.log('coucouuu');
+  }).then(({ data: results, headers }) => {
+    console.log('coucouuu', results);
     if (results.status === true) {
+      console.log("RESULT GET CONNECTED", results);
       dispatch(user(results));
     } else {
-      dispatch(error(results));
+      console.log(headers);
+      console.log("RESULT GET CONNECTED", results);
+      dispatch(error(results, headers));
     }
   })
 }
