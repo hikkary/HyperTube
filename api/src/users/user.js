@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
 import multer from 'multer';
 import debug from 'debug';
 import _ from 'lodash';
@@ -27,6 +28,42 @@ const storage = multer.diskStorage({
 
 const single = multer({ storage }).single('image');
 
+const getToken = (req) => {
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    return req.headers.authorization.split(' ')[1];
+  } else if (req.query && req.query.token) {
+    return req.query.token;
+  }
+  return null;
+};
+
+export const connectedUser = (req,res) => {
+  const token = getToken(req);
+  jwt.verify(token, jwtSecret, (err, decoded) => {
+    res.send(decoded);
+  // console.log(decoded.username);
+  });
+}
+
+export const getUserInfo = (req, res) => {
+  const id = req.body.id;
+  User.findOne({ _id: id })
+    .then((result) => {
+      if (!result) {
+        res.send({ status: false, details: 'Username not found' });
+      }
+      const user = {
+        username: result.username,
+        firstname: result.firstname,
+        id: result.id,
+        email: result.email,
+        picture: result.picture,
+      };
+      console.log('user', user);
+      res.send({ status: false, details: 'Username found', user  });
+  });
+};
+
 const userToDatabase = (req) => {
   if (!req.file) {
     req.file = '';
@@ -51,46 +88,6 @@ const userToDatabase = (req) => {
   });
   newUser.save();
 };
-
-const getToken = (req) => {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-        return req.headers.authorization.split(' ')[1];
-    } else if (req.query && req.query.token) {
-      return req.query.token;
-    }
-    return null;
-  };
-
-  export const connectedUser = (req,res) => {
-    const token = getToken(req);
-    jwt.verify(token, jwtSecret, (err, decoded) => {
-      res.send(decoded)
-      // console.log(decoded.username);
-    })
-
-  }
-
-  export const getUserInfo = (req, res) => {
-    const id = req.body.id;
-    // console.log('id', id);
-    User.findOne({ _id: id })
-    .then((result) => {
-      if (!result) {
-        console.log('result', result);
-        res.send({ status: false, details: 'Username not found' });
-      }
-      // const user = result.data.map(userInfo => _.pick(userInfo, [
-      //   'username',
-      //   'lastname',
-      //   'firstname',
-      //   'id',
-      //   'email',
-      //   'picture',
-      // ]));
-      res.send({ status: false, details: 'Username found', username: result.username, lastname: result.lastname, firstname: result.firstname, id: result.id, email: result.email, picture: result.picture  });
-    });
-  };
-
 
 export const createAccount = (req, res) => {
   single(req, res, async (err) => {
@@ -188,7 +185,6 @@ export const handleAuthorize42 = (req, res) => {
 };
 
 export const forgotPassword = async (req, res) => {
-  // METTRE JOI ICI
   const { error } = await Joi.validate(req.body, Forgot, { abortEarly: false });
   if (error) {
     return res.send({ status: false, errors: error.details });
@@ -221,7 +217,6 @@ export const updatePassword = async (req, res) => {
   if (password.localeCompare(newPass) !== 0) {
     res.send({ status: false, details: 'passwords dont match' });
   }
-
   User.findOne({ username })
   .then((result) => {
     if (!result) {
@@ -274,6 +269,11 @@ export const editProfile = (req, res) => {
       if(!req.file){
         req.file.filename = '';
       }
+      if (result.picture) {
+        fs.unlink(`./public/${result.picture}`, (err) => {
+          if (err) throw err;
+        });
+      }
       // eslint-disable-next-line no-param-reassign
       result.username = req.body.username;
       result.firstname = req.body.firstname;
@@ -281,12 +281,21 @@ export const editProfile = (req, res) => {
       result.email = req.body.email;
       result.picture = req.file.filename;
       result.save()
+      // res.send({ status: ..... details: result})
       .then((user) => {
-        const token = jwt.sign({ username: result.username, lastname: result.lastname, firstname: result.firstname, id: result.id, email: result.email, picture: result.picture }, jwtSecret);
+        const updatedUser = {
+          username: result.username,
+          lastname: result.lastname,
+          firstname: result.firstname,
+          id: result.id,
+          email: result.email,
+          picture: result.picture,
+        }
+        const token = jwt.sign({ updatedUser }, jwtSecret);
         res.header('Access-Control-Expose-Headers', 'x-access-token');
         res.set('x-access-token', token);
         res.send({ status: true, details: 'user updated' });
-      })
+      });
     });
   });
 };

@@ -38,7 +38,6 @@ export default class EditProfile extends Component {
     img.src = _URL.createObjectURL(file);
   }
 
-
   editProfile = (e) => {
     e.preventDefault();
     const { username, firstname, lastname, email, } = e.target;
@@ -64,10 +63,8 @@ export default class EditProfile extends Component {
     .then((results) => {
       localStorage.setItem('token', results.headers['x-access-token']);
       const token = localStorage.getItem('token');
-
       this.props.actions.user.getConnectedUser(token);
     })
-
   }
 
   render(){

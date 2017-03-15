@@ -8,11 +8,10 @@ export const pending = () => ({
   type: PENDING,
 });
 
-export const display = (serie) => ({
+export const fetched = (serie) => ({
   type: GET,
   payload: serie,
 });
-
 
 export const getSeriePage = ({
   id,
@@ -24,7 +23,7 @@ export const getSeriePage = ({
   .then(({ data: serie }) => {
     // console.log("Series  :" ,typeof(series))
     // console.log("Series  :" ,series)
-    dispatch(display(...serie));
+    dispatch(fetched(...serie));
   })
   .catch(console.error)
 };

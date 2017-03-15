@@ -8,8 +8,6 @@ import * as series from './series';
 import * as user from './users/user';
 import './mongoose';
 
-const path = require('path');
-
 const log = debug('hypertube:index.js');
 
 const app = express();

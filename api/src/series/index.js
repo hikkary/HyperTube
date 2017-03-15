@@ -1,6 +1,5 @@
 import axios from 'axios';
 import debug from 'debug';
-// import fs from 'fs';
 import _ from 'lodash';
 import Joi from 'joi';
 import apiKey from '../../apiKey';
@@ -25,7 +24,6 @@ const writeJson = (allSeries) => {
           else {
             rate = -1;
           }
-          console.log('rate', rate);
           const newSerie = new Serie({
             images: serie.images,
             description: data.description,
@@ -45,9 +43,9 @@ const writeJson = (allSeries) => {
             provider: 'EZTV',
           });
           newSerie.save()
-          .then(() => {
-            log(`${serie.title} added !`);
-          });
+            .then(() => {
+              log(`${serie.title} added !`);
+            });
         }
       }),
     );
@@ -56,8 +54,7 @@ const writeJson = (allSeries) => {
 const recursiveEztv = (page, allSeries) => {
   // console.log(p'http://eztvapi.ml/shows/${page}');
   console.log(page);
-  axios.get(`http://eztvapi.ml/shows/${page}`).then((data) => {
-    // console.log("DATA", data.data[0]);
+  axios.get(`http://eztvapi.ml/shows/${Number(page)}`).then((data) => {
     if (!data.data) {
       writeJson(allSeries);
       return;
@@ -85,7 +82,6 @@ export const tenBest = (req, res) => {
   Serie.find().sort({ rating: -1 })
   .limit(8)
   .then((results) => {
-    // console.log(results);
     res.send(results);
   });
 };
@@ -93,11 +89,11 @@ export const tenBest = (req, res) => {
 const RES_PER_PAGE = 30;
 
 export const get = async (req, res) => {
-  log(req.query)
+  log(req.query);
   const { error } = await Joi.validate(req.query, getSeries, { abortEarly: false });
   if (error) return res.send({ status: false, details: error.details });
   const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
-  log(title)
+  log(title);
   const searchObj = {
     year: { $gt: (yearMin || 1900) - 1, $lt: (Number(yearMax) || Number(2017)) + Number(1) },
     rating: { $gt: (rateMin || 0) - 1, $lt: (Number(rateMax) || Number(10)) + Number(1) },
@@ -110,10 +106,6 @@ export const get = async (req, res) => {
   }
   // const test = (asc || 1) ? '+' : '-';
   // const tit = (sort || 'title')
-
-  // log(tit)
-  // log(test);
-  // log(searchObj);
   Serie.find(searchObj)
     .skip(page * RES_PER_PAGE)
     .limit(RES_PER_PAGE)

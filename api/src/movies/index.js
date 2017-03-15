@@ -13,7 +13,6 @@ const writeJson = (allMovies) => {
       console.log('collection dropped');
   });
   allMovies = _.flattenDepth(allMovies, 1);
-  // console.log(allMovies);
   allMovies.map((movie) => {
     let rate = -1;
     if (movie.rating) {
@@ -34,11 +33,11 @@ const writeJson = (allMovies) => {
       provider: 'YTS',
       torrents: movie.torrents,
     });
-    newMovie.save()
+    newMovie.save();
   });
 };
 
-const recursiveGet = (page, allMovies) => {
+const recursiveScrap = (page, allMovies) => {
   console.log('Page', page);
   axios.get(`https://yts.ag/api/v2/list_movies.json?limit=50&page=${Number(page)}`)
   .then((movie) => {
@@ -49,12 +48,12 @@ const recursiveGet = (page, allMovies) => {
     }
     const { movies } = movie.data.data;
     allMovies.push(movies);
-    recursiveGet(page + 1, allMovies);
+    recursiveScrap(page + 1, allMovies);
   });
 };
 
 export const scrap = (req, res) => {
-  recursiveGet(0, []);
+  recursiveScrap(0, []);
   res.send(true);
 };
 
@@ -62,10 +61,9 @@ const RES_PER_PAGE = 30;
 
 export const get = async (req, res) => {
   const { error } = await Joi.validate(req.query, getMovies, { abortEarly: false });
-
   if (error) return res.send({ status: false, details: error.details });
   const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
-  log(title)
+  log(title);
   const searchObj = {
     year: { $gt: (yearMin || 1900) - 1, $lt: (Number(yearMax) || Number(2017)) + Number(1) },
     rating: { $gt: (rateMin || 0) - 1, $lt: (Number(rateMax) || Number(10)) + Number(1) },
@@ -78,10 +76,6 @@ export const get = async (req, res) => {
   }
   const test = (asc || 1) ? '+' : '-';
   const tit = (sort || 'title')
-
-  // log(tit)
-  // log(test);
-  // log(searchObj);
   Movie.find(searchObj)
     .skip(page * RES_PER_PAGE)
     .limit(RES_PER_PAGE)
@@ -110,11 +104,9 @@ export const get = async (req, res) => {
 // }`)
 
 export const tenBest = (req, res) => {
-  console.log('okkkk');
   Movie.find().sort({ rating: -1 })
   .limit(8)
   .then((results) => {
-    // console.log(results);
     res.send(results);
   });
 };

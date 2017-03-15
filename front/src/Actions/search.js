@@ -3,13 +3,13 @@ import _ from 'lodash';
 import api from '../apiURI';
 
 export const GET = "SEARCH_GET";
-export const PENDING = "SEARCH_PENDING";
+export const PENDING = "PENDING";
 
 export const pending = () => ({
   type: PENDING,
 });
 
-export const display = (all) => ({
+export const fetched = (all) => ({
   type: GET,
   payload: all,
 });
@@ -39,14 +39,7 @@ Promise.all([
     data.push(result[0].data,result[1].data) // si on recoit plus que 2 objects?
     data = _.flattenDepth(data, 1);
     console.log("DATAAAAAAA",data);
-    dispatch(display(data))
+    dispatch(fetched(data))
     console.log(result);
-  })
-
-
-
-  // .then(({ data: data }) =>{
-  //   dispatch(display(data));
-  //   // console.log(data.data);
-  // });
+  });
 };

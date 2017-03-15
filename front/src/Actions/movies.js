@@ -1,24 +1,24 @@
 import axios from 'axios';
 import api from '../apiURI';
 
-export const GET = 'MOVIE_GET';
-export const PENDING = 'MOVIE_PENDING';
-export const FILTER = 'MOVIE_FILTER';
-// export const SEARCH = 'MOVIE_PENDING';
+export const GET = 'MOVIES_GET';
+export const PENDING = 'PENDING';
+export const FILTER = 'MOVIES_FILTER';
+export const SCROLL = 'MOVIES_SCROLL';
 
 export const pending = () => ({
   type: PENDING,
 });
 
-export const display = movies  => ({
+export const fetched = movies  => ({
   type: GET,
   payload: movies,
 });
 
-// export const search = keys => ({
-//   type: SEARCH,
-//   payload: keys,
-// })
+export const scrolled = movies =>({
+  type: SCROLL,
+  payload: movies,
+})
 
 // TODO check getMovie call
 export const getMovie = ({
@@ -29,6 +29,7 @@ export const getMovie = ({
   rateMax = 10,
   genre = '',
   page = 0,
+  scroll = 0,
   sort = 'title',
   asc = 1,
 } = {}) => (dispatch) => {
@@ -39,9 +40,14 @@ export const getMovie = ({
   .then(({ data: movies }) => {
     console.log("MOVieS  :" ,typeof(movies))
     console.log("MOVieS  :" ,movies)
-    dispatch(display(movies));
+    if(scroll === 1){
+      dispatch(scrolled(movies))
+    }
+    else{
+      dispatch(fetched(movies));
+    }
   })
-  .catch(console.error)
+  .catch(console.error);
 };
 
 export const TenBestMovies = () => (dispatch) => {
@@ -50,9 +56,9 @@ export const TenBestMovies = () => (dispatch) => {
     `${api}/movies/tenBest`,
   )
   .then(({ data: movies }) => {
-    dispatch(display(movies));
+    dispatch(fetched(movies));
   })
-  .catch(console.error)
+  .catch(console.error);
 };
 
 export const getGenre = (genre) => (dispatch) => {
@@ -66,7 +72,7 @@ export const getGenre = (genre) => (dispatch) => {
   })
   .then(({ data: movies }) => {
     console.log('genresssss', movies);
-    dispatch(display(movies));
+    dispatch(fetched(movies));
   })
   .catch(console.error)
 };

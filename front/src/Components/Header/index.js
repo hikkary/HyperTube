@@ -18,35 +18,36 @@ export default class Header extends React.Component {
     console.log(this.props);
     const { getConnectedUser } = this.props.actions.user;
     if(!token) {
+      browserHistory.push('/');
     }
     getConnectedUser(token);
-  }
+  };
 
   toMovies = () => {
     browserHistory.push('/app/movies')
-  }
+  };
 
   toSeries = () => {
     browserHistory.push('/app/series')
-  }
+  };
 
   toHome = () => {
     browserHistory.push('/app/homePage')
-  }
+  };
 
   toProfile = () => {
     browserHistory.push(`/app/user/profile/${this.props.user.id}`);
-  }
+  };
 
   toEditProfile = () => {
     console.log('entered edit profile');
     browserHistory.push('/app/user/editProfile');
-  }
+  };
 
   logout = () => {
     localStorage.removeItem('token');
     browserHistory.push('/');
-  }
+  };
 
 	render(){
     const { user } = this.props;

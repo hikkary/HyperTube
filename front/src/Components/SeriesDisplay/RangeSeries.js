@@ -17,13 +17,11 @@ export default class RangeSeries extends Component {
 
   handleChangeYear = (values) => {
     this.setState({ year: values });
-
   }
 
   handleChangeYearToProps = () => {
     console.log("YWRUWERIEW OEWJR",this.state.year);
     this.props.onChange('year', this.state.year);
-
   }
 
   handleChangeRating = (values) => {
@@ -32,7 +30,6 @@ export default class RangeSeries extends Component {
 
   handleChangeRatingToProps = () => {
     this.props.onChange('rate', this.state.rate);
-
   }
 
   render(){

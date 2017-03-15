@@ -44,7 +44,6 @@ export default class BestOfMovies extends Component {
           </div>
          )
           })}
-
       </div>
     </div>
     )

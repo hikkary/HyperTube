@@ -3,7 +3,7 @@
 import translation from '../translation';
 
 export const GET = 'TRANSLATION_GET';
-export const PENDING = 'TRANSLATION_PENDING';
+export const PENDING = 'PENDING';
 export const FRENCH = 'TRANSLATION_FRENCH';
 export const ENGLISH = 'TRANSLATION_ENGLISH';
 

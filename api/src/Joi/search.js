@@ -13,6 +13,7 @@ export const getMovies = Joi.object().keys({
   page: Joi.number().min(0),
   sort: Joi.string().alphanum().min(1).max(40),
   sorted: Joi.number(),
+  scroll: Joi.number(),
 });
 
 export const getSeries = Joi.object().keys({
@@ -28,4 +29,5 @@ export const getSeries = Joi.object().keys({
   page: Joi.number().min(0),
   sort: Joi.string().alphanum().min(1).max(40),
   sorted: Joi.number(),
+  scroll: Joi.number(),
 });

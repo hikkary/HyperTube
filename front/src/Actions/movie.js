@@ -21,8 +21,7 @@ export const getMoviePage = ({
     `${api}/movie/${id}`,
   )
   .then(({ data: movie }) => {
-    // console.log('TYPE DE NOVUE', typeof(movie));
     dispatch(fetched( ...movie));
   })
-  .catch(console.error)
+  .catch(console.error);
 };

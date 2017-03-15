@@ -2,12 +2,12 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
-import MovieDisplay from '../../Components/MovieDisplay';
+import MoviesDisplay from '../../Components/MoviesDisplay';
 import Header from '../../Components/Header';
 
 const Movies = ({ movies, translation, actions }) =>
   <div>
-    <MovieDisplay movies={movies} translation={translation} actions={actions} />
+    <MoviesDisplay movies={movies} translation={translation} actions={actions} />
   </div>
 
 Movies.propTypes = {

@@ -3,16 +3,21 @@ import api from '../apiURI';
 
 export const GET = "SERIES_GET";
 export const PENDING = "SERIES_PENDING";
+export const SCROLL = "SERIES_SCROLL";
 
 export const pending = () => ({
   type: PENDING,
 });
 
-export const display = (series) => ({
+export const fetched = (series) => ({
   type: GET,
   payload: series,
 });
 
+export const scrolled = (series) => ({
+  type: SCROLL,
+  payload: series,
+});
 
 export const getSeries = ({
   title = '',
@@ -21,9 +26,10 @@ export const getSeries = ({
   rateMin = 0,
   rateMax = 10,
   genre = '',
-  page = 0,
+  page = Number(0),
   sort = 'title',
   asc = 1,
+  scroll = 0,
 } = {}) => (dispatch) => {
   dispatch(pending());
   axios.get(
@@ -32,7 +38,11 @@ export const getSeries = ({
   .then(({ data: series }) => {
     console.log("Series  :" ,typeof(series))
     console.log("Series  :" ,series)
-    dispatch(display(series));
+    if (scroll === 1) {
+      dispatch(scrolled(series))
+    } else {
+      dispatch(fetched(series));
+    }
   })
   .catch(console.error)
 };
@@ -58,14 +68,13 @@ export const getSeries = ({
 //   });
 // };
 
-
 export const TenBestSeries = () => (dispatch) => {
   dispatch(pending());
   axios.get(
     `${api}/series/tenBest`,
   )
   .then(({ data: series }) => {
-    dispatch(display(series));
+    dispatch(fetched(series));
   })
   .catch(console.error)
 };

@@ -3,15 +3,12 @@ import _ from 'lodash';
 import { User } from '../Schema/';
 
 const resetPassword = async (transporter, user, host) => {
-  console.log('USER', user);
-
   const mailOptions = {
     from: '"Reset password" <noreply@hypertube.com>', // sender address
     to: user.email, // list of receivers
     subject: 'Change password', // Subject line
     text: ` Please click on this link to change your password ${host}/updatePassword?username=${user.username}&key=${user.key}`,
   };
-
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
        // console.log(error);
@@ -20,13 +17,9 @@ const resetPassword = async (transporter, user, host) => {
   return true;
 };
 
-
 const mailCenter = async (user, host) => {
-
   // TODO save secret data in secret file
   const transporter = await nodemailer.createTransport('smtps://hikkaryfr@gmail.com:Kenshiro31@smtp.gmail.com');
-
-  console.log(host);
   resetPassword(transporter, user, host);
 };
 

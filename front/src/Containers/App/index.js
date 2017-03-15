@@ -3,64 +3,55 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import Header from '../../Components/Header';
-import BestOfMovies from '../../Components/BestOfMovies';
-import BestOfSeries from '../../Components/BestOfSeries';
-import SearchDisplay from '../../Components/SearchDisplay';
-import Search from '../../Components/SearchMenu';
 
 // ADD FOOTER TO Component
 class App extends Component {
-  state={
-    displaySearch: 'none',
-    displayBest: '',
-    ready: false,
-    genres: '',
-    year: {
-      min: 1900,
-      max: 2017,
-    },
-    rate: {
-      min: 0,
-      max: 10,
-    },
-    filter: {
-      name: 'title',
-      sorted: 1,
-    },
-    title_search: '',
-  }
-
-  // componentWillReceiveProps = (newProps) => {
-  //   console.log("NEWPROSSS ", newProps);
-  //   if(newProps.search){
-  //     console.log(newProps.search.slice(0, 30));
-  //     this.setState({ series: newProps.search.slice(0, 30), ready: true });
-  //   }
+  // state={
+  //   displaySearch: 'none',
+  //   displayBest: '',
+  //   ready: false,
+  //   genres: '',
+  //   year: {
+  //     min: 1900,
+  //     max: 2017,
+  //   },
+  //   rate: {
+  //     min: 0,
+  //     max: 10,
+  //   },
+  //   filter: {
+  //     name: 'title',
+  //     sorted: 1,
+  //   },
+  //   title_search: '',
+  // }
+  //
+  // // componentWillReceiveProps = (newProps) => {
+  // //   console.log("NEWPROSSS ", newProps);
+  // //   if(newProps.search){
+  // //     console.log(newProps.search.slice(0, 30));
+  // //     this.setState({ series: newProps.search.slice(0, 30), ready: true });
+  // //   }
+  // // }
+  //
+  // handleChange = (key, value) => {
+  //   this.setState({ [key]: value, displaySearch: "", displayBest: 'none' }, () => {
+  //     const { genres, year, rate, filter, title_search } = this.state;
+  //     this.props.actions.search.getAll({
+  //       genres,
+  //       yearMin: year.min,
+  //       yearMax: year.max,
+  //       rateMin: rate.min,
+  //       rateMax: rate.max,
+  //       filter: filter.name,
+  //       sorted: filter.value,
+  //       title_search,
+  //     })
+  //   })
   // }
 
-  handleChange = (key, value) => {
-    this.setState({ [key]: value, displaySearch: "", displayBest: 'none' }, () => {
-      const { genres, year, rate, filter, title_search } = this.state;
-      this.props.actions.search.getAll({
-        genres,
-        yearMin: year.min,
-        yearMax: year.max,
-        rateMin: rate.min,
-        rateMax: rate.max,
-        filter: filter.name,
-        sorted: filter.value,
-        title_search,
-      })
-    })
-  }
-
-  displayNone = () => {
-    this.setState({displayBest: '', displaySearch: 'none' })
-  }
-
   render() {
-    const { translation, actions, movies, series, search, user } = this.props;
-    const {displaySearch, displayBest} = this.state;
+    const {actions, user } = this.props;
     return (
       <div>
         <Header user={user} actions={actions} />
@@ -92,7 +83,5 @@ const mapDispatchToProps = dispatch => ({
     user: bindActionCreators(allTheActions.user, dispatch),
   },
 });
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

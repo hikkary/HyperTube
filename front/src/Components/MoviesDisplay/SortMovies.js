@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './MovieDisplay.sass';
+import './MoviesDisplay.sass';
 import FlatButton from 'material-ui/FlatButton';
 
 export default class SortMovies extends Component {

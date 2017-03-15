@@ -1,8 +1,5 @@
-import { GET } from '../Actions/movies';
-
-// const search = (action) =>{
-    // action.payload.Map;
-// }
+import { GET, SCROLL } from '../Actions/movies';
+import _ from 'lodash';
 
 export default (state = [], action) => {
   // console.log("STATE", state);
@@ -12,9 +9,8 @@ export default (state = [], action) => {
   switch (action.type) {
     case GET:
       return action.payload;
-    // case SEARCH:
-      // return search(action);
-      // return action.payload;
+    case SCROLL:
+      return _.flattenDepth([...state, action.payload], 1);
     default: return state;
   }
 }

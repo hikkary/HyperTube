@@ -13,7 +13,6 @@ export default class Login extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
-
     console.log('Login newProps',newProps);
     if(newProps.user){
     // this.setState({ message: newProps.user.details });

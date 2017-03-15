@@ -3,7 +3,7 @@ import InputRange from 'react-input-range';
 import _ from 'lodash';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Genres from '../Genres';
-import './MovieDisplay.sass';
+import './MoviesDisplay.sass';
 
 export default class MenuMovies extends Component {
 

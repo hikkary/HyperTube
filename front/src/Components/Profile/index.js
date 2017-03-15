@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import api from '../../apiURI'
+import api from '../../apiURI';
 
 export default class Profile extends Component {
   state = {
@@ -10,9 +10,7 @@ export default class Profile extends Component {
 
   componentDidMount() {
     console.log(this.props.id);
-
     const token = localStorage.getItem("token");
-
     axios({
       method: 'GET',
       url: `${api}/users/connectedUser`,
@@ -35,11 +33,11 @@ export default class Profile extends Component {
         })
         .then((results) =>{
           console.log("UTIIIIIILISATEUR",results)
-          this.setState({user:results.data})
-        })
-      }
-    })
-  }
+          this.setState({ user:results.data });
+        });
+      };
+    });
+  };
 
   render(){
     const { user, myId } = this.state;
