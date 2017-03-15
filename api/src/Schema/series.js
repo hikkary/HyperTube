@@ -1,7 +1,7 @@
 import mongoose from '../mongoose';
 
 const serie = mongoose.Schema({
-  id: Number,
+  id: String,
   images: Object,
   imdb_code: String,
   num_seasons: Number,

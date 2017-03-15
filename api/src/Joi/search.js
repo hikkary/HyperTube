@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 export const getMovies = Joi.object().keys({
-  title_search: Joi.string().max(50).min(1),
   yearMin: Joi.number().min(1900).max(2016),
   yearMax: Joi.number().min(1901).max(2017),
   rateMin: Joi.number().min(0).max(9),
@@ -17,7 +16,6 @@ export const getMovies = Joi.object().keys({
 });
 
 export const getSeries = Joi.object().keys({
-  title_search: Joi.string().max(50).min(1),
   yearMin: Joi.number().min(1900).max(2016),
   yearMax: Joi.number().min(1901).max(2017),
   rateMin: Joi.number().min(0).max(9),

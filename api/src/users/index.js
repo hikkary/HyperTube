@@ -1,28 +1,25 @@
+/* eslint-disable no-param-reassign */
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import multer from 'multer';
 import debug from 'debug';
-import _ from 'lodash';
-import jwtSecret from '../../jwtSecret';
-import { User, Facebook } from '../Schema';
-import { Register, Login, Forgot, Update, Profile } from '../Joi';
 import Joi from 'joi';
 import path from 'path';
 import axios from 'axios';
+import jwtSecret from '../../jwtSecret';
+import { User } from '../Schema';
+import { Register, Login, Forgot, Update, Profile } from '../Joi';
 import { uid, secret } from './secret42';
 import mailCenter from './mailCenter';
 
-/* eslint-disable-next-line no-param-reassign */
 
 const log = debug('hypertube:api:user:register');
 
 const storage = multer.diskStorage({
   destination: `${__dirname}/../../public`,
   filename: (req, file, cb) => {
-    const fileSplit = file.originalname.split('.');
-    console.log(path.extname(file.originalname));
-    cb(null, Math.random(100000, 9999999) +  path.extname(file.originalname));
+    cb(null, Math.random(100000, 9999999) + path.extname(file.originalname));
   },
 });
 
@@ -37,13 +34,12 @@ const getToken = (req) => {
   return null;
 };
 
-export const connectedUser = (req,res) => {
+export const connectedUser = (req, res) => {
   const token = getToken(req);
   jwt.verify(token, jwtSecret, (err, decoded) => {
     res.send(decoded);
-  // console.log(decoded.username);
   });
-}
+};
 
 export const getUserInfo = (req, res) => {
   const id = req.body.id;
@@ -59,21 +55,13 @@ export const getUserInfo = (req, res) => {
         email: result.email,
         picture: result.picture,
       };
-      console.log('user', user);
-      res.send({ status: false, details: 'Username found', user  });
-  });
+      res.send({ status: false, details: 'Username found', user });
+    });
 };
 
 const userToDatabase = (req) => {
   if (!req.file) {
     req.file = '';
-  } else {
-    // console.log('file', req.file);
-    // req.file.mimetype
-    // const parts = req.file.mimetype.split('/');
-    // const result = parts[parts.length - 1];
-    // console.log('results', result);
-    // req.file.filename = `${req.file.filename}.${result}`;
   }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
@@ -98,9 +86,6 @@ export const createAccount = (req, res) => {
     if (err) {
       return res.send({ status: false, details: 'cannot create image' });
     }
-    // req.file === image data
-    console.log(req.file);
-    // res.send(req.file);
     const { username, email } = req.body;
     User.findOne({ username })
       .then((user) => {
@@ -123,22 +108,29 @@ export const login = async (req, res) => {
   }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   User.findOne({ username })
-  .then((user) => {
-    if (!user) res.send({ status: false, details: 'there is an issue with the password or the username' });
-    if (user) {
-      if (user.password.localeCompare(passwordHash) !== 0) {
-        return res.send({ status: false, details: 'there is an issue with the password or the username' });
+    .then((user) => {
+      if (!user) res.send({ status: false, details: 'there is an issue with the password or the username' });
+      if (user) {
+        if (user.password.localeCompare(passwordHash) !== 0) {
+          return res.send({ status: false, details: 'there is an issue with the password or the username' });
+        }
+        const tokenUserinfo = {
+          username: user.username,
+          lastname: user.lastname,
+          firstname: user.firstname,
+          id: user.id,
+          email: user.email,
+          picture: user.picture,
+        };
+        const token = jwt.sign(tokenUserinfo, jwtSecret);
+        res.header('Access-Control-Expose-Headers', 'x-access-token');
+        res.set('x-access-token', token);
+        res.send({ status: true, details: 'user connected', user });
       }
-      const token = jwt.sign({ username: user.username, lastname: user.lastname, firstname: user.firstname, id: user.id, email: user.email, picture: user.picture }, jwtSecret);
-      res.header('Access-Control-Expose-Headers', 'x-access-token');
-      res.set('x-access-token', token);
-      res.send({ status: true, details: 'user connected', user });
-    }
-  });
+    });
 };
 
 export const handleAuthorize42 = (req, res) => {
-  console.log('query', req.query.code);
   const code = req.query.code;
   axios({
     method: 'POST',
@@ -152,14 +144,14 @@ export const handleAuthorize42 = (req, res) => {
     },
   })
   .then((response) => {
-    console.log(response.data.access_token);
     axios({
       method: 'GET',
       url: 'https://api.intra.42.fr/v2/me',
       headers: {
         Authorization: `Bearer ${response.data.access_token}`,
       },
-    }).then((user) => {
+    })
+    .then((user) => {
       const data = {
         auth_id: user.data.id,
         firstname: user.data.first_name,
@@ -173,7 +165,6 @@ export const handleAuthorize42 = (req, res) => {
     const token = response.data.access_token;
     res.header('Access-Control-Expose-Headers', 'x-access-token');
     res.set('x-access-token', token);
-    // redirect port 3000
     res.redirect('http://localhost:3000/app');
     // res.send({ status: true, details: 'user connected' });
   })
@@ -196,7 +187,6 @@ export const forgotPassword = async (req, res) => {
         res.send({ status: false, details: 'Username not found' });
       }
       const key = crypto.randomBytes(20).toString('hex');
-      // eslint-disable-next-line no-param-reassign
       result.key = key;
       result.save()
         .then((savedUser) => {
@@ -218,27 +208,23 @@ export const updatePassword = async (req, res) => {
     res.send({ status: false, details: 'passwords dont match' });
   }
   User.findOne({ username })
-  .then((result) => {
-    if (!result) {
-      res.send({ status: false, details: 'Username not found' });
-    }
-    if (result.key.localeCompare(key) !== 0) {
-      res.send({ status: false, details: 'An issue occured' });
-    }
-    const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
-
-    // eslint-disable-next-line no-param-reassign
-    result.password = passwordHash;
-    result.save()
-    .then(() => {
-      res.send({ status: true, details: 'Password Updated' });
+    .then((result) => {
+      if (!result) {
+        res.send({ status: false, details: 'Username not found' });
+      }
+      if (result.key.localeCompare(key) !== 0) {
+        res.send({ status: false, details: 'An issue occured' });
+      }
+      const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
+      result.password = passwordHash;
+      result.save()
+      .then(() => {
+        res.send({ status: true, details: 'Password Updated' });
+      });
     });
-  });
 };
 
 export const facebook = async (req, res) => {
-  console.log(req.body.picture.data.url);
-  console.log('TYPE ID', typeof (req.body.id));
   const data = ({
     auth_id: req.body.id,
     firstname: req.body.first_name,
@@ -261,41 +247,46 @@ export const editProfile = (req, res) => {
     }
     const { id } = req.body;
     User.findOne({ _id: id })
-    .then((result) => {
-      if (!result) {
-        res.send({ status: false, details: 'Username not found' });
-      }
-      console.log('fielllllll', req.file);
-      if(!req.file){
-        req.file.filename = '';
-      }
-      if (result.picture) {
-        fs.unlink(`./public/${result.picture}`, (err) => {
-          if (err) throw err;
-        });
-      }
-      // eslint-disable-next-line no-param-reassign
-      result.username = req.body.username;
-      result.firstname = req.body.firstname;
-      result.lastname = req.body.lastname;
-      result.email = req.body.email;
-      result.picture = req.file.filename;
-      result.save()
-      // res.send({ status: ..... details: result})
-      .then((user) => {
-        const updatedUser = {
-          username: result.username,
-          lastname: result.lastname,
-          firstname: result.firstname,
-          id: result.id,
-          email: result.email,
-          picture: result.picture,
+      .then((result) => {
+        if (!result) {
+          res.send({ status: false, details: 'Username not found' });
         }
-        const token = jwt.sign({ updatedUser }, jwtSecret);
-        res.header('Access-Control-Expose-Headers', 'x-access-token');
-        res.set('x-access-token', token);
-        res.send({ status: true, details: 'user updated' });
+        if (!req.file && result.picture) {
+          req.file = {
+            filename: result.picture,
+          };
+        }
+        if (!req.file && !result.picture) {
+          req.file = {
+            filename: '',
+          };
+        }
+        if (result.picture && req.file) {
+          fs.unlink(`./public/${result.picture}`, (err) => {
+            if (err) throw err;
+          });
+        }
+        result.username = req.body.username;
+        result.firstname = req.body.firstname;
+        result.lastname = req.body.lastname;
+        result.email = req.body.email;
+        result.picture = req.file.filename;
+        result.save()
+        // res.send({ status: ..... details: result})
+        .then(() => {
+          const updatedUser = {
+            username: result.username,
+            lastname: result.lastname,
+            firstname: result.firstname,
+            id: result.id,
+            email: result.email,
+            picture: result.picture,
+          }
+          const token = jwt.sign(updatedUser, jwtSecret);
+          res.header('Access-Control-Expose-Headers', 'x-access-token');
+          res.set('x-access-token', token);
+          res.send({ status: true, details: 'user updated' });
+        });
       });
-    });
   });
 };

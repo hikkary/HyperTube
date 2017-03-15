@@ -117,6 +117,7 @@ export const get = async (req, res) => {
         'rating',
         'year',
         'imdb_code',
+        'provider',
         'images',
       ])));
     })
@@ -124,39 +125,3 @@ export const get = async (req, res) => {
       res.send({ status: false, details: 'An error occurred' });
     });
 };
-// export const display = (req, res) => {
-//   const filteredData = {
-//     title_search: req.query.title_search,
-//     genres: req.query.genres,
-//   };
-//
-//   const data = _.reduce(filteredData, (accu, value, key) => {
-//     if (value) {
-//       return { ...accu, [key]: value }
-//     }
-//     return accu;
-//   }, {})
-//
-//   if (data.title_search)
-//   {
-//     log(data)
-//
-//     data.title_search = { $regex: `${data.title_search}` }
-//   }
-//
-//   log(data);
-//   Serie.find(data)
-//   .sort({ [req.query.filter]: [req.query.sorted] })
-//   .then((results) => {
-//     const yearAndRateRange = results.filter((serie) => {
-//       if (serie.year >= req.query.yearMin && serie.year <= req.query.yearMax &&
-//         serie.rating >= req.query.rateMin && serie.rating <= req.query.rateMax) {
-//         return serie;
-//       }
-//     },
-//   )
-//   log(yearAndRateRange);
-//
-//     res.send(yearAndRateRange);
-//   });
-// };

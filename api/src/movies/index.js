@@ -87,6 +87,7 @@ export const get = async (req, res) => {
         'rating',
         'year',
         'id',
+        'provider',
         'largeImage',
       ])));
     })

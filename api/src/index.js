@@ -5,7 +5,8 @@ import debug from 'debug';
 import * as movies from './movies';
 import * as movie from './movie';
 import * as series from './series';
-import * as user from './users/user';
+import * as serie from './serie';
+import * as users from './users';
 import './mongoose';
 
 const log = debug('hypertube:index.js');
@@ -13,7 +14,7 @@ const log = debug('hypertube:index.js');
 const app = express();
 const movieRouter = express.Router('/api/movie');
 const seriesRouter = express.Router('/api/series');
-const users = express.Router('/api/users');
+const usersRouter = express.Router('/api/users');
 const stream = express.Router('/api/stream');
 
 movieRouter
@@ -27,20 +28,21 @@ movieRouter
 
 seriesRouter
   .get('/api/series', series.get)
+  .get('/api/serie/:id', serie.serie)
   .get('/api/series/scrap', series.scrap)
   .get('/api/series/tenBest', series.tenBest)
   .post('/api/series/getInfo', series.getInfo);
 
-users
-  .put('/api/users/login', user.login)
-  .post('/api/users/editProfile', user.editProfile)
-  .post('/api/users/register', user.createAccount)
-  .post('/api/users/facebook_auth', user.facebook)
-  .post('/api/users/forgotPassword', user.forgotPassword)
-  .post('/api/users/updatePassword', user.updatePassword)
-  .get('/api/users/42_auth', user.handleAuthorize42)
-  .get('/api/users/connectedUser', user.connectedUser)
-  .post('/api/users/getUserInfo', user.getUserInfo);
+usersRouter
+  .put('/api/users/login', users.login)
+  .post('/api/users/editProfile', users.editProfile)
+  .post('/api/users/register', users.createAccount)
+  .post('/api/users/facebook_auth', users.facebook)
+  .post('/api/users/forgotPassword', users.forgotPassword)
+  .post('/api/users/updatePassword', users.updatePassword)
+  .get('/api/users/42_auth', users.handleAuthorize42)
+  .get('/api/users/connectedUser', users.connectedUser)
+  .post('/api/users/getUserInfo', users.getUserInfo);
 
 app
   .use(cors()) // connexion front back
@@ -49,7 +51,7 @@ app
   .use('/public', express.static(`${__dirname}/../public`))
   .use(movieRouter)
   .use(seriesRouter)
-  .use(users)
+  .use(usersRouter)
   .use(stream);
 
 app.listen(8080, () => {
