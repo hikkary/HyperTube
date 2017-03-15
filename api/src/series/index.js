@@ -52,8 +52,6 @@ const writeJson = (allSeries) => {
 };
 
 const recursiveEztv = (page, allSeries) => {
-  // console.log(p'http://eztvapi.ml/shows/${page}');
-  console.log(page);
   axios.get(`http://eztvapi.ml/shows/${Number(page)}`).then((data) => {
     if (!data.data) {
       writeJson(allSeries);
@@ -71,7 +69,6 @@ export const scrap = (req, res) => {
 };
 
 export const getInfo = (req, res) => {
-  log('coucou');
   axios.get(`http://imdb.wemakesites.net/api/${req.body.imdb}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
   .then((data) => {
     res.send(data.data);
@@ -104,8 +101,6 @@ export const get = async (req, res) => {
   if (title) {
     searchObj.title = new RegExp(`${title}`, 'gi');
   }
-  // const test = (asc || 1) ? '+' : '-';
-  // const tit = (sort || 'title')
   Serie.find(searchObj)
     .skip(page * RES_PER_PAGE)
     .limit(RES_PER_PAGE)

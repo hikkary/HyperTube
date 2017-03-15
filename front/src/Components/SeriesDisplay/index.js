@@ -29,14 +29,12 @@ export default class SeriesDisplay extends Component {
     page: {
       valueScroll: 0,
       valuePage: 0,
-    }
+    },
   }
 
   componentDidMount = () => {
     console.log("PROPS DID MOUNT SERIESDISPLAY",this.props);
-    // this.props.actions.series.getSeries();
     this.loadSeries = _.debounce(this.loadSeries, 1000);
-    // this.loadSeries();
     this.handleChange();
   }
 
@@ -79,7 +77,7 @@ export default class SeriesDisplay extends Component {
   }
 
   render() {
-    const { series } = this.props; // 30 films at a time
+    const { series } = this.props;
     return(
       <div className="seriesContainer">
         <SearchMenu onKeyDown={this.handleChange}/>

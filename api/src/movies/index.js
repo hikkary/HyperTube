@@ -8,7 +8,7 @@ import { getMovies } from '../Joi/search';
 
 const log = require('debug')('hypertube:movies.js');
 
-const writeJson = (allMovies) => {
+const movieToDatabase = (allMovies) => {
   mongoose.connection.collections['movies'].drop((err) => {
       console.log('collection dropped');
   });
@@ -42,8 +42,7 @@ const recursiveScrap = (page, allMovies) => {
   axios.get(`https://yts.ag/api/v2/list_movies.json?limit=50&page=${Number(page)}`)
   .then((movie) => {
     if (movie.data.data.movies === undefined) {
-      console.log('UNDEFINED');
-      writeJson(allMovies);
+      movieToDatabase(allMovies);
       return;
     }
     const { movies } = movie.data.data;
@@ -63,7 +62,7 @@ export const get = async (req, res) => {
   const { error } = await Joi.validate(req.query, getMovies, { abortEarly: false });
   if (error) return res.send({ status: false, details: error.details });
   const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
-  log(title);
+  // log(title);
   const searchObj = {
     year: { $gt: (yearMin || 1900) - 1, $lt: (Number(yearMax) || Number(2017)) + Number(1) },
     rating: { $gt: (rateMin || 0) - 1, $lt: (Number(rateMax) || Number(10)) + Number(1) },
@@ -74,8 +73,6 @@ export const get = async (req, res) => {
   if (title) {
     searchObj.title = new RegExp(`${title}`, 'gi');
   }
-  const test = (asc || 1) ? '+' : '-';
-  const tit = (sort || 'title')
   Movie.find(searchObj)
     .skip(page * RES_PER_PAGE)
     .limit(RES_PER_PAGE)
@@ -96,14 +93,6 @@ export const get = async (req, res) => {
     });
 };
 
-// .sort(`${
-//   // select asc or desc
-//   (asc || 1) ? '+' : '-'
-// }${
-//   // select key
-//   (sort || 'title')
-// }`)
-
 export const tenBest = (req, res) => {
   Movie.find().sort({ rating: -1 })
   .limit(8)
@@ -113,10 +102,8 @@ export const tenBest = (req, res) => {
 };
 
 export const getGenre = (req, res) => {
-  console.log('Dans Genre');
   Movie.find({ genres: req.body.genre }).sort({ title: 1 })
   .then((results) => {
-    // console.log(results);
     res.send(results);
   });
 };

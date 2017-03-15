@@ -11,7 +11,7 @@ import Login from './Containers/Auth/Login';
 import forgotPassword from './Containers/Auth/ForgotPassword/ForgotPassword';
 import Register from './Containers/Auth/Register';
 import Profile from './Containers/Profile';
-import editProfile from './Containers/EditProfile';
+import EditProfile from './Containers/EditProfile';
 import './index.css';
 import { Route, Router, browserHistory, Redirect } from 'react-router';
 import reducers from './Reducers';
@@ -60,7 +60,7 @@ ReactDOM.render(
         <Route path="/app" component={App}>
           <Route path="homePage" component={HomePage}/>
           <Route path="user/profile/:id" component={Profile} />
-          <Route path="user/editProfile" component={editProfile} />
+          <Route path="user/editProfile" component={EditProfile} />
           <Route path="movies" component={Movies} />
           <Route path="movies/:id" component={MoviePage} />
           <Route path="series" component={Series} />

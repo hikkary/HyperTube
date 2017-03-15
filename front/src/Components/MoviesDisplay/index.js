@@ -26,18 +26,15 @@ export default class MoviesDisplay extends Component {
     },
     title_search: '',
     id: '',
-    // pageNumber: 1,
     page: {
       valueScroll: 0,
       valuePage: 0,
-    }
+    },
   }
 
   componentDidMount = () => {
-    console.log("PROPS DID MOUNT MOVIESDISPLAY",this.props);
     this.loadMovies = _.debounce(this.loadMovies, 1000);
-    // this.loadMovies();
-    this.handleChange();
+    this.loadMovies();
   }
 
   resetValues = (key) => {
@@ -76,22 +73,19 @@ export default class MoviesDisplay extends Component {
   }
 
   goMoviePage = (id) => {
-    // console.log('yayyyyyss');
     browserHistory.push(`/app/movies/${id}`);
   }
 
   loadMovies = () => {
-    const { page = { valuePage: 1, valueScroll: 1 } } = this.state;
+    const { page } = this.state;
     const nextPage = page.valuePage + 1;
-
     this.handleChange('page', page);
     this.setState({ page: { valuePage: nextPage, valueScroll: 1 } });
   }
 
   render(){
-    // console.log(this.props.actions);
     const {current} = this.props.translation;
-    const { movies } = this.props; // 30 films at a time
+    const { movies } = this.props;
     return(
       <div className="moviesContainer">
         <SearchMenu onKeyDown={this.handleChange}/>
@@ -100,7 +94,7 @@ export default class MoviesDisplay extends Component {
           <RangeMovies onChange={this.handleChange} />
           <SortMovies onChange={this.handleChange} />
         </div>
-      <InfiniteScroll
+        <InfiniteScroll
           pageStart={0}
           loadMore={this.loadMovies}
           initialLoad={false}
@@ -125,10 +119,11 @@ export default class MoviesDisplay extends Component {
                       </div>
                     </div>
                    )
-                   })}
-            </div>}
-        </InfiniteScroll>
-
+                   })
+                 }
+            </div>
+          }
+          </InfiniteScroll>
     </div>
     )
   }

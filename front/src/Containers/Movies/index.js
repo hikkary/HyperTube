@@ -10,12 +10,8 @@ const Movies = ({ movies, translation, actions }) =>
   </div>
 
 Movies.propTypes = {
-  movies: PropTypes.array.isRequired
+  movies: PropTypes.array.isRequired,
 };
-//
-// const mapStateToProps = (state) => ({
-//   movies: state.movies,
-// });
 
 const mapStateToProps = ({ movies , translation }) => ({ movies, translation });
 
