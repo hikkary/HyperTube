@@ -5,35 +5,32 @@ import api from '../../apiURI';
 export default class Profile extends Component {
   state = {
     user: '',
-    loggedUser: '',
+    myId: '',
   }
 
   componentDidMount() {
-    console.log(this.props.id);
     const token = localStorage.getItem("token");
     axios({
       method: 'GET',
       url: `${api}/users/connectedUser`,
       headers: {
-					 'Authorization': 'Bearer '+token,
+					 'Authorization': `Bearer ${token}`,
 				 },
     })
     .then((results) => {
       this.setState({ user: results.data, myId: results.data.id });
-      console.log('ID LOGGEDUSER', results.data.id);
-      console.log('ID OTHER', this.props.id);
-      if(results.data.id !== this.props.id) {
-        console.log('eyeyeyeyeyeyeyeyeyeyeyyeyeyeeyeyeyeyeeyeyeye');
+      if (results.data.id !== this.props.id) {
+        console.log('ID ID ID ID');
         axios({
           method: 'POST',
-          url: `${api}/users/getUserInfo/`,
+          url: `${api}/users/getUserInfo`,
           data: {
             id: this.props.id,
           }
         })
         .then((results) =>{
-          console.log("UTIIIIIILISATEUR",results)
-          this.setState({ user:results.data });
+          console.log('results', results);
+          this.setState({ user: results.data.user });
         });
       };
     });
@@ -42,7 +39,7 @@ export default class Profile extends Component {
   render(){
     const { user, myId } = this.state;
     return (
-      <div>
+      <div className="profile">
         {user.username}
         {this.props.id === myId && user.email}
         {user.firstname}

@@ -1,36 +1,34 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import './BestOfMovies.sass';
 
 export default class BestOfMovies extends Component {
-  state = {
-    ready : false,
-  }
-
-  componentWillReceiveProps = (newProps) => {
-    console.log('rtfgy6gtrfcgtjuygtrvthygtvbhygtvf', newProps.movies);
-    this.setState({ tenBestMovies: newProps.movies, ready: true });
-    console.log("10", this.state.tenBestMovies);
-  }
 
   componentDidMount = () => {
     const { actions } = this.props;
     actions.movies.TenBestMovies();
-    console.log('ten best movies props did mount', this.props);
+    // console.log('ten best movies props did mount', this.props);
+  }
+
+  goMoviePage = (id) => {
+    browserHistory.push(`/app/movies/${id}`);
   }
 
   render(){
-    const {current} = this.props.translation;
+    const { current } = this.props.translation;
+    const { movies } = this.props;
     return(
       <div>
       <div className="BestMovies">
         <p>{current.bestMovies}</p>
       </div>
       <div className="TenBestMovies">
-          {this.state.ready && this.state.tenBestMovies.map((movie, key) => {
+          {movies && movies.map((movie, key) => {
             return(
               <div key={key} className="allInfo">
                 <div
                   className="movie"
+                  onClick={() => this.goMoviePage(movie.id)}
                   style={{ backgroundImage: `url('${movie.largeImage}')` }}
                 >
                   <div className="textContainer">
@@ -38,11 +36,11 @@ export default class BestOfMovies extends Component {
                     <p>{movie.year} </p>
                   </div>
                 </div>
-            <div className="title">
-              <p>{movie.title} </p>
-            </div>
-          </div>
-         )
+                <div className="title">
+                  <p>{movie.title} </p>
+                </div>
+              </div>
+            )
           })}
       </div>
     </div>

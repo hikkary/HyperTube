@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import MoviesDisplay from '../../Components/MoviesDisplay';
-import Header from '../../Components/Header';
 
 const Movies = ({ movies, translation, actions }) =>
   <div>

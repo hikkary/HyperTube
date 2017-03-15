@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import SeriesDisplay from '../../Components/SeriesDisplay';
-import Header from '../../Components/Header';
 
 export const Series = ({ series, actions }) =>
   <div>

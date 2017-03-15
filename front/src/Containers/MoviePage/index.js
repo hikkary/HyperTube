@@ -1,9 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import MoviePage from '../../Components/MoviePage';
-import Header from '../../Components/Header';
 
 const Movie = ({ translation, actions, id, movie }) =>
   <div>

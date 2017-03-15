@@ -1,4 +1,4 @@
-import { ADDED, ERROR, REFRESH, REGISTER, GET } from '../Actions/user';
+import { ADDED, ERROR, REGISTER, GET } from '../Actions/user';
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -8,8 +8,6 @@ export default (state = [], action) => {
       return  action.payload;
     case REGISTER:
       return  action.payload;
-    case REFRESH:
-      return [];
     case GET:
       return action.payload;
     default: return state;

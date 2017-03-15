@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import apiURI from '../../apiURI';
+import apiURI from '../../../apiURI';
 import axios from 'axios';
-// import { uid } from './secret42';
 import './OmniAuth.sass';
-import FBlogo from '../../../public/facebook_logo.png';
-import fortyTwoLogo from '../../../public/42_logo.png';
-// import popup from './popup42';
+import FBlogo from '../../../../public/facebook_logo.png';
+import fortyTwoLogo from '../../../../public/42_logo.png';
 /* global FB */
 
 export default class OmniAuth extends Component {

@@ -1,16 +1,21 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import SeriePage from '../../Components/SeriePage';
-import Header from '../../Components/Header';
 
-const Series = ({ serie, translation, actions }) =>
+const Series = ({ serie, translation, actions, id }) =>
   <div>
-    <SeriePage serie={serie} translation={translation} actions={actions} />
+    <SeriePage serie={serie} id={id} translation={translation} actions={actions} />
   </div>
 
-const mapStateToProps = ({ serie , translation }) => ({ serie, translation });
+// const mapStateToProps = ({ serie , translation }) => ({ serie, translation });
+
+const mapStateToProps = (state, ownProps) => ({
+  translation: state.translation,
+  id: ownProps.params.id,
+  serie: state.serie,
+});
 
 const mapDispatchToProps = dispatch => ({
   actions: {

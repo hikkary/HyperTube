@@ -4,7 +4,6 @@ import { browserHistory } from 'react-router';
 import ExtLogin from '../OmniAuth';
 import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-// import Register from '../../../public/AddUser.png';
 import './Login.sass';
 
 export default class Login extends Component {
@@ -13,11 +12,10 @@ export default class Login extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
-    console.log('Login newProps',newProps.user);
     if(newProps.user){
       console.log('status', newProps.status);
     // this.setState({ message: newProps.user.details });
-      if(newProps.user.results.status === true) // Gerer du cote de joi le retour
+      if (newProps.user.results.status === true) // Gerer du cote de joi le retour
         localStorage.setItem('token', newProps.user.headers['x-access-token']);
       }
   };
@@ -30,17 +28,16 @@ export default class Login extends Component {
       username: username.value,
       password: password.value,
     }
-    if (username && password)
+    if (username && password) {
       actionLogin(userInfo);
+    }
   }
 
   registerForm = () => {
-    console.log('hey');
     browserHistory.push('/register');
   }
 
   forgotPassword = () => {
-    console.log('hey');
     browserHistory.push('/forgotPassword');
   }
 
@@ -56,7 +53,7 @@ export default class Login extends Component {
           }}
           onClick={this.registerForm}
         >
-          <i className="material-icons">person_add</i>
+        <i className="material-icons">person_add</i>
         </FloatingActionButton>
         <div className="loginForm"/>
           <form onSubmit={this.login} className="loginForm">

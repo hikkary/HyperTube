@@ -25,7 +25,7 @@ export default class SortMovies extends Component {
   }
 
   render(){
-    console.log('hey', this.props);
+    // console.log('hey', this.props);
     return(
       <div className="sorted">
         <FlatButton label="Sort By Title" onClick={this.sortTitle}/>

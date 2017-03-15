@@ -5,13 +5,12 @@ import allTheActions from '../../Actions';
 import BestOfMovies from '../../Components/BestOfMovies';
 import BestOfSeries from '../../Components/BestOfSeries';
 import SearchDisplay from '../../Components/SearchDisplay';
-import Search from '../../Components/SearchMenu';
+import Search from '../../Components/SearchMenuHomePage';
 
 class HomePage extends Component {
-  state={
+  state= {
     displaySearch: 'none',
     displayBest: '',
-    ready: false,
     genres: '',
     year: {
       min: 1900,
@@ -26,50 +25,62 @@ class HomePage extends Component {
       sorted: 1,
     },
     title_search: '',
+    id: '',
+    page: {
+      valueScroll: 0,
+      valuePage: 0,
+    }
   }
 
-  // componentWillReceiveProps = (newProps) => {
-  //   console.log("NEWPROSSS ", newProps);
-  //   if(newProps.search){
-  //     console.log(newProps.search.slice(0, 30));
-  //     this.setState({ series: newProps.search.slice(0, 30), ready: true });
-  //   }
-  // }
+  resetValues = (key) => {
+    if (key !== 'page') {
+      this.setState({ page: { valuePage: 0, valueScroll: 0 } });
+    }
+    if (key === 'title') {
+      this.setState({ genre: '' });
+    }
+  };
 
   handleChange = (key, value) => {
-    this.setState({ [key]: value, displaySearch: "", displayBest: 'none' }, () => {
-      const { genres, year, rate, filter, title_search } = this.state;
+    this.resetValues(key);
+    console.log("KEY SEARCH", key);
+    console.log("VALUE SEARCH", value);
+    this.setState({ [key]: value,  displaySearch: "", displayBest: 'none'  }, () => {
+      const { year, rate, genre , sort = { name : 'title', value: 1 }, title, id, page } = this.state;
       this.props.actions.search.getAll({
-        genres,
         yearMin: year.min,
         yearMax: year.max,
-        rateMin: rate.min,
         rateMax: rate.max,
-        filter: filter.name,
-        sorted: filter.value,
-        title_search,
+        rateMin: rate.min,
+        genre,
+        sort: sort.name,
+        asc: sort.value,
+        title,
+        id,
+        page: page.valuePage,
+        scroll: page.valueScroll,
       })
     })
   }
 
   displayNone = () => {
-    this.setState({displayBest: '', displaySearch: 'none' })
+    this.setState({displayBest: '', displaySearch: 'none' });
   }
 
   render() {
-    const { translation, actions, movies, series, search, user } = this.props;
-    const {displaySearch, displayBest} = this.state;
+    const { translation, actions, movies, series, search } = this.props;
+    const { displaySearch, displayBest } = this.state;
     return (
       <div>
         <Search onKeyDown={this.handleChange} onChange={this.displayNone}/>
         <div className="searchDiv" style={{
           display: displaySearch,
-        }}>
-        <SearchDisplay search={search} />
-      </div>
+          }}>
+          <SearchDisplay search={search} />
+        </div>
         <div className="displayApp" style={{
           display: displayBest,
-        }}>
+          }}>
           <BestOfMovies movies={movies} actions={actions} translation={translation} />
           <BestOfSeries series={series} actions={actions} translation={translation} />
         </div>
@@ -83,12 +94,8 @@ HomePage.propTypes = {
   series: PropTypes.array.isRequired,
   search: PropTypes.array.isRequired,
 };
-//
-// const mapStateToProps = (state) => ({
-//   movies: state.movies,
-// });
 
-const mapStateToProps = ({ translation, movies, series, search, user }) => ({ translation, movies, series, search, user });
+const mapStateToProps = ({ translation, movies, series, search }) => ({ translation, movies, series, search });
 
 const mapDispatchToProps = dispatch => ({
   actions: {
@@ -96,10 +103,7 @@ const mapDispatchToProps = dispatch => ({
     search: bindActionCreators(allTheActions.search, dispatch),
     series: bindActionCreators(allTheActions.series, dispatch),
     translation: bindActionCreators(allTheActions.translation, dispatch),
-    user: bindActionCreators(allTheActions.user, dispatch),
   },
 });
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

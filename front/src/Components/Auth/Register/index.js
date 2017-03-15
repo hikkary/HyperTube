@@ -2,33 +2,28 @@ import React, { Component } from 'react';
 import './Register.sass';
 import { browserHistory } from 'react-router';
 import './Register.sass';
-// import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import FR from '../../../public/am-flag.gif';
-import EN from '../../../public/fr-flag.gif';
+import FR from '../../../../public/am-flag.gif';
+import EN from '../../../../public/fr-flag.gif';
 
 export default class Register extends Component {
   state= {
     message: '',
   }
 
-  componentDidMount = () =>{
-    console.log(this.convertImage);
-  }
-
-  componentWillReceiveProps = (newProps) => {
-    console.log('REgister newProps',newProps);
+  // componentWillReceiveProps = (newProps) => {
+    // console.log('REgister newProps',newProps);
     // this.setState({ message: newProps.register.details });
-  }
+  // }
 
-  convertImage = async(e) => {
-    if (!e.target.files[0])
-      return
+  uploadImage = async(e) => {
+    e.persist();
+    if (!e.target.files[0]) {
+      return;
+    }
 		const file = e.target.files[0];
 		const img = new Image();
-
-		e.persist()
 		img.onload = () => {
       this.setState({ message: 'Picture Uploaded' });
       this.setState({ image: file })
@@ -42,7 +37,7 @@ export default class Register extends Component {
 	}
 
   loginForm = () => {
-    browserHistory.push('/');
+    browserHistory.push('/login');
   }
 
   register = (e) => {
@@ -59,22 +54,21 @@ export default class Register extends Component {
     form.append('confirm', confirm.value)
     form.append('image', image)
     form.append('language', this.state.currentLanguage)
-    console.log(form);
     register(form);
   };
 
   toFrench = (e) => {
     this.setState({ currentLanguage: 'fr' })
-    this.props.actions.translation.toFrench()
+    this.props.actions.translation.toFrench();
   }
 
   toEnglish = (e) => {
     this.setState({ currentLanguage: 'en' })
-    this.props.actions.translation.toEnglish()
+    this.props.actions.translation.toEnglish();
   }
 
   render(){
-    const {current} = this.props.translation;
+    const { current } = this.props.translation;
     return(
       <div>
         <div className="translation">
@@ -123,8 +117,8 @@ export default class Register extends Component {
             labelPosition="before"
             className="imageUpload"
             containerElement="label"
-          >
-            <input type="file" name="imageUpload" className="uploadInput" onChange={this.convertImage} />
+            >
+            <input type="file" name="imageUpload" className="uploadInput" onChange={this.uploadImage} />
           </RaisedButton>
           <RaisedButton type="submit" label={current.register} className="registerSubmit" name="register"/>
         </form>

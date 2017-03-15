@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './moviePage.sass';
 
 export default class MoviePage extends Component {
-  state = {
-  }
 
   componentDidMount() {
     this.props.actions.movie.getMoviePage({
@@ -11,27 +9,23 @@ export default class MoviePage extends Component {
     })
   }
 
-    toList = (list) =>{
-  		 let tmp = "";
-      if (this.props.movie)
-      {
-        console.log('DANS GENRE LIST');
-  			for (let data in list){
-          // console.log(this.props.movie.genres[data]);
-  				if (data && data + 1){
-  					tmp += list[data]+", "
-  				}
-  			}
-  			return tmp
-      }
-  	}
-
+  toList = (list) => {
+		 let tmp = "";
+    if (this.props.movie)
+    {
+      console.log('DANS GENRE LIST');
+			for (let data in list) {
+        // console.log(this.props.movie.genres[data]);
+				if (data && data + 1) {
+					tmp += list[data]+", ";
+				}
+			}
+			return tmp;
+    }
+	}
 
   render() {
     console.log("PROPS",this.props.movie)
-    // if(this.props.movie){
-    // const { movie } = this.props.movie;
-    // }
     // const { movie } = this.props.movie;
     return (
     <div>

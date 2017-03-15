@@ -12,7 +12,7 @@ import img from '../../../public/series_default.png';
 export default class SeriesDisplay extends Component {
   state={
     ready: false,
-    genres: '',
+    genre: '',
     year: {
       min: 1900,
       max: 2017,
@@ -26,31 +26,31 @@ export default class SeriesDisplay extends Component {
       sorted: 1,
     },
     title_search: '',
-    pageNumer: 0,
-    page: 0,
+    page: {
+      valueScroll: 0,
+      valuePage: 0,
+    }
   }
 
   componentDidMount = () => {
-    console.log("PROPS",this.props);
+    console.log("PROPS DID MOUNT SERIESDISPLAY",this.props);
     // this.props.actions.series.getSeries();
     this.loadSeries = _.debounce(this.loadSeries, 1000);
-    this.loadSeries();
+    // this.loadSeries();
+    this.handleChange();
   }
 
-  // componentWillReceiveProps = (newProps) => {
-  //   console.log(newProps.series.slice(0, 30));
-  //   this.setState({ series: newProps.series.slice(0, 30), ready: true });
-  // }
+  resetValues = (key) => {
+    if (key !== 'page') {
+      this.setState({ page: { valuePage: 0, valueScroll: 0 } });
+    }
+    if (key === 'title') { this.setState({ genre: '' }); };
+  }
 
   handleChange = (key, value) => {
+    this.resetValues(key);
     this.setState({ [key]: value }, () => {
-      let { genre, id, year, rate, sort = {name: 'title', value: 1}, title, page = {valuePage: 0, valueScroll: 0 } } = this.state;
-      // QUAND ON SELECTIONNE UN GENRE ET QU'ON LANCE UNE RECHERCHE, ON CHERCHE UNIQUEMENT DANS LE
-      // GENRE,
-      // console.log("TITRE ",title);
-      if(title){ genre = '' }
-      if(genre){ title = '' }
-
+      const { genre, id, year, rate, sort = {name: 'title', value: 1}, title, page } = this.state;
       this.props.actions.series.getSeries({
         genre,
         yearMin: year.min,
@@ -63,20 +63,19 @@ export default class SeriesDisplay extends Component {
         id,
         page: page.valuePage,
         scroll: page.valueScroll,
-      })
-    })
-  }
+      });
+    });
+  };
 
   goSeriePage = (id) => {
     browserHistory.push(`/app/movies/${id}`);
   }
 
   loadSeries = () => {
-    const { pageNumber } = this.state;
-    console.log('loadSeries function');
-    this.handleChange('page', { valuePage: pageNumber, valueScroll: 1 });
-    const nextPage = pageNumber + 1;
-    this.setState({ pageNumber: nextPage });
+    const { page = { valuePage: 1, valueScroll: 1 } } = this.state;
+    this.handleChange('page', page);
+    const nextPage = page.valuePage + 1;
+    this.setState({ page: { valuePage: nextPage, valueScroll: 1 } });
   }
 
   render() {
@@ -101,7 +100,7 @@ export default class SeriesDisplay extends Component {
             {series && series.length > 0 && series.map((src, key) => {
               return (
                 <div key={key} className="displaySeries">
-                  {((src.images.poster.length > 0 && <div onClick={() => this.goSeriePage(src.imdb_code)} className="Serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
+                  {((src.images && src.images.poster.length > 0 && <div onClick={() => this.goSeriePage(src.imdb_code)} className="Serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
                     <div className="rateYear">
                       <p>Year: {src.year}</p>
                       <p>Seasons: {src.num_seasons}</p>

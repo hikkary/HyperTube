@@ -6,17 +6,19 @@ export default class SearchMenu extends Component {
   }
 
   handleChangeSearch = (e) => {
+    if(this.props.onChange){
+      if(e.target.value === ''){
+        this.props.onChange();
+      }
+    }
     this.setState({ search: e.target.value });
-  };
+  }
 
   submit = (event) => {
     if (event.keyCode === 13) {
       this.props.onKeyDown('title', this.state.search);
     }
-    if(event.target.value === '') {
-      this.props.onKeyDown('title', '');
-    }
-  };
+  }
 
   render(){
     return(

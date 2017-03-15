@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import SearchMenu from '../SearchMenu';
+// import SearchMenu from '../SearchMenu';
 import './SearchDisplay.sass';
 // import axios from 'axios';
 // import apiURI from '../../apiURI';
 
 export default class SearchDisplay extends Component {
   state={
-    ready: false,
     genres: '',
     year: {
       min: 1900,
@@ -24,28 +23,21 @@ export default class SearchDisplay extends Component {
     title_search: '',
   }
 
-  componentDidMount = () => {
-    // console.log("PROPS",this.props);
-  }
-  
-  componentWillReceiveProps = (newProps) => {
-    if(newProps.search){
-      console.log("NOUVELLE PROPSsss",newProps.search.slice(0, 30));
-      this.setState({ search: newProps.search.slice(0, 30), ready: true });
-    }
-  }
+
 
   seriesDisplay = (src, key) =>(
-  <div className="allInfo">
+  <div
+    className="allInfo"
+    key={key}
+    >
      <div
-       key={key}
        className="Serie"
        style={{ backgroundImage: `url('${src.images.poster}')` }}
        >
          <div className="textContainer">
            <p>Year: {src.year}</p>
            {src.num_seasons && <p>Seasons: {src.num_seasons}</p>}
-           <p>Rating: {(src.rating === -1 && '-') || src.rating}</p>
+           <p>Rating: {(src.rating === -1 && '-') || (src.rating)}</p>
            </div>
 
      </div>
@@ -56,10 +48,12 @@ export default class SearchDisplay extends Component {
   )
 
   moviesDisplay = (src, key) => (
-    <div className="allInfo">
+    <div
+      className="allInfo"
+      key={key}
+      >
     <div
       className="movie"
-      key={key}
       style={{ backgroundImage: `url('${src.largeImage}')` }}
     >
       <div className="textContainer">
@@ -75,17 +69,18 @@ export default class SearchDisplay extends Component {
   )
 
   render() {
-    console.log("render this.props.searchhh", this.props.search);
+    const { search } = this.props;
+    console.log("SEARCH INFOOOOO",search);
     return(
       <div className="searchContainer">
         <div className="moviesAndSeries">
-          {this.state.ready && this.state.search.map((src, key) => {
+          {search && search.map((src, key) => {
             console.log(src.provider);
             // console.log(src.images.poster);
             return (
-              (src.provider === 'EZTV' && this.seriesDisplay(src,key)) || src.provider === 'YTS' &&
+              (src.provider === 'EZTV' && this.seriesDisplay(src,key)) || (src.provider === 'YTS' &&
               this.moviesDisplay(src, key)
-            )
+            ))
           }) }
         </div>
       </div>

@@ -4,14 +4,10 @@ import api from '../../apiURI';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-// todo change image
 export default class EditProfile extends Component {
   state = {
     user: '',
-  }
-
-  componentWillReceiveProps = (newProps) => {
-    console.log('new props', newProps);
+    error: '',
   }
 
   onChange = (e) => {
@@ -20,28 +16,26 @@ export default class EditProfile extends Component {
   }
 
   getImage = async(e) => {
-    if (!e.target.files[0])
-      return
+    e.persist();
+    if (!e.target.files[0]) return;
     const file = e.target.files[0];
     const img = new Image();
-
-    e.persist()
     img.onload = () => {
       this.setState({ message: 'Picture Uploaded' });
-      this.setState({ image: file })
+      this.setState({ image: file });
     };
     img.onerror = () => {
-      this.setState({message: 'The picture is not valid'});
+      this.setState({ message: 'The picture is not valid' });
       e.target.value = "";
     }
     const _URL = window.URL || window.webkitURL;
-    img.src = _URL.createObjectURL(file);
+    img.src = _URL.createObjectURL(file); //base64 creation
   }
 
   editProfile = (e) => {
     e.preventDefault();
+    const { user } = this.props.actions;
     const { username, firstname, lastname, email, } = e.target;
-    console.log('target', e.target.username.value);
     const { image } = this.state;
     const form = new FormData();
     form.append('id', this.props.user.id)
@@ -49,7 +43,6 @@ export default class EditProfile extends Component {
     form.append('firstname', firstname.value)
     form.append('lastname', lastname.value)
     form.append('email', email.value)
-    console.log(form);
     form.append('image', image)
     // form.append('language', this.state.currentLanguage)
     axios({
@@ -61,17 +54,18 @@ export default class EditProfile extends Component {
       data: form,
     })
     .then((results) => {
+      if (results.data.errors) {
+        return this.setState({ error: 'erreur' });
+      }
       localStorage.setItem('token', results.headers['x-access-token']);
       const token = localStorage.getItem('token');
-      this.props.actions.user.getConnectedUser(token);
-    })
+      user.getConnectedUser(token);
+    });
   }
 
   render(){
-    console.log('hhhhhhh', this.props);
     const { current } = this.props.translation;
     const { user } = this.props;
-    console.log("PROPS RENDER", user);
     return (
       <div>
         {user.length !== 0  &&
@@ -104,8 +98,9 @@ export default class EditProfile extends Component {
             defaultValue={user.email}
             onChange={this.onChange}
           />
+          {user.picture && <img src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
           <RaisedButton
-            label="Choose an Image"
+            label="Edit your Profile Picture"
             labelPosition="before"
             className="imageUpload"
             containerElement="label"
@@ -115,7 +110,8 @@ export default class EditProfile extends Component {
           <RaisedButton type="submit" label="Edit Profile" className="editProfileSubmit" name="editProfile"/>
         </form>
       }
-      </div>
+      <div>{this.state.error}</div>
+    </div>
     )
   }
 }

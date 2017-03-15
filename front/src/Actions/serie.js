@@ -8,7 +8,7 @@ export const pending = () => ({
   type: PENDING,
 });
 
-export const fetched = (serie) => ({
+export const fetched = serie => ({
   type: GET,
   payload: serie,
 });
@@ -16,13 +16,12 @@ export const fetched = (serie) => ({
 export const getSeriePage = ({
   id,
 } = {}) => (dispatch) => {
+  console.log('id action' , id);
   dispatch(pending());
   axios.get(
-    `${api}/series/${id}`,
+    `${api}/serie/${id}`,
   )
   .then(({ data: serie }) => {
-    // console.log("Series  :" ,typeof(series))
-    // console.log("Series  :" ,series)
     dispatch(fetched(...serie));
   })
   .catch(console.error)

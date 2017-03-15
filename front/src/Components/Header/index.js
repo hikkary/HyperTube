@@ -1,38 +1,30 @@
 import React from 'react';
-import axios from 'axios';
 import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import './style/header.sass';
 import logo from  '../../../public/logo.gif';
-import api from '../../apiURI';
 
 export default class Header extends React.Component {
-  state={
-    search: '',
-    id: '',
-    user: '',
-  }
 
   componentDidMount() {
     const token = localStorage.getItem("token");
-    console.log(this.props);
     const { getConnectedUser } = this.props.actions.user;
     if(!token) {
-      browserHistory.push('/');
+      browserHistory.push('/login');
     }
     getConnectedUser(token);
   };
 
   toMovies = () => {
-    browserHistory.push('/app/movies')
+    browserHistory.push('/app/movies');
   };
 
   toSeries = () => {
-    browserHistory.push('/app/series')
+    browserHistory.push('/app/series');
   };
 
   toHome = () => {
-    browserHistory.push('/app/homePage')
+    browserHistory.push('/app/homePage');
   };
 
   toProfile = () => {
@@ -46,12 +38,11 @@ export default class Header extends React.Component {
 
   logout = () => {
     localStorage.removeItem('token');
-    browserHistory.push('/');
+    browserHistory.push('/login');
   };
 
 	render(){
     const { user } = this.props;
-    console.log(user);
 		return(
     <div>
       <div className="Header">

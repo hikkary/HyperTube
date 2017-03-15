@@ -10,7 +10,7 @@ export default (state = [], action) => {
     case GET:
       return action.payload;
     case SCROLL:
-      return _.flattenDepth([...state, action.payload], 1);
+      return [...state, ...action.payload];
     default: return state;
   }
 }

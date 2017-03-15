@@ -33,9 +33,9 @@ export default class RangeMovies extends Component {
   }
 
   render(){
-    console.log('hey', this.props);
+    // console.log('hey', this.props);
     // const {current} = this.props.translation;
-    const { genreButton } = this.state;
+    // const { genreButton } = this.state;
     return(
       <div className="ranges">
         <InputRange

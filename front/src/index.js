@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './Containers/App';
-import Welcome from './Containers/Welcome';
+import Welcome from './Containers/Auth/Welcome';
 import HomePage from './Containers/HomePage';
 import Series from './Containers/Series';
 import Movies from './Containers/Movies';
 import MoviePage from './Containers/MoviePage';
 import SeriePage from './Containers/SeriePage';
-import Login from './Containers/Login';
-import forgotPassword from './Containers/ForgotPassword/ForgotPassword';
-import Register from './Containers/Register';
+import Login from './Containers/Auth/Login';
+import forgotPassword from './Containers/Auth/ForgotPassword/ForgotPassword';
+import Register from './Containers/Auth/Register';
 import Profile from './Containers/Profile';
-import editProfile from './Containers/editProfile';
+import editProfile from './Containers/EditProfile';
 import './index.css';
-import { Route, Router, browserHistory } from 'react-router';
+import { Route, Router, browserHistory, Redirect } from 'react-router';
 import reducers from './Reducers';
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
@@ -23,7 +23,7 @@ import * as translation from './Actions/translation';
 // import * as series from './Actions/series';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import updatePassword from './Containers/ForgotPassword/UpdatePassword'
+import updatePassword from './Containers/Auth/ForgotPassword/UpdatePassword'
 injectTapEventPlugin();
 
 const initialState = {
@@ -64,8 +64,9 @@ ReactDOM.render(
           <Route path="movies" component={Movies} />
           <Route path="movies/:id" component={MoviePage} />
           <Route path="series" component={Series} />
-          <Route path="serie/:id" component={SeriePage} />
+          <Route path="series/:id" component={SeriePage} />
         </Route>
+        <Redirect from='*' to='/app/homePage' component={HomePage} />
       </Router>
     </MuiThemeProvider>
   </Provider>,

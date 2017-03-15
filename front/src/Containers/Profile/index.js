@@ -1,9 +1,6 @@
 import React from 'react';
 import Profile from '../../Components/Profile';
-// import allTheActions from '../../Actions';
 import { connect } from 'react-redux';
-import Header from '../../Components/Header'
-// import { bindActionCreators } from 'redux';
 
 const ProfileContainer = ({ user, translation, id }) =>
   <div className="Profile">

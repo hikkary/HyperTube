@@ -10,15 +10,15 @@ export const pending = () => ({
   type: PENDING,
 });
 
-export const fetched = movies  => ({
+export const fetched = movies => ({
   type: GET,
   payload: movies,
 });
 
-export const scrolled = movies =>({
+export const scrolled = movies => ({
   type: SCROLL,
   payload: movies,
-})
+}) // return directement ({})
 
 // TODO check getMovie call
 export const getMovie = ({
@@ -38,14 +38,8 @@ export const getMovie = ({
     `${api}/movies?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   )
   .then(({ data: movies }) => {
-    console.log("MOVieS  :" ,typeof(movies))
-    console.log("MOVieS  :" ,movies)
-    if(scroll === 1){
-      dispatch(scrolled(movies))
-    }
-    else{
-      dispatch(fetched(movies));
-    }
+    if(scroll === 1)dispatch(scrolled(movies))
+    else dispatch(fetched(movies))
   })
   .catch(console.error);
 };

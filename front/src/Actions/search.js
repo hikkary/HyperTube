@@ -15,31 +15,32 @@ export const fetched = (all) => ({
 });
 
 export const getAll = ({
-  title_search = '',
-  genres = '',
-  page = '',
+  title = '',
   yearMin = 1900,
   yearMax = 2017,
   rateMin = 0,
   rateMax = 10,
-  sorted = 1,
-  filter = 'title',
+  genre = '',
+  page = Number(0),
+  sort = 'title',
+  asc = 1,
+  scroll = 0,
 } = {}) => (dispatch) => {
   dispatch(pending());
 Promise.all([
   axios.get(
-    `${api}/movies?title_search=${title_search}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genres=${genres}&page=${page}&sorted=${sorted}&filter=${filter}`,
+    `${api}/movies?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   ),
   axios.get(
-    `${api}/series/?title_search=${title_search}&genres=${genres}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&sorted=${sorted}&filter=${filter}`,
+    `${api}/series?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   )])
   .then((result) => {
-    console.log('results before arrayyy', result);
+    // console.log('results before arrayyy', result);
     let data = [];
-    data.push(result[0].data,result[1].data) // si on recoit plus que 2 objects?
+    data.push(result[0].data,result[1].data) // 2 params in promise all func sent
     data = _.flattenDepth(data, 1);
-    console.log("DATAAAAAAA",data);
+    // console.log("DATAAAAAAA",data);
     dispatch(fetched(data))
-    console.log(result);
+    // console.log(result);
   });
 };

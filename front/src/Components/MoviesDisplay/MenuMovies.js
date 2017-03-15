@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import InputRange from 'react-input-range';
+// import InputRange from 'react-input-range';
 import _ from 'lodash';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+// import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Genres from '../Genres';
 import './MoviesDisplay.sass';
 

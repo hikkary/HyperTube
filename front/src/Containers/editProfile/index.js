@@ -1,7 +1,6 @@
 import React from 'react';
-import EditProfile from '../../Components/editProfile';
+import EditProfile from '../../Components/EditProfile';
 import { connect } from 'react-redux';
-import Header from '../../Components/Header';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 

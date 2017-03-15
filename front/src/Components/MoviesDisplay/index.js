@@ -5,8 +5,6 @@ import RangeMovies from './RangeMovies';
 import SortMovies from './SortMovies';
 import SearchMenu from '../SearchMenu';
 import _ from 'lodash';
-// import FloatingActionButton from 'material-ui/FloatingActionButton';
-// import Genres from '../Genres';
 import './MoviesDisplay.sass';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -28,37 +26,39 @@ export default class MoviesDisplay extends Component {
     },
     title_search: '',
     id: '',
-    pageNumber: 0,
-    page: 0,
+    // pageNumber: 1,
+    page: {
+      valueScroll: 0,
+      valuePage: 0,
+    }
   }
 
-  // componentWillReceiveProps = (newProps) => {
-  //   console.log('RECEIVED', newProps.movies);
-  //   this.setState({ movies: newProps.movies.slice(0,30), ready:true })
-  // }
-
   componentDidMount = () => {
-    console.log("PROPS",this.props);
-    // this.props.actions.movies.getMovie({});
+    console.log("PROPS DID MOUNT MOVIESDISPLAY",this.props);
     this.loadMovies = _.debounce(this.loadMovies, 1000);
-    this.loadMovies();
-    // this.props.actions.movies.getGenre('Comedy');
+    // this.loadMovies();
+    this.handleChange();
+  }
+
+  resetValues = (key) => {
+    if (key !== 'page') {
+      this.setState({ page: { valuePage: 0, valueScroll: 0 } });
+    }
+    if (key === 'title') { this.setState({ genre: '' }); };
   }
 
   handleChange = (key, value) => {
-    console.log('yayyyyyss');
-    if(key !== 'page'){ // GERER CORRECTEMENT
-      this.setState({page: { valuePage: 0, valueScroll: 0 } })
-    }
-
+    this.resetValues(key);
     this.setState({ [key]: value }, () => {
-      const { year, rate, genre , sort = {name : 'title', value: 1}, title, id, page = { valuePage: 0, valueScroll: 0 } } = this.state;
-      // console.log("TITRE 1",filter.name);
-      // console.log("TITRE 2",filter.value);
-      // console.log("titre 2", title ) ;
-      console.log("SCROLL ", page.valueScroll);
-      console.log("PAGE ", page.valuePage);
-      console.log('dvdv', title);
+      const {
+        year,
+        rate,
+        genre,
+        sort = { name: 'title', value: 1 },
+        title,
+        id,
+        page
+      } = this.state;
       this.props.actions.movies.getMovie({
         yearMin: year.min,
         yearMax: year.max,
@@ -76,27 +76,19 @@ export default class MoviesDisplay extends Component {
   }
 
   goMoviePage = (id) => {
-    console.log('yayyyyyss');
+    // console.log('yayyyyyss');
     browserHistory.push(`/app/movies/${id}`);
   }
 
-
-// METTRE A ZERO LA PAGE SI NOUVELLE REQUETE
   loadMovies = () => {
-    console.log("CHARGEMENT DE FILMs");
-    const { pageNumber } = this.state;
-    console.log("CHARGEMENT DE FILMs", pageNumber);
+    const { page = { valuePage: 1, valueScroll: 1 } } = this.state;
+    const nextPage = page.valuePage + 1;
 
-    // this.setState({page: this.state.page + 1})
-    this.handleChange( 'page', { valuePage: pageNumber, valueScroll: 1}  );
-    const nextPage = pageNumber + 1;
-    console.log("CHARGEMENT DE FILMs next", nextPage );
-
-    this.setState({ pageNumber: nextPage });
+    this.handleChange('page', page);
+    this.setState({ page: { valuePage: nextPage, valueScroll: 1 } });
   }
 
   render(){
-    let pageStart;
     // console.log(this.props.actions);
     const {current} = this.props.translation;
     const { movies } = this.props; // 30 films at a time
@@ -109,7 +101,7 @@ export default class MoviesDisplay extends Component {
           <SortMovies onChange={this.handleChange} />
         </div>
       <InfiniteScroll
-          pageStart= {0}
+          pageStart={0}
           loadMore={this.loadMovies}
           initialLoad={false}
           hasMore={true}
@@ -119,7 +111,7 @@ export default class MoviesDisplay extends Component {
                   {movies && movies.length > 0 && movies.map((movie, key) => {
                     return(
                       <div className="allInfo" key={key}>
-                          <div onClick= {() => this.goMoviePage(movie.id)}
+                          <div onClick={() => this.goMoviePage(movie.id)}
                             className="movie"
                             style={{ backgroundImage: `url('${movie.largeImage}')` }}
                           >
