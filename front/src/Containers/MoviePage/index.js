@@ -9,13 +9,6 @@ const Movie = ({ translation, actions, id, movie }) =>
     <MoviePage movie={movie} id={id} translation={translation} actions={actions} />
   </div>
 
-//
-// const mapStateToProps = (state) => ({
-//   movies: state.movies,
-// });
-
-// query: ownProps.location.query
-
 const mapStateToProps = (state, ownProps) => ({
   translation: state.translation,
   id: ownProps.params.id,

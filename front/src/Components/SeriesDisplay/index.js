@@ -48,7 +48,7 @@ export default class SeriesDisplay extends Component {
   handleChange = (key, value) => {
     this.resetValues(key);
     this.setState({ [key]: value }, () => {
-      const { genre, id, year, rate, sort = {name: 'title', value: 1}, title, page } = this.state;
+      const { genre, id, year, rate, sort = { name: 'title', value: 1 }, title, page } = this.state;
       this.props.actions.series.getSeries({
         genre,
         yearMin: year.min,

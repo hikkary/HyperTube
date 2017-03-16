@@ -12,12 +12,12 @@ import './mongoose';
 const log = debug('hypertube:index.js');
 
 const app = express();
-const movieRouter = express.Router('/api/movie');
+const moviesRouter = express.Router('/api/movie');
 const seriesRouter = express.Router('/api/series');
 const usersRouter = express.Router('/api/users');
 const stream = express.Router('/api/stream');
 
-movieRouter
+moviesRouter
   .get('/api/movies', movies.get)
   .get('/api/movie/:id', movie.movie)
   .get('/api/movies/scrap', movies.scrap)
@@ -49,7 +49,7 @@ app
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
   .use('/public', express.static(`${__dirname}/../public`))
-  .use(movieRouter)
+  .use(moviesRouter)
   .use(seriesRouter)
   .use(usersRouter)
   .use(stream);

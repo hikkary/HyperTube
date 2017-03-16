@@ -4,12 +4,10 @@ import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import SeriePage from '../../Components/SeriePage';
 
-const Series = ({ serie, translation, actions, id }) =>
+const Serie = ({ serie, translation, actions, id }) =>
   <div>
     <SeriePage serie={serie} id={id} translation={translation} actions={actions} />
   </div>
-
-// const mapStateToProps = ({ serie , translation }) => ({ serie, translation });
 
 const mapStateToProps = (state, ownProps) => ({
   translation: state.translation,
@@ -24,4 +22,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Series);
+export default connect(mapStateToProps, mapDispatchToProps)(Serie);

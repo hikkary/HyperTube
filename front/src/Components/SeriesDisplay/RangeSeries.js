@@ -51,7 +51,6 @@ export default class RangeSeries extends Component {
           value={this.state.rate}
           onChange={this.handleChangeRating}
           onChangeComplete={this.handleChangeRatingToProps}
-
         />
       </div>
     )
