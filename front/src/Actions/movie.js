@@ -1,5 +1,6 @@
 import axios from 'axios';
 import api from '../apiURI';
+import _ from 'lodash';
 
 export const PENDING = "PENDING";
 export const GET = "GET_MOVIE";
@@ -21,7 +22,9 @@ export const getMoviePage = ({
     `${api}/movie/${id}`,
   )
   .then(({ data: movie }) => {
-    dispatch(fetched( ...movie));
+    // const test = _.flattenDepth(movie.results, 1);
+    // console.log('test action', movie.finalInfos);
+    dispatch(fetched(movie));
   })
   .catch(console.error);
 };
