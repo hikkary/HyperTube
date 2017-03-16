@@ -55,7 +55,7 @@ export default class Login extends Component {
         >
         <i className="material-icons">person_add</i>
         </FloatingActionButton>
-        <div className="loginForm"/>
+        <div className="updateForm"/>
           <form onSubmit={this.login} className="loginForm">
             <ExtLogin />
             <TextField

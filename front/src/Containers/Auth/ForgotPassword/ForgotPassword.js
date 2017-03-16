@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import api from '../../../apiURI';
 import './forgotPassword.sass';
@@ -34,12 +35,21 @@ class forgotPassword extends React.Component {
             FORGOT YOUR PASSWORD ?
           </div>
           <form className="formPass" onSubmit={this.forgotPassword}>
-            <input className="forgotInput"
+            <TextField
+              floatingLabelText="Please enter your username"
               type="text"
               name="username"
-              placeholder="Please enter your username"
+              style={{
+                width: '60%',
+
+               }}
             />
-            <RaisedButton type="submit" name="submit" label="RESET PASSWORD"/>
+            <RaisedButton type="submit" name="submit" label="RESET PASSWORD"
+              style={{
+                width: '60%',
+                marginTop: '50px'
+             }}
+            />
           </form>
           <div className={this.state.err}>{this.state.error}</div>
         </div>

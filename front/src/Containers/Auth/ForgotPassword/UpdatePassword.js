@@ -1,6 +1,9 @@
 import React 	from 'react';
 import axios from 'axios';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 import api from '../../../apiURI';
+import './updatePassword.sass';
 
 export default class changePassword extends React.Component{
 
@@ -24,16 +27,31 @@ submit = (event) => {
 
 	render() {
 		return(
-			<div className="auth">
-				<div className="content">
-					<form className="loginForm" onSubmit={this.submit}>
-						<input type="password" className="password" name="password" title="password" autoComplete="off" min="8" max="30" placeholder="Enter New Password"></input>
-						<input type="password" className="newPass" name="newPass" title="newPass" autoComplete="off" min="8" max="30" placeholder="Confirm New Password"></input>
-						<input className="forgotSubmit"
-          		type="submit"
-          		name="submit"
-          		value="Submit"
-          	/>
+			<div className="updatePassword">
+				<div className="updateFormCss">
+          <div className="titleUpdate">
+            FORGOT YOUR PASSWORD ?
+          </div>
+					<form className="updateForm" onSubmit={this.submit}>
+            <TextField
+              floatingLabelText="Enter New Password"
+              type="password"
+              name="password"
+              style={{
+                width: '70%',
+               }}/>
+            <TextField
+              floatingLabelText="Confirm New Password"
+              type="newPass"
+              name="newPass"
+              style={{
+                width: '70%',
+               }}/>
+
+            <RaisedButton type="submit" label="Change PASSWORD" style={{
+              margin: '20px 0',
+              width: '70%',
+             }}/>
 					</form>
 				</div>
 				<div className="buttons"></div>
