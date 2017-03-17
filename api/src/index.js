@@ -7,6 +7,7 @@ import * as movie from './movie';
 import * as series from './series';
 import * as serie from './serie';
 import * as users from './users';
+import * as torent from './torrent';
 import './mongoose';
 
 const log = debug('hypertube:index.js');
@@ -43,6 +44,9 @@ usersRouter
   .get('/api/users/42_auth', users.handleAuthorize42)
   .get('/api/users/connectedUser', users.connectedUser)
   .post('/api/users/getUserInfo', users.getUserInfo);
+
+stream
+  .post('/api/stream', torrent.torrent);
 
 app
   .use(cors()) // connexion front back
