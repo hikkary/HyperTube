@@ -18,6 +18,8 @@ const writeJson = (allSeries) => {
     axios.get(`http://imdb.wemakesites.net/api/${serie.imdb_id}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
       // arg: response.data.data
       .then(({ data: { data } }) => {
+        console.log('imdb', data.episodes);
+        console.log('eztv', serie.episodes);
         if (data) {
           let rate = '-';
           if (data.review && data.review.rating !== null) { rate = Number(data.review.rating.split('/')[0]); }
@@ -44,7 +46,7 @@ const writeJson = (allSeries) => {
           });
           newSerie.save()
             .then(() => {
-              log(`${serie.title} added !`);
+              // log(`${serie.title} added !`);
             });
         }
       }),

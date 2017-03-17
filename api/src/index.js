@@ -7,7 +7,7 @@ import * as movie from './movie';
 import * as series from './series';
 import * as serie from './serie';
 import * as users from './users';
-import * as torent from './torrent';
+import * as torrent from './torrent';
 import './mongoose';
 
 const log = debug('hypertube:index.js');
