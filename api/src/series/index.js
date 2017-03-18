@@ -14,12 +14,19 @@ const writeJson = (allSeries) => {
   mongoose.connection.collections.series.drop((err) => {
     log('collection dropped');
   });
+  // allSeries.forEach(serie =>
+    // axios.get(`http://eztvapi.ml/show/${serie.imdb_id}`)
+      // .then((data) => {
+        // data.data.episodes[0].torrents => object
+        // console.log('dataaaaaaaaaaaaaa', data.data);
+      // }),
+  // );
   allSeries.forEach(serie =>
     axios.get(`http://imdb.wemakesites.net/api/${serie.imdb_id}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
       // arg: response.data.data
       .then(({ data: { data } }) => {
-        console.log('imdb', data.episodes);
-        console.log('eztv', serie.episodes);
+        // console.log('imdb', data.episodes);
+        // console.log('eztv', serie.episodes);
         if (data) {
           let rate = '-';
           if (data.review && data.review.rating !== null) { rate = Number(data.review.rating.split('/')[0]); }

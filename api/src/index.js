@@ -46,7 +46,7 @@ usersRouter
   .post('/api/users/getUserInfo', users.getUserInfo);
 
 stream
-  .post('/api/stream', torrent.torrent);
+  .get('/api/stream/:hash', torrent.torrent);
 
 app
   .use(cors()) // connexion front back

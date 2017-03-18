@@ -66,7 +66,7 @@ export default class SeriesDisplay extends Component {
   };
 
   goSeriePage = (id) => {
-    browserHistory.push(`/app/movies/${id}`);
+    browserHistory.push(`/app/series/${id}`);
   }
 
   loadSeries = () => {

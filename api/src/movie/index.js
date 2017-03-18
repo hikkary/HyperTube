@@ -30,7 +30,7 @@ export const movie = (req, res) => {
               results.push(compInfos);
               // const allInfos = Object.assign({}, results);
               // console.log('all', allInfos);
-              // console.log('final results with everything', results);
+              console.log('final results with everything', results);
               res.send({ status: true, results });
             })
       }
