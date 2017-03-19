@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import './BestOfMovies.sass';
+import './sass/BestOfMovies.sass';
 
 export default class BestOfMovies extends Component {
 

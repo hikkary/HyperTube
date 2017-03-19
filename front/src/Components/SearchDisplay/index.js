@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 // import SearchMenu from '../SearchMenu';
-import './SearchDisplay.sass';
+import './sass/SearchDisplay.sass';
 // import axios from 'axios';
 // import apiURI from '../../apiURI';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Genres from '../Genres';
-import './MoviesDisplay.sass';
+import './sass/MoviesDisplay.sass';
 
 export default class MenuMovies extends Component {
 

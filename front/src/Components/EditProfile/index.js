@@ -3,6 +3,7 @@ import axios from 'axios';
 import api from '../../apiURI';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import './sass/EditProfile.sass';
 
 export default class EditProfile extends Component {
   state = {
@@ -67,15 +68,18 @@ export default class EditProfile extends Component {
     const { current } = this.props.translation;
     const { user } = this.props;
     return (
-      <div>
+      <div className="editContainer">
         {user.length !== 0  &&
-        <form onSubmit={this.editProfile} className="editProfile">
+        <form onSubmit={this.editProfile} className="editProfileForm">
           <TextField
             floatingLabelText={current.username}
             name="username"
             type="text"
             defaultValue={user.username}
             onChange={this.onChange}
+            inputStyle={{
+              color: 'white'
+            }}
           />
           <TextField
             floatingLabelText={current.firstname}
@@ -83,6 +87,9 @@ export default class EditProfile extends Component {
             type="text"
             defaultValue={user.firstname}
             onChange={this.onChange}
+            inputStyle={{
+              color: 'white'
+            }}
           />
           <TextField
             floatingLabelText={current.lastname}
@@ -90,6 +97,9 @@ export default class EditProfile extends Component {
             type="text"
             defaultValue={user.lastname}
             onChange={this.onChange}
+            inputStyle={{
+              color: 'white'
+            }}
           />
           <TextField
             floatingLabelText={current.email}
@@ -97,12 +107,15 @@ export default class EditProfile extends Component {
             type="text"
             defaultValue={user.email}
             onChange={this.onChange}
+            inputStyle={{
+              color: 'white'
+            }}
           />
-          {user.picture && <img src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
+          {user.picture && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
           <RaisedButton
             label="Edit your Profile Picture"
             labelPosition="before"
-            className="imageUpload"
+            className="editButton"
             containerElement="label"
           >
             <input type="file" name="imageUpload" className="uploadInput" onChange={this.getImage} />

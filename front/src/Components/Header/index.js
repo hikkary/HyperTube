@@ -1,7 +1,7 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import './style/header.sass';
+import './sass/header.sass';
 import logo from  '../../../public/logo.gif';
 
 export default class Header extends React.Component {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './moviePage.sass';
+import './sass/moviePage.sass';
 import api from '../../apiURI';
 // import axios from 'axios';
 

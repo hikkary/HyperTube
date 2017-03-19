@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import './SeriesDisplay.sass';
+import './sass/SeriesDisplay.sass';
 import MenuSeries from './MenuSeries';
 import RangeSeries from './RangeSeries';
 import SortSeries from './SortSeries';

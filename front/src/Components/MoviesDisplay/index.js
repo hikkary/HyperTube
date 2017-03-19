@@ -5,7 +5,7 @@ import RangeMovies from './RangeMovies';
 import SortMovies from './SortMovies';
 import SearchMenu from '../SearchMenu';
 import _ from 'lodash';
-import './MoviesDisplay.sass';
+import './sass/MoviesDisplay.sass';
 import InfiniteScroll from 'react-infinite-scroller';
 
 export default class MoviesDisplay extends Component {

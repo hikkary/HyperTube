@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './SeriesDisplay.sass';
+import './sass/SeriesDisplay.sass';
 import FlatButton from 'material-ui/FlatButton';
 
 export default class SortSeries extends Component {

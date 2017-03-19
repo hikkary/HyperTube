@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import './Register.sass';
 import { browserHistory } from 'react-router';
-import './Register.sass';
+import './sass/Register.sass';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import FR from '../../../../public/am-flag.gif';

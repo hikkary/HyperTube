@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import GenreSerie from '../GenreSerie';
-import './SeriesDisplay.sass';
+import './sass/SeriesDisplay.sass';
 
 export default class MenuSeries extends Component {
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import api from '../../apiURI';
+import './sass/Profile.sass';
 
 export default class Profile extends Component {
   state = {
@@ -40,11 +41,12 @@ export default class Profile extends Component {
     const { user, myId } = this.state;
     return (
       <div className="profile">
-        {user.username}
-        {this.props.id === myId && user.email}
-        {user.firstname}
-        {user.lastname}
-        {user.picture}
+      <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />
+        <div className="float">
+          <div className="profileInfos">{user.username}</div>
+          <div className="profileInfos">{user.firstname} {user.lastname}</div>
+          <div className="profileInfos">{this.props.id === myId && user.email}</div>
+        </div>
       </div>
     )
   }

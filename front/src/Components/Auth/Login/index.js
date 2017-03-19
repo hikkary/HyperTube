@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router';
 import ExtLogin from '../OmniAuth';
 import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import './Login.sass';
+import './sass/Login.sass';
 
 export default class Login extends Component {
   state= {
