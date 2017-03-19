@@ -1,27 +1,36 @@
 import React, { Component } from 'react';
 import './moviePage.sass';
 import api from '../../apiURI';
-import axios from 'axios';
+// import axios from 'axios';
 
 export default class MoviePage extends Component {
   state = {
     movieInfos: '',
     quality: '',
+    redraw: false,
   }
 
   componentDidMount() {
     this.props.actions.movie.getMoviePage({
       id: this.props.id,
     });
+    // if (this.props.movie.results) {
+    //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
+    //   console.log('newprops', this.props.movie.results[0].torrents[0].hash);
+    //   const hash = this.props.movie.results[0].torrents[0].hash;
+    //   this.setState({ quality: hash });
+    // }
   }
 
   componentWillReceiveProps = (newProps) => {
     if (newProps.movie.results) {
+      console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
       console.log('newprops', newProps.movie.results[0].torrents[0].hash);
       const hash = newProps.movie.results[0].torrents[0].hash;
       this.setState({ quality: hash });
     }
   }
+
 
   toList = (list) => {
 		 let tmp = "";
@@ -49,16 +58,20 @@ export default class MoviePage extends Component {
   // }
 
   quality = (hash) => {
-    this.setState({ quality: hash });
+    this.setState({ quality: hash, redraw: true });
+    setTimeout(() => this.setState({ redraw: false }), 0)
   }
 
   render() {
     if (this.props.movie.results) {
       console.log("PROP RESULT[0]",this.props.movie.results[0]);
-    console.log("PROP RESULT[0]",this.props.movie.results[1]);
-    console.log("PROP PROPS .torrents",this.props.movie.results[0].torrents);
-  }
-  console.log('QUALITY HASH', this.state.quality);
+      console.log("PROP RESULT[0]",this.props.movie.results[1]);
+      console.log("PROP PROPS .torrents",this.props.movie.results[0].torrents);
+    }
+    const { redraw } = this.state
+  setTimeout(() => {
+    console.log('QUALITY HASH RENDER', this.state.quality);
+  },3000)
   // console.log('state hash', this.state.quality);
     // if (this.props.movie){
     //   const { movie } = this.props;
@@ -66,7 +79,7 @@ export default class MoviePage extends Component {
     // }// console.log('props movies' , movie);
     return (
     <div>
-          {this.props.movie.results &&  <div className="infoContainer">
+          {this.props.movie.results && <div className="infoContainer">
             <div className="displayBigPoster" style={{
               backgroundImage: `url('${this.props.movie.results[0].largeImage}')`
             }}>
@@ -89,11 +102,17 @@ export default class MoviePage extends Component {
                 <p>Director : {this.toList(this.props.movie.results[0].directors)}</p>
               </div>
             </div>
-          </div>
+            </div>
         }
-        {this.state.quality && <video width="620" height="540" controls>
-          <source src={`${api}/stream/${this.state.quality}`} type="video/mp4" />
+        {!redraw && this.state.quality && <div className="videoPlayer">
+          <video width="720" height="540" controls style={{
+          textAlign: 'center',
+        }}>
+        <source src={`${api}/stream/${this.state.quality}`} type="video/mp4" />
+        // <source key={Math.random(10000,99999)} src='' type="video/mp4" />
         </video>
+        </div>
+
         }
         {this.props.movie.results && this.props.movie.results[0].torrents.map((torrent, key) => {
           return(
@@ -104,6 +123,7 @@ export default class MoviePage extends Component {
         })
       }
       </div>
+
     )
   }
 }

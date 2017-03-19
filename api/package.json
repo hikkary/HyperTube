@@ -35,6 +35,7 @@
     "nodemon": "^1.11.0",
     "regex-email": "^1.0.2",
     "socket.io": "^1.7.3",
+    "stream-transcoder": "0.0.5",
     "torrent-stream": "^1.0.3",
     "uuid": "^3.0.1"
   },

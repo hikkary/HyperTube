@@ -1,13 +1,15 @@
 import torrentStream from 'torrent-stream';
+import path from 'path';
 import mongoose from 'mongoose';
 import { Movie } from '../Schema';
 import fs from 'fs';
+import Transcoder from 'stream-transcoder';
 // const myFile = `https://yts.ag/torrent/download/02C577D9A9CC90FFCCFC69082D03F74A0C8DD306`;
 
 // faire un filter qui recoit le file le plus lourd
 
 export const torrent = (req, res) => {
-console.log('hash', req.params.hash);
+console.log('BACK HASH', req.params.hash);
   const options = {
     connections: 5000,     // Max amount of peers to be connected to.
       uploads: 10,          // Number of upload slots.
@@ -34,26 +36,46 @@ console.log('hash', req.params.hash);
   const engine = torrentStream(req.params.hash,options);
 
   engine.on('ready', function() {
+
     console.log(engine.files);
-      engine.files.forEach(function(file) {
+      const videoFile = engine.files.filter((file) => {
+        console.log('file', file);
+        console.log('type video filename', typeof(file.name));
+        const pathFile = path.extname(file.name);
+        console.log('pathfile', pathFile);
+        if (pathFile === '.mp4' || pathFile === '.mkv' || pathFile === '.avi')
+        {
+          return(file)
+        }
+      });
+      res.writeHead(200, { 'Content-Length': videoFile[0].length, 'Content-Type':`video/${path.extname(videoFile[0].name)}` });
+      console.log('VIDEO FILE',videoFile[0].name);
+      const stream = videoFile[0].createReadStream();
+
+      engine.on('download', async () => {
+        console.log(Math.floor((engine.swarm.downloaded * 8)/10000024),"M")
+        // console.log("RES :",res);
+        await stream.pipe(res);
+        await stream.unpipe(res);
+      });
+
+      // engine.files.forEach(function(file) {
         // file = engine.files[0];
         // console.log("FILE NAME ",file);
         // console.log('filename:', file.name);
         // console.log('file path:', file.path);
         // console.log('filename:', file);
-          const stream = file.createReadStream();
-          engine.on('download', () => {
-            console.log(Math.floor((engine.swarm.downloaded * 8)/10000024),"M")
-            // stream.pipe(res);
-            response.setHeader();
-            res.writeHead(200);
-          });
+          // const stream = file.createReadStream();
+          // engine.on('download', () => {
+          //   console.log(Math.floor((engine.swarm.downloaded * 8)/10000024),"M")
+          //   // stream.pipe(res);
+          // });
           // const writeStream = fs.createWriteStream('./public/output.mp4');
           // console.log('var stream', stream);
           // const test = stream.pipe(writeStream);
           // console.log('TEST', test);
           // console.log('STREAM', writeStream);
-      });
+      // });
   });
 
   engine.on('idle', () => {
