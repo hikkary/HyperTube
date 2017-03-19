@@ -5,9 +5,7 @@ import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 
 const ProfileContainer = ({ user, translation, actions }) =>
-  <div className="Profile">
-    <EditProfile user={user} translation={translation} actions={actions} />
-  </div>
+  <EditProfile user={user} translation={translation} actions={actions} />
 
 const mapStateToProps = (state, ownProps) => ({
   user: state.user,

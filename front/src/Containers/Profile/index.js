@@ -3,9 +3,7 @@ import Profile from '../../Components/Profile';
 import { connect } from 'react-redux';
 
 const ProfileContainer = ({ user, translation, id }) =>
-  <div className="Profile">
-    <Profile user={user} id={id} translation={translation} />
-  </div>
+  <Profile user={user} id={id} translation={translation} />
 
 const mapStateToProps = (state, ownProps) => ({
   user: state.user,
