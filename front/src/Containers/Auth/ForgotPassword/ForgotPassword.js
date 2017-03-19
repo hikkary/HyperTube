@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import api from '../../../apiURI';
-import './forgotPassword.sass';
+import './sass/forgotPassword.sass';
 
 class forgotPassword extends React.Component {
   state = {
@@ -32,7 +32,7 @@ class forgotPassword extends React.Component {
       <div className="forgot">
         <div className="formCss">
           <div className="titleForgot">
-            FORGOT YOUR PASSWORD ?
+            Forgot Your Password ?
           </div>
           <form className="formPass" onSubmit={this.forgotPassword}>
             <TextField

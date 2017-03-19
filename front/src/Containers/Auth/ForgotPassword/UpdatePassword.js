@@ -3,7 +3,7 @@ import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import api from '../../../apiURI';
-import './updatePassword.sass';
+import './sass/updatePassword.sass';
 
 export default class changePassword extends React.Component{
 
@@ -30,7 +30,7 @@ submit = (event) => {
 			<div className="updatePassword">
 				<div className="updateFormCss">
           <div className="titleUpdate">
-            FORGOT YOUR PASSWORD ?
+            Update Your Password
           </div>
 					<form className="updateForm" onSubmit={this.submit}>
             <TextField
@@ -47,9 +47,8 @@ submit = (event) => {
               style={{
                 width: '70%',
                }}/>
-
             <RaisedButton type="submit" label="Change PASSWORD" style={{
-              margin: '20px 0',
+              margin: '40px 0',
               width: '70%',
              }}/>
 					</form>
