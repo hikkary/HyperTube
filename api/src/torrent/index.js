@@ -48,17 +48,33 @@ console.log('BACK HASH', req.params.hash);
           return(file)
         }
       });
+
       res.writeHead(200, { 'Content-Length': videoFile[0].length, 'Content-Type':`video/${path.extname(videoFile[0].name)}` });
       console.log('VIDEO FILE',videoFile[0].name);
       const stream = videoFile[0].createReadStream();
 
       engine.on('download', async () => {
+        console.log(videoFile[0].length);
         console.log(Math.floor((engine.swarm.downloaded * 8)/10000024),"M")
         // console.log("RES :",res);
         await stream.pipe(res);
         await stream.unpipe(res);
       });
 
+
+      engine.on('idle', () => {
+        console.log('download Complete');
+        // a tester a l'ecole insert in db
+        console.log('ID', req.params.id);
+        Movie.findOne({ id: req.params.id })
+          .then((movie) => {
+            if (movie) {
+              console.log("Video Path", videoFile[0].path);
+              // console.log(engine.files[0]); trouver le filename du ready
+              movie.path = videoFile[0].path;
+              movie.save();
+            }
+          });
       // engine.files.forEach(function(file) {
         // file = engine.files[0];
         // console.log("FILE NAME ",file);
@@ -78,16 +94,6 @@ console.log('BACK HASH', req.params.hash);
       // });
   });
 
-  engine.on('idle', () => {
-    console.log('download Complete');
-    // a tester a l'ecole insert in db
-    Movie.findOne({ id: req.body.id })
-      .then((movie) => {
-        if (movie) {
-          // console.log(engine.files[0]); trouver le filename du ready
-          movie.path = engine.files[0].path;
-          movie.save();
-        }
-      });
+
   });
 }

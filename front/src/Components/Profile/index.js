@@ -38,6 +38,7 @@ export default class Profile extends Component {
   };
 
   render(){
+    // tableau 5 derniers films vues et 5 dernieres series ?
     const { user, myId } = this.state;
     return (
       <div className="profile">

@@ -29,6 +29,12 @@ export default class MoviePage extends Component {
       const hash = newProps.movie.results[0].torrents[0].hash;
       this.setState({ quality: hash });
     }
+    // if (newProps.movie && newProps.movie.results.path) {
+    //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
+    //   console.log('newprops', newProps.movie.results[0].torrents[0].hash);
+    //   const hash = newProps.movie.results[0].torrents[0].hash;
+    //   this.setState({ quality: hash });
+    // }
   }
 
 
@@ -57,6 +63,12 @@ export default class MoviePage extends Component {
   //   })
   // }
 
+  showControl = (e) => {
+    console.log("ON EST ENTRER DNAS SHOW CONTROL");
+    console.log(e);
+    e.controls = true;
+  }
+
   quality = (hash) => {
     this.setState({ quality: hash, redraw: true });
     setTimeout(() => this.setState({ redraw: false }), 0)
@@ -64,7 +76,7 @@ export default class MoviePage extends Component {
 
   render() {
     if (this.props.movie.results) {
-      console.log("PROP RESULT[0]",this.props.movie.results[0]);
+      console.log("PROP RESULT[0]",this.props);
       console.log("PROP RESULT[0]",this.props.movie.results[1]);
       console.log("PROP PROPS .torrents",this.props.movie.results[0].torrents);
     }
@@ -105,10 +117,14 @@ export default class MoviePage extends Component {
             </div>
         }
         {!redraw && this.state.quality && <div className="videoPlayer">
-          <video width="720" height="540" controls style={{
+          <video width="720" height="540" controls="false" onCanPlay={this.showControl} style={{
           textAlign: 'center',
         }}>
-        <source src={`${api}/stream/${this.state.quality}`} type="video/mp4" />
+        {(!this.props.movie.results[0].path && <source src={`${api}/stream/${this.state.quality}/${this.props.id}`} type="video/mp4" />) ||
+          (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />)
+        }
+        // onCanPlay
+        // {this.props.movie.results[0].path && <source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />}
         // <source key={Math.random(10000,99999)} src='' type="video/mp4" />
         </video>
         </div>
