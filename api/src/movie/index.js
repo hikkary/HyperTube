@@ -22,7 +22,7 @@ export const movie = (req, res) => {
                 'released',
                 'review',
               ]);
-              console.log("RESULT AVNAT" ,results.data);
+              // console.log("RESULT AVNAT" ,results.data);
               // merge imdb infos + infos de la database
               // console.log('compInfo', compInfos);
               // const finalInfos = [
@@ -36,7 +36,7 @@ export const movie = (req, res) => {
               // console.log("RESULT APRES PUSH",results);
               // const allInfos = Object.assign({}, results);
               // console.log('all', allInfos);
-              console.log('final results with everything', results);
+              // console.log('final results with everything', results);
               res.send({ status: true, ...results });
             })
       }

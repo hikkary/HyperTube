@@ -147,9 +147,7 @@ export default class MoviePage extends Component {
         {(!this.props.movie.results[0].path && <source src={`${api}/stream/${this.state.quality}/${this.props.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />)
         }
-        // onCanPlay
-        // {this.props.movie.results[0].path && <source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />}
-        // <source key={Math.random(10000,99999)} src='' type="video/mp4" />
+    
         </video>
         </div>
 
