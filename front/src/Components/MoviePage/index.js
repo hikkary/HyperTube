@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import './sass/moviePage.sass';
 import api from '../../apiURI';
 // import axios from 'axios';
@@ -63,22 +64,45 @@ export default class MoviePage extends Component {
   //   })
   // }
 
-  showControl = (e) => {
-    console.log("ON EST ENTRER DNAS SHOW CONTROL");
-    console.log(e);
-    e.controls = true;
-  }
+  // showControl = (e) => {
+  //   console.log("ON EST ENTRER DNAS SHOW CONTROL");
+  //   console.log(e);
+  //   e.controls = true;
+  // }
 
   quality = (hash) => {
     this.setState({ quality: hash, redraw: true });
     setTimeout(() => this.setState({ redraw: false }), 0)
   }
 
+  comments = (e) => {
+    e.preventDefault();
+    console.log(e.target.comment.value);
+    const { comment } = e.target;
+    const { username, id } = this.props.user;
+    const movie_id = this.props.id;
+    if (this.props.actions) {
+      this.props.actions.movie.addCommentMovie(
+        comment.value,
+        username,
+        id,
+        movie_id
+      );
+    }
+  }
+
+  goProfile = (id) =>{
+    browserHistory.push(`/app/user/profile/${id}`)
+  }
+
   render() {
-    if (this.props.movie.results) {
-      console.log("PROP RESULT[0]",this.props);
-      console.log("PROP RESULT[0]",this.props.movie.results[1]);
-      console.log("PROP PROPS .torrents",this.props.movie.results[0].torrents);
+    let comments = [];
+    if (this.props.movie.results && this.props.movie.results[0].comments) {
+
+      comments = this.props.movie.results[0].comments.map((comment, key) =>
+      <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>{comment.username}: {comment.comment}</p>
+    )
+    console.log("Comment",comments);
     }
     const { redraw } = this.state
   setTimeout(() => {
@@ -108,7 +132,7 @@ export default class MoviePage extends Component {
                 <p>Genre : {this.toList(this.props.movie.results[0].genres)}</p>
               </div>
               <div className="movieCast">
-                <p>With : {this.toList(this.props.movie.results[1].cast)}</p>
+                <p>With : {this.toList(this.props.movie.results[0].cast)}</p>
               </div>
               <div className="movieDirectors">
                 <p>Director : {this.toList(this.props.movie.results[0].directors)}</p>
@@ -117,7 +141,7 @@ export default class MoviePage extends Component {
             </div>
         }
         {!redraw && this.state.quality && <div className="videoPlayer">
-          <video width="720" height="540" controls="false" onCanPlay={this.showControl} style={{
+          <video width="720" height="540" controls="false" style={{
           textAlign: 'center',
         }}>
         {(!this.props.movie.results[0].path && <source src={`${api}/stream/${this.state.quality}/${this.props.id}`} type="video/mp4" />) ||
@@ -138,6 +162,15 @@ export default class MoviePage extends Component {
           )
         })
       }
+      <div className="comments">
+        {comments}
+      </div>
+      <div>
+        <form onSubmit={this.comments}>
+          <input type="text" name="comment" placeholder="Leave a comment" />
+          <input type="submit" value="send" />
+        </form>
+      </div>
       </div>
 
     )

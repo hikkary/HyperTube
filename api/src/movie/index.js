@@ -1,6 +1,8 @@
-import { Movie } from '../Schema';
 import axios from 'axios';
 import _ from 'lodash';
+import Joi from 'joi';
+import { Movie } from '../Schema';
+import { Comment } from '../Joi';
 
 export const movie = (req, res) => {
   const data = req.params.id;
@@ -20,19 +22,42 @@ export const movie = (req, res) => {
                 'released',
                 'review',
               ]);
+              console.log("RESULT AVNAT" ,results.data);
               // merge imdb infos + infos de la database
-              console.log('compInfo', compInfos);
+              // console.log('compInfo', compInfos);
               // const finalInfos = [
               //   ...results,
               //   ...compInfos,
               // ]
               // console.log('final infos', finalInfos);
-              results.push(compInfos);
+              // results.push("NIKE KEEK KE KEK KEKE KEK EKE KKE K EKE KE KEKE KK EKE KE KK E");
+              // results.push(compInfos);
+              results = {...compInfos.data, ...results}
+              // console.log("RESULT APRES PUSH",results);
               // const allInfos = Object.assign({}, results);
               // console.log('all', allInfos);
               console.log('final results with everything', results);
-              res.send({ status: true, results });
+              res.send({ status: true, ...results });
             })
       }
     });
+};
+
+export const addComment = async (req, res) => {
+  const { error } = await Joi.validate({ comment: req.body.comment }, Comment, { abortEarly: false });
+  if (error) {
+    return res.send({ status: false, errors: error.details });
+  }
+  const { username, id, comment, movie_id } = req.body;
+  console.log(username);
+  console.log(id);
+  console.log(comment);
+  Movie.find({ id: movie_id })
+  .exec()
+    .then((results) => {
+      console.log(results);
+      results[0].comments.unshift({ comment, id, username });
+      results[0].save();
+      res.send({ status: true, results });
+    })
 };

@@ -26,3 +26,17 @@ export const getSeriePage = ({
   })
   .catch(console.error)
 };
+
+export const getEpisode = ({
+  id, serieId
+} = {}) => (dispatch) => {
+  console.log('serie id action' , serieId);
+  dispatch(pending());
+  axios.get(
+    `${api}/serie/${serieId}/${id}`,
+  )
+  .then(({ data: serie }) => {
+    dispatch(fetched(...serie.details));
+  })
+  .catch(console.error)
+};

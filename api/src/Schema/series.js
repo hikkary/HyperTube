@@ -35,6 +35,8 @@ const serie = mongoose.Schema({
   },
   provider: String,
   content: Array,
+  path: String,
+  comments: Array,
 });
 
 const Serie = mongoose.model('series', serie);

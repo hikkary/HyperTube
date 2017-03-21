@@ -4,15 +4,16 @@ import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import MoviePage from '../../Components/MoviePage';
 
-const Movie = ({ translation, actions, id, movie }) =>
+const Movie = ({ translation, actions, id, movie, user }) =>
   <div>
-    <MoviePage movie={movie} id={id} translation={translation} actions={actions} />
+    <MoviePage movie={movie} user={user} id={id} translation={translation} actions={actions} />
   </div>
 
 const mapStateToProps = (state, ownProps) => ({
   translation: state.translation,
   id: ownProps.params.id,
   movie: state.movie,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

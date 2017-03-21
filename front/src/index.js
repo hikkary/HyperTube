@@ -12,6 +12,7 @@ import forgotPassword from './Containers/Auth/ForgotPassword/ForgotPassword';
 import Register from './Containers/Auth/Register';
 import Profile from './Containers/Profile';
 import EditProfile from './Containers/EditProfile';
+import SerieStreamingPage from './Containers/SerieStreamingPage';
 import './index.css';
 import { Route, Router, browserHistory, Redirect } from 'react-router';
 import reducers from './Reducers';
@@ -65,6 +66,7 @@ ReactDOM.render(
           <Route path="movies/:id" component={MoviePage} />
           <Route path="series" component={Series} />
           <Route path="series/:id" component={SeriePage} />
+          <Route path="series/:serieId/:id" component={SerieStreamingPage} />
         </Route>
         <Redirect from='*' to='/app/homePage' component={HomePage} />
       </Router>

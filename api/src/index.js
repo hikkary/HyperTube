@@ -22,7 +22,8 @@ moviesRouter
   .get('/api/movies', movies.get)
   .get('/api/movie/:id', movie.movie)
   .get('/api/movies/scrap', movies.scrap)
-  .get('/api/movies/tenBest', movies.tenBest);
+  .get('/api/movies/tenBest', movies.tenBest)
+  .put('/api/movie/comment', movie.addComment);
   // .post('/api/movies/getGenre', movies.getGenre)
   // .post('/api/movies', movies.post)
   // .put('/api/movies', movies.modify);
@@ -30,6 +31,7 @@ moviesRouter
 seriesRouter
   .get('/api/series', series.get)
   .get('/api/serie/:id', serie.serie)
+  .get('/api/serie/:serie_id/:id', serie.episode)
   .get('/api/series/scrap', series.scrap)
   .get('/api/series/tenBest', series.tenBest)
   .post('/api/series/getInfo', series.getInfo);
@@ -46,7 +48,8 @@ usersRouter
   .post('/api/users/getUserInfo', users.getUserInfo);
 
 stream
-  .get('/api/stream/:hash/:id', torrent.torrent);
+  .get('/api/stream/:hash/:id', torrent.movieTorrent)
+  .get('/api/stream/:hash/:serie_id/:id', torrent.serieTorrent);
 
 app
   .use(cors()) // connexion front back
