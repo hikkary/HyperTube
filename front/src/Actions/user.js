@@ -39,7 +39,7 @@ export const actionLogin = (data) => (dispatch) => {
       dispatch(successLogin({ results, headers }));
       browserHistory.push('/app/homePage');
     } else {
-      dispatch(error(results, headers));
+      dispatch(error({results, headers}));
     }
   });
 };

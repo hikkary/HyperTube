@@ -14,11 +14,11 @@ export default class Login extends Component {
   componentWillReceiveProps = (newProps) => {
     if(newProps.user){
       console.log('status', newProps.status);
-    // this.setState({ message: newProps.user.details });
       if (newProps.user.results.status === true) // Gerer du cote de joi le retour
         localStorage.setItem('token', newProps.user.headers['x-access-token']);
       }
   };
+
 
   login = (e) => {
     e.preventDefault();
@@ -41,7 +41,14 @@ export default class Login extends Component {
     browserHistory.push('/forgotPassword');
   }
 
+	errorHandler = (error) => {
+		const { translation } = this.props;
+		return translation.current[error];
+	}
+
   render() {
+	  console.log(this.props);
+	  const { user } = this.props;
     return(
       <div>
         <div className="loginTitle">Sign in</div>
@@ -54,10 +61,14 @@ export default class Login extends Component {
           onClick={this.registerForm}
         >
         <i className="material-icons">person_add</i>
-        </FloatingActionButton>
+		</FloatingActionButton>
+
         <div className="updateForm"/>
           <form onSubmit={this.login} className="loginForm">
             <ExtLogin />
+			{user.results && user.results.errors && <div className="errorLogin">
+				{this.errorHandler(user.results.errors)}
+			</div>}
             <TextField
               floatingLabelText="Username"
               name="username"
