@@ -81,21 +81,22 @@ export const createAccount = (req, res) => {
   single(req, res, async (err) => {
     const { error } = await Joi.validate(req.body, Register, { abortEarly: false });
     if (error) {
-      return res.send({ status: false, errors: error.details });
+		// return res.send({ status: false, errors: error.details });
+      return res.send({ status: false, errors: 'fillForm' });
     }
     if (err) {
-      return res.send({ status: false, details: 'cannot create image' });
+      return res.send({ status: false, details: 'imgIssue' });
     }
     const { username, email } = req.body;
     User.findOne({ username })
       .then((user) => {
-        if (user) res.send({ status: false, details: 'username already exists' });
+        if (user) res.send({ status: false, details: 'usernameExists' });
         else return User.findOne({ email });
       })
       .then((usermail) => {
-        if (usermail) res.send({ status: false, details: 'email already exists' });
+        if (usermail) res.send({ status: false, details: 'emailExists' });
         else userToDatabase(req);
-        return res.send({ status: true, details: 'user successfully saved in database' });
+        return res.send({ status: true, details: 'userCreated' });
       });
   });
 };
@@ -104,7 +105,8 @@ export const login = async (req, res) => {
   const { username } = req.body;
   const { error } = await Joi.validate(req.body, Login, { abortEarly: false });
   if (error) {
-    return res.send({ status: false, errors: error.details });
+	//   return res.send({ status: false, errors: error.details });
+    return res.send({ status: false, errors: "badLogin" });
   }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   User.findOne({ username })

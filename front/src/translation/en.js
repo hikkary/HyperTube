@@ -9,4 +9,10 @@ export default {
   register: 'Register',
   bestMovies: 'Best Movies',
   bestSeries: 'Best Series',
+  badLogin: 'There is an issue with your username or password',
+  fillForm: 'Please fill correctly the form',
+  imgIssue: 'There is a problem with your image',
+  usernameExists: 'The username already exists',
+  emailExists: 'The email already exists',
+  userCreated: 'User successfully added to database',
 }
