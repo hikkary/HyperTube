@@ -15,6 +15,7 @@ const movie = mongoose.Schema({
   genres: Array,
   directors: Array,
   writers: Array,
+  seeds: Number,
   review: {
     type: Object,
     default: {

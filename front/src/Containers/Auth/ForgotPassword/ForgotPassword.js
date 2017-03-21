@@ -7,7 +7,7 @@ import './sass/forgotPassword.sass';
 
 class forgotPassword extends React.Component {
   state = {
-    error: '',
+    errors: '',
     status: '',
     err: 'err',
   }
@@ -23,9 +23,18 @@ class forgotPassword extends React.Component {
       })
       .then((results) => {
         //add message
+        if(results.data.errors)
+        {
+          this.setState({errors: results.data.errors})
+        }
         console.log(results);
       });
   }
+
+  errorHandler = (error) => {
+		const { translation } = this.props;
+		return translation.current[error];
+	}
 
   render() {
     return (
@@ -35,6 +44,9 @@ class forgotPassword extends React.Component {
             Forgot Your Password ?
           </div>
           <form className="formPass" onSubmit={this.forgotPassword}>
+          {this.state.errors && <div className="errorLogin">
+    				{this.errorHandler(this.state.errors)}
+    			</div>}
             <TextField
               floatingLabelText="Please enter your username"
               type="text"
@@ -51,7 +63,6 @@ class forgotPassword extends React.Component {
              }}
             />
           </form>
-          <div className={this.state.err}>{this.state.error}</div>
         </div>
       </div>
     )

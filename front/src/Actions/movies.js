@@ -30,8 +30,8 @@ export const getMovie = ({
   genre = '',
   page = 0,
   scroll = 0,
-  sort = 'title',
-  asc = 1,
+  sort = 'seeds',
+  asc = -1,
 } = {}) => (dispatch) => {
   dispatch(pending());
   axios.get(

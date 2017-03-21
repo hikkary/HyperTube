@@ -111,10 +111,10 @@ export const login = async (req, res) => {
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   User.findOne({ username })
     .then((user) => {
-      if (!user) res.send({ status: false, details: 'there is an issue with the password or the username' });
+      if (!user) res.send({ status: false, errors: 'badLogin' });
       if (user) {
         if (user.password.localeCompare(passwordHash) !== 0) {
-          return res.send({ status: false, details: 'there is an issue with the password or the username' });
+          return res.send({ status: false, errors: 'badLogin' });
         }
         const tokenUserinfo = {
           username: user.username,
@@ -180,13 +180,13 @@ export const handleAuthorize42 = (req, res) => {
 export const forgotPassword = async (req, res) => {
   const { error } = await Joi.validate(req.body, Forgot, { abortEarly: false });
   if (error) {
-    return res.send({ status: false, errors: error.details });
+    return res.send({ status: false, errors: 'badUsername' });
   }
   const { username } = req.body;
   User.findOne({ username })
     .then(async (result) => {
       if (!result) {
-        res.send({ status: false, details: 'Username not found' });
+        res.send({ status: false, details: 'noUsername' });
       }
       const key = crypto.randomBytes(20).toString('hex');
       result.key = key;

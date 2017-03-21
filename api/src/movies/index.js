@@ -18,6 +18,15 @@ const movieToDatabase = (allMovies) => {
     if (movie.rating) {
       rate = Math.floor(movie.rating);
     }
+    let sum = 0;
+    if (movie.torrents) {
+      const seeds = movie.torrents.map((data) => {
+        if (data.seeds) return data.seeds;
+      });
+      console.log('seeds', seeds);
+      sum = seeds.reduce((a = 0, b = 0) => a + b, 0);
+      console.log('sum', sum);
+    }
     const newMovie = new Movie({
       id: movie.id,
       imdb_code: movie.imdb_code,
@@ -32,6 +41,7 @@ const movieToDatabase = (allMovies) => {
       largeImage: movie.large_cover_image,
       provider: 'YTS',
       torrents: movie.torrents,
+      seeds: sum,
     });
     newMovie.save();
   });
