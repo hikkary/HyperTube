@@ -88,7 +88,7 @@ export const getInfo = (req, res) => {
 };
 
 export const tenBest = (req, res) => {
-  Serie.find().sort({ rating: -1 })
+  Serie.find().sort({ seeds: -1 })
   .limit(8)
   .then((results) => {
     res.send(results);

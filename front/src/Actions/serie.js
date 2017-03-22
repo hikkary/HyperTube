@@ -40,3 +40,26 @@ export const getEpisode = ({
   })
   .catch(console.error)
 };
+
+export const addCommentSerie = (
+  comment,
+  username,
+  id,
+  serie_id) => (dispatch) => {
+  dispatch(pending());
+  axios({
+    method: 'PUT',
+    url: `${api}/serie/comment`,
+    data: {
+      comment,
+      username,
+      id,
+      serie_id,
+    }
+  })
+    .then((results) => {
+      console.log('results axios', results);
+      dispatch(fetched(results.data));
+    })
+    .catch(console.error);
+};

@@ -10,7 +10,7 @@ export default {
   bestMovies: 'Best Movies',
   bestSeries: 'Best Series',
   badLogin: 'There is an issue with your username or password',
-  fillForm: 'Please fill out the form',
+  fillForm: 'Please fill out correctly the form',
   imgIssue: 'There is a problem with your image',
   usernameExists: 'The username already exists',
   emailExists: 'The email already exists',

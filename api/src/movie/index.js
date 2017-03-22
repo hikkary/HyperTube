@@ -1,8 +1,13 @@
+/* eslint-disable no-param-reassign */
 // import axios from 'axios';
 import _ from 'lodash';
 import Joi from 'joi';
-import { Movie } from '../Schema';
+import { Movie, User } from '../Schema';
 import { Comment } from '../Joi';
+import OS from 'OpenSubtitles-api';
+import download from 'download-file';
+import srt2vtt from 'srt-to-vtt';
+import fs from 'fs';
 
 export const movie = (req, res) => {
   const data = req.params.id;
@@ -37,9 +42,9 @@ export const movie = (req, res) => {
               // const allInfos = Object.assign({}, results);
               // console.log('all', allInfos);
               // console.log('final results with everything', results);
-              res.send({ status: true, ...results });
-            })
-      }
+      res.send({ status: true, ...results });
+    });
+};
     // });
 // };
 
@@ -59,22 +64,80 @@ export const addComment = async (req, res) => {
       results[0].comments.unshift({ comment, id, username });
       results[0].save();
       res.send({ status: true, results });
-    })
+    });
 };
 
-export const userSeenMovie = (req) => {
+export const userSeenMovie = (req, res) => {
   const { userId, movieId } = req.body;
   console.log('idssss', userId, movieId);
   Movie.find({ id: movieId })
   .then((data) => {
     data[0].seenBy.push(userId);
+    data[0].seenBy = _.uniq(data[0].seenBy);
     data[0].save();
     User.find({ _id: userId })
       .then((user) => {
-        console.log('title movie', movie[0].title);
+        console.log('title movie', data[0].title);
         user[0].lastSeen.push(data[0].title);
+        user[0].lastSeen = _.uniq(user[0].lastSeen);
+        user[0].lastSeen = user[0].lastSeen.slice(0, 10);
         user[0].save();
+        res.send({ status: true });
         console.log('user', user[0]);
       });
   });
-}
+};
+
+export const getSubtitles =  (req, res) => {
+  const OpenSubtitles = new OS('42hypertube');
+  console.log('hellooooo youuuu subbbbtitltes');
+  console.log('HASH HASH HAHS', req.body.hash);
+  console.log('WORK WORK WORK', req.body);
+  OpenSubtitles.search({
+    sublanguageid: 'fre',       // Can be an array.join, 'all', or be omitted.
+    hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
+    imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
+  }).then( (subtitles) => {
+    const url = subtitles.fr.url;
+
+    const options = {
+      directory: './public/subtitles',
+      filename: subtitles.fr.filename,
+    };
+
+  const filename = subtitles.fr.filename.replace('.srt', '.vtt');
+
+  download(url, options,  (err) => {
+    if (err) throw err;
+    console.log('meow');
+
+    fs.createReadStream(`./public/subtitles/${subtitles.fr.filename}`)
+    .pipe(srt2vtt())
+    .pipe(fs.createWriteStream(`./public/subtitles/${filename}`))
+    res.send(filename)
+  });
+    // console.log('sub', subtitles);
+    // subtitles = Object {
+        // en: {
+        //     downloads: "432",
+        //     encoding: "ASCII",
+        //     id: "192883746",
+        //     lang: "en",
+        //     langName: "English",
+        //     score: 9,
+        //     url: "http://dl.opensubtitles.org/download/subtitle_file_id",
+        //     filename: "some_movie.tag.srt"
+        // }
+        // fr: {
+        //     download: "221",
+        //     encoding: "UTF-8",
+        //     id: "1992536558",
+        //     lang: "fr",
+        //     langName: "French",
+        //     score: 6,
+        //     url: "http://dl.opensubtitles.org/download/subtitle_file_id",
+        //     filename: "some_movie.tag.srt"
+        // }
+    // }
+  });
+};

@@ -21,7 +21,6 @@ export default class Profile extends Component {
     .then((results) => {
       this.setState({ user: results.data, myId: results.data.id });
       if (results.data.id !== this.props.id) {
-        console.log('ID ID ID ID');
         axios({
           method: 'POST',
           url: `${api}/users/getUserInfo`,
@@ -30,7 +29,6 @@ export default class Profile extends Component {
           }
         })
         .then((results) =>{
-          console.log('results', results);
           this.setState({ user: results.data.user });
         });
       };
@@ -38,6 +36,12 @@ export default class Profile extends Component {
   };
 
   render(){
+    let lastSeen = '';
+    if (this.state.user) {
+      lastSeen = this.state.user.lastSeen.map((show, key) =>
+        <div key={key} className="profileInfos">{show}</div>
+      )
+    }
     // tableau 5 derniers films vues et 5 dernieres series ?
     const { user, myId } = this.state;
     return (
@@ -47,6 +51,7 @@ export default class Profile extends Component {
           <div className="profileInfos">{user.username}</div>
           <div className="profileInfos">{user.firstname} {user.lastname}</div>
           <div className="profileInfos">{this.props.id === myId && user.email}</div>
+          <div className="profileInfos">{lastSeen}</div>
         </div>
       </div>
     )

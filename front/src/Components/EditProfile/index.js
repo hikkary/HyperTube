@@ -55,8 +55,9 @@ export default class EditProfile extends Component {
       data: form,
     })
     .then((results) => {
+      console.log('results', results.data);
       if (results.data.errors) {
-        return this.setState({ error: 'erreur' });
+        return this.setState({ error: results.data.errors });
       }
       localStorage.setItem('token', results.headers['x-access-token']);
       const token = localStorage.getItem('token');
@@ -64,9 +65,17 @@ export default class EditProfile extends Component {
     });
   }
 
+  errorHandler = (error) => {
+    console.log('ggggggggg', error);
+    const { translation } = this.props;
+    return translation.current[error];
+  }
+
   render(){
     const { current } = this.props.translation;
     const { user } = this.props;
+    const { error } = this.state;
+    console.log("user",user);
     return (
       <div className="editContainer">
         {user.length !== 0  &&
@@ -111,19 +120,22 @@ export default class EditProfile extends Component {
               color: 'white'
             }}
           />
-          {user.picture && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
+          {user && user.picture && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
           <RaisedButton
             label="Edit your Profile Picture"
             labelPosition="before"
             className="editButton"
             containerElement="label"
+            type="submit"
           >
             <input type="file" name="imageUpload" className="uploadInput" onChange={this.getImage} />
           </RaisedButton>
           <RaisedButton type="submit" label="Edit Profile" className="editProfileSubmit" name="editProfile"/>
         </form>
       }
-      <div>{this.state.error}</div>
+      {error && <div className="errorLogin">
+				{this.errorHandler(error)}
+			</div>}
     </div>
     )
   }

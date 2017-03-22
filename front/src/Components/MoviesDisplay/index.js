@@ -33,19 +33,30 @@ export default class MoviesDisplay extends Component {
   }
 
   componentDidMount = () => {
+    this._mounted = true;
     this.loadMovies = _.debounce(this.loadMovies, 1000);
     this.loadMovies();
   }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
   resetValues = (key) => {
     if (key !== 'page') {
       this.setState({ page: { valuePage: 0, valueScroll: 0 } });
     }
-    if (key === 'title') { this.setState({ genre: '' }); };
+    if (key === 'title') {
+      if (!this._mounted) return false;
+      this.setState({ genre: '' });
+    };
   }
 
   handleChange = (key, value) => {
     this.resetValues(key);
+    if (!this._mounted) return false;
     this.setState({ [key]: value }, () => {
       const {
         year,
@@ -80,6 +91,7 @@ export default class MoviesDisplay extends Component {
     const { page } = this.state;
     const nextPage = page.valuePage + 1;
     this.handleChange('page', page);
+    if (!this._mounted) return false;
     this.setState({ page: { valuePage: nextPage, valueScroll: 1 } });
   }
 

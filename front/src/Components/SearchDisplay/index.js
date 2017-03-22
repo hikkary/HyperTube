@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { browserHistory } from 'react-router';
 // import SearchMenu from '../SearchMenu';
 import './sass/SearchDisplay.sass';
 // import axios from 'axios';
@@ -23,7 +24,13 @@ export default class SearchDisplay extends Component {
     title_search: '',
   }
 
+  goMoviePage = (id) => {
+    browserHistory.push(`/app/movies/${id}`);
+  }
 
+  goSeriePage = (id) => {
+    browserHistory.push(`/app/series/${id}`);
+  }
 
   seriesDisplay = (src, key) =>(
   <div
@@ -32,6 +39,7 @@ export default class SearchDisplay extends Component {
     >
      <div
        className="Serie"
+       onClick={() => this.goSeriePage(src.imdb_code)}
        style={{ backgroundImage: `url('${src.images.poster}')` }}
        >
          <div className="textContainer">
@@ -53,6 +61,7 @@ export default class SearchDisplay extends Component {
       key={key}
       >
     <div
+      onClick={() => this.goMoviePage(src.id)}
       className="movie"
       style={{ backgroundImage: `url('${src.largeImage}')` }}
     >

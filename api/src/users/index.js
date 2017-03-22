@@ -37,7 +37,16 @@ const getToken = (req) => {
 export const connectedUser = (req, res) => {
   const token = getToken(req);
   jwt.verify(token, jwtSecret, (err, decoded) => {
-    res.send(decoded);
+    User.find({ _id: decoded.id })
+      .then((result) => {
+        if (result) {
+          decoded.lastSeen = result[0].lastSeen;
+          console.log(decoded);
+          res.send(decoded);
+        } else {
+          res.send('errors');
+        }
+      });
   });
 };
 
@@ -54,6 +63,7 @@ export const getUserInfo = (req, res) => {
         id: result.id,
         email: result.email,
         picture: result.picture,
+        lastSeen: result.lastSeen,
       };
       res.send({ status: false, details: 'Username found', user });
     });
@@ -73,6 +83,7 @@ const userToDatabase = (req) => {
     password: passwordHash,
     picture: req.file.filename,
     key: 0,
+    lastSeen: [],
   });
   newUser.save();
 };
@@ -116,6 +127,10 @@ export const login = async (req, res) => {
         if (user.password.localeCompare(passwordHash) !== 0) {
           return res.send({ status: false, errors: 'badLogin' });
         }
+        if (!user.picture) {
+          user.picture = null;
+        }
+
         const tokenUserinfo = {
           username: user.username,
           lastname: user.lastname,
@@ -242,16 +257,16 @@ export const editProfile = (req, res) => {
   single(req, res, async (err) => {
     const { error } = await Joi.validate(req.body, Profile, { abortEarly: false });
     if (error) {
-      return res.send({ status: false, errors: error.details });
+      return res.send({ status: false, errors: 'fillForm' });
     }
     if (err) {
-      return res.send({ status: false, details: 'cannot create image' });
+      return res.send({ status: false, errors: 'imgIssue' });
     }
     const { id } = req.body;
     User.findOne({ _id: id })
       .then((result) => {
         if (!result) {
-          res.send({ status: false, details: 'Username not found' });
+          res.send({ status: false, errors: 'noUsername' });
         }
         if (!req.file && result.picture) {
           req.file = {

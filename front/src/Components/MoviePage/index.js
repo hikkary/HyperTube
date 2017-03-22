@@ -11,10 +11,17 @@ export default class MoviePage extends Component {
     redraw: false,
   }
 
+  _mounted = false;
+
   componentDidMount() {
+    this._mounted = true;
     this.props.actions.movie.getMoviePage({
       id: this.props.id,
     });
+// faire requet axios avec ces params:
+
+
+
     // if (this.props.movie.results) {
     //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
     //   console.log('newprops', this.props.movie.results[0].torrents[0].hash);
@@ -23,37 +30,47 @@ export default class MoviePage extends Component {
     // }
   }
 
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
   componentWillReceiveProps = (newProps) => {
     if (newProps.movie.results) {
       console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
       console.log('newprops', newProps.movie.results[0].torrents[0].hash);
       const hash = newProps.movie.results[0].torrents[0].hash;
+      if (!this._mounted) return false;
       this.setState({ quality: hash });
-      this.onPlay(this.props.movie.results[0].id, this.props.user.id);
-    }
+      this.onPlay(newProps.movie.results[0].id, this.props.user.id);
+    axios({
+      method: 'POST',
+      url: `${api}/movie/subtitles`,
+      data: {
+        sublanguageid: 'fre',
+        hash: this.state.quality,
+        imdbid: newProps.movie.results[0].imdb_code,
+      }
+    }).then((result) => {
+      console.log('res subtitles', result);
+      if (!this._mounted) return false;
+      this.setState({ filename: result.data });
+    });
     // if (newProps.movie && newProps.movie.results.path) {
     //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
     //   console.log('newprops', newProps.movie.results[0].torrents[0].hash);
     //   const hash = newProps.movie.results[0].torrents[0].hash;
     //   this.setState({ quality: hash });
     // }
+    }
   }
 
 
   toList = (list) => {
-		 let tmp = "";
-    if (this.props.movie)
-    {
+    if (this.props.movie) {
       console.log('DANS GENRE LIST');
-			for (let data in list) {
-        // console.log(this.props.movie.genres[data]);
-				if (data && data + 1) {
-					tmp += list[data]+", ";
-				}
-			}
-			return tmp;
-    }
-	}
+      return list.reduce((accu, name) => accu ? `${accu}, ${name}` : name, '')
+	  }
+  }
 
   // play = () => {
   //   axios({
@@ -73,7 +90,10 @@ export default class MoviePage extends Component {
 
   quality = (hash) => {
     this.setState({ quality: hash, redraw: true });
-    setTimeout(() => this.setState({ redraw: false }), 0)
+    setTimeout(() => {
+      if (!this._mounted) return false;
+      this.setState({ redraw: false });
+    }, 0)
   }
 
   comments = (e) => {
@@ -103,7 +123,7 @@ export default class MoviePage extends Component {
       url: `${api}/movie/seenMovie`,
       data: {
         movieId,
-        userId
+        userId,
       }
     })
   }
@@ -153,14 +173,14 @@ export default class MoviePage extends Component {
             </div>
             </div>
         }
-        {!redraw && this.state.quality && <div className="videoPlayer">
-          <video  width="720" height="540" controls autoPlay style={{
+        {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
+          <video crossOrigin width="720" height="540" controls autoPlay style={{
           textAlign: 'center',
         }}>
-        {(!this.props.movie.results[0].path && <source src={`${api}/stream/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
+        {(!this.props.movie.results[0].path &&  <source src={`${api}/stream/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />)
         }
-
+          <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
         </video>
         </div>
 

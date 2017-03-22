@@ -104,8 +104,8 @@ export const get = async (req, res) => {
 };
 
 export const tenBest = (req, res) => {
-  Movie.find().sort({ rating: -1 })
-  .limit(8)
+  Movie.find().sort({ seeds: -1 })
+  .limit(20)
   .then((results) => {
     res.send(results);
   });
