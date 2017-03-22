@@ -144,10 +144,10 @@ export default class MoviePage extends Component {
           <video width="720" height="540" controls="false" style={{
           textAlign: 'center',
         }}>
-        {(!this.props.movie.results[0].path && <source src={`${api}/stream/${this.state.quality}/${this.props.id}`} type="video/mp4" />) ||
+        {(!this.props.movie.results[0].path && <source src={`${api}/stream/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />)
         }
-    
+
         </video>
         </div>
 

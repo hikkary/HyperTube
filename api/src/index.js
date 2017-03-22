@@ -48,7 +48,7 @@ usersRouter
   .post('/api/users/getUserInfo', users.getUserInfo);
 
 stream
-  .get('/api/stream/:hash/:id', torrent.movieTorrent)
+  .get('/api/stream/:hash/:id/:user_id', torrent.movieTorrent)
   .get('/api/stream/:hash/:serie_id/:id', torrent.serieTorrent);
 
 app
