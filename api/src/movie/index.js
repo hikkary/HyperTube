@@ -61,3 +61,20 @@ export const addComment = async (req, res) => {
       res.send({ status: true, results });
     })
 };
+
+export const userSeenMovie = (req) => {
+  const { userId, movieId } = req.body;
+  console.log('idssss', userId, movieId);
+  Movie.find({ id: movieId })
+  .then((data) => {
+    data[0].seenBy.push(userId);
+    data[0].save();
+    User.find({ _id: userId })
+      .then((user) => {
+        console.log('title movie', movie[0].title);
+        user[0].lastSeen.push(data[0].title);
+        user[0].save();
+        console.log('user', user[0]);
+      });
+  });
+}

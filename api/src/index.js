@@ -23,7 +23,8 @@ moviesRouter
   .get('/api/movie/:id', movie.movie)
   .get('/api/movies/scrap', movies.scrap)
   .get('/api/movies/tenBest', movies.tenBest)
-  .put('/api/movie/comment', movie.addComment);
+  .put('/api/movie/comment', movie.addComment)
+  .put('api/movie/seenMovie', movie.userSeenMovie);
   // .post('/api/movies/getGenre', movies.getGenre)
   // .post('/api/movies', movies.post)
   // .put('/api/movies', movies.modify);

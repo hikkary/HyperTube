@@ -37,22 +37,6 @@ export const movieTorrent = (req, res) => {
   const engine = torrentStream(req.params.hash, options);
   let videoFile = '';
   engine.on('ready', () => {
-    console.log(req.params);
-    const { user_id } = req.params;
-    console.log('id', user_id);
-    Movie.find({ id: req.params.id })
-      .then((movie) => {
-        movie[0].seenBy.push(user_id);
-        movie[0].save();
-        User.find({ _id: user_id })
-          .then((user) => {
-            console.log('title movie', movie.title);
-            user[0].lastSeen.push(movie.title);
-            user[0].save();
-            console.log('user', user[0]);
-          });
-      });
-
     videoFile = engine.files.filter((file) => {
       console.log('file', file);
       console.log('type video filename', typeof (file.name));

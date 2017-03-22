@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import './sass/moviePage.sass';
 import api from '../../apiURI';
-// import axios from 'axios';
+import axios from 'axios';
 
 export default class MoviePage extends Component {
   state = {
@@ -29,6 +29,7 @@ export default class MoviePage extends Component {
       console.log('newprops', newProps.movie.results[0].torrents[0].hash);
       const hash = newProps.movie.results[0].torrents[0].hash;
       this.setState({ quality: hash });
+      this.onPlay(this.props.movie.results[0].id, this.props.user.id);
     }
     // if (newProps.movie && newProps.movie.results.path) {
     //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
@@ -95,6 +96,18 @@ export default class MoviePage extends Component {
     browserHistory.push(`/app/user/profile/${id}`)
   }
 
+  onPlay = (movieId, userId) => {
+    console.log('entereddddddd');
+    axios({
+      method: 'POST',
+      url: `${api}/movie/seenMovie`,
+      data: {
+        movieId,
+        userId
+      }
+    })
+  }
+
   render() {
     let comments = [];
     if (this.props.movie.results && this.props.movie.results[0].comments) {
@@ -141,7 +154,7 @@ export default class MoviePage extends Component {
             </div>
         }
         {!redraw && this.state.quality && <div className="videoPlayer">
-          <video width="720" height="540" controls="false" style={{
+          <video  width="720" height="540" controls autoPlay style={{
           textAlign: 'center',
         }}>
         {(!this.props.movie.results[0].path && <source src={`${api}/stream/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
