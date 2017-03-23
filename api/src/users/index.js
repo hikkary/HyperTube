@@ -279,7 +279,7 @@ export const editProfile = (req, res) => {
             filename: '',
           };
         }
-        if (result.picture && req.file) {
+        if (result.picture && result.picture !== 'poule.jpg' && req.file ) {
           fs.unlink(`./public/${result.picture}`, (err) => {
             if (err) throw err;
           });
