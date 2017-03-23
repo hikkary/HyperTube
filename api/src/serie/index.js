@@ -1,4 +1,6 @@
 import { Serie } from '../Schema';
+import { Comment } from '../Joi';
+import Joi from 'Joi';
 
 export const serie = (req, res) => {
   const data = req.params.id;
@@ -23,4 +25,23 @@ export const episode = (req, res) => {
       });
       res.send({ status: true, details: episodeInfo });
     });
+};
+
+export const addComment = async (req, res) => {
+  const { error } = await Joi.validate({ comment: req.body.comment }, Comment, { abortEarly: false });
+  if (error) {
+    return res.send({ status: false, errors: error.details });
+  }
+  const { username, id, comment, serie_id } = req.body;
+  console.log(username);
+  console.log(id);
+  console.log(comment);
+  Serie.find({ id: serie_id })
+  .exec()
+    .then((results) => {
+      console.log(results);
+      results[0].comments.unshift({ comment, id, username });
+      results[0].save();
+      res.send({ status: true, results });
+    })
 };

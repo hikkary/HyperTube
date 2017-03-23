@@ -88,7 +88,7 @@ export const getInfo = (req, res) => {
 };
 
 export const tenBest = (req, res) => {
-  Serie.find().sort({ rating: -1 })
+  Serie.find().sort({ seeds: -1 })
   .limit(8)
   .then((results) => {
     res.send(results);
@@ -100,7 +100,7 @@ const RES_PER_PAGE = 30;
 export const get = async (req, res) => {
   log(req.query);
   const { error } = await Joi.validate(req.query, getSeries, { abortEarly: false });
-  if (error) return res.send({ status: false, details: error.details });
+  if (error) return res.send({ status: false, errors: error.details });
   const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
   log(title);
   const searchObj = {

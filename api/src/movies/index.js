@@ -18,6 +18,15 @@ const movieToDatabase = (allMovies) => {
     if (movie.rating) {
       rate = Math.floor(movie.rating);
     }
+    let sum = 0;
+    if (movie.torrents) {
+      const seeds = movie.torrents.map((data) => {
+        if (data.seeds) return data.seeds;
+      });
+      console.log('seeds', seeds);
+      sum = seeds.reduce((a = 0, b = 0) => a + b, 0);
+      console.log('sum', sum);
+    }
     const newMovie = new Movie({
       id: movie.id,
       imdb_code: movie.imdb_code,
@@ -32,6 +41,7 @@ const movieToDatabase = (allMovies) => {
       largeImage: movie.large_cover_image,
       provider: 'YTS',
       torrents: movie.torrents,
+      seeds: sum,
     });
     newMovie.save();
   });
@@ -60,7 +70,7 @@ const RES_PER_PAGE = 30;
 
 export const get = async (req, res) => {
   const { error } = await Joi.validate(req.query, getMovies, { abortEarly: false });
-  if (error) return res.send({ status: false, details: error.details });
+  if (error) return res.send({ status: false, errors: error.details });
   const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
   // log(title);
   const searchObj = {
@@ -94,8 +104,8 @@ export const get = async (req, res) => {
 };
 
 export const tenBest = (req, res) => {
-  Movie.find().sort({ rating: -1 })
-  .limit(8)
+  Movie.find().sort({ seeds: -1 })
+  .limit(20)
   .then((results) => {
     res.send(results);
   });

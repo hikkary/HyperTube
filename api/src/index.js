@@ -23,7 +23,9 @@ moviesRouter
   .get('/api/movie/:id', movie.movie)
   .get('/api/movies/scrap', movies.scrap)
   .get('/api/movies/tenBest', movies.tenBest)
-  .put('/api/movie/comment', movie.addComment);
+  .put('/api/movie/comment', movie.addComment)
+  .post('/api/movie/seenMovie', movie.userSeenMovie)
+  .post('/api/movie/subtitles', movie.getSubtitles);
   // .post('/api/movies/getGenre', movies.getGenre)
   // .post('/api/movies', movies.post)
   // .put('/api/movies', movies.modify);
@@ -34,6 +36,7 @@ seriesRouter
   .get('/api/serie/:serie_id/:id', serie.episode)
   .get('/api/series/scrap', series.scrap)
   .get('/api/series/tenBest', series.tenBest)
+  .put('/api/serie/comment', serie.addComment)
   .post('/api/series/getInfo', series.getInfo);
 
 usersRouter
@@ -48,7 +51,7 @@ usersRouter
   .post('/api/users/getUserInfo', users.getUserInfo);
 
 stream
-  .get('/api/stream/:hash/:id', torrent.movieTorrent)
+  .get('/api/stream/:hash/:id/:user_id', torrent.movieTorrent)
   .get('/api/stream/:hash/:serie_id/:id', torrent.serieTorrent);
 
 app

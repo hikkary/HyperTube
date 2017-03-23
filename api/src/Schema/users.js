@@ -12,6 +12,7 @@ const user = mongoose.Schema({
   key: String,
   provider: String,
   language: String,
+  lastSeen: Array,
 });
 
 
