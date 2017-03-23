@@ -2,6 +2,7 @@ import axios from 'axios';
 import api from '../apiURI';
 
 export const GET = 'MOVIES_GET';
+export const ERROR = 'MOVIES_ERROR';
 export const PENDING = 'PENDING';
 export const FILTER = 'MOVIES_FILTER';
 export const SCROLL = 'MOVIES_SCROLL';
@@ -13,6 +14,11 @@ export const pending = () => ({
 export const fetched = movies => ({
   type: GET,
   payload: movies,
+});
+
+export const error = errors => ({
+  type: ERROR,
+  payload: errors,
 });
 
 export const scrolled = movies => ({
@@ -30,14 +36,16 @@ export const getMovie = ({
   genre = '',
   page = 0,
   scroll = 0,
-  sort = 'title',
-  asc = 1,
+  sort = 'seeds',
+  asc = -1,
 } = {}) => (dispatch) => {
   dispatch(pending());
   axios.get(
     `${api}/movies?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   )
   .then(({ data: movies }) => {
+    console.log("MOOOOOVIES",movies);
+    if(movies.errors) return dispatch(error(movies))
     if(scroll === 1)dispatch(scrolled(movies))
     else dispatch(fetched(movies))
   })

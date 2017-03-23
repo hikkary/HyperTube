@@ -23,6 +23,7 @@ export default class SearchMenu extends Component {
   render(){
     return(
       <div className="searchContainer">
+    
         <input type="text" className="Search" name="search" placeholder="Search..." onKeyDown={this.submit} onChange={this.handleChangeSearch}></input>
       </div>
     )

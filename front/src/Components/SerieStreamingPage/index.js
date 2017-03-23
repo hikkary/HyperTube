@@ -26,9 +26,33 @@ export default class SerieStreamingPage extends Component {
     setTimeout(() => this.setState({ redraw: false }), 0)
   }
 
+  comments = (e) => {
+    e.preventDefault();
+    console.log(e.target.comment.value);
+    const { comment } = e.target;
+    const { username, id } = this.props.user;
+    const serie_id = this.props.id;
+    if (this.props.actions) {
+      this.props.actions.serie.addCommentSerie(
+        comment.value,
+        username,
+        id,
+        serie_id
+      );
+    }
+  }
+
+
   render() {
     const { redraw } = this.state;
+    let comments = [];
+    if (this.props.serie && this.props.serie.comments) {
 
+      comments = this.props.serie.comments.map((comment, key) =>
+      <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>{comment.username}: {comment.comment}</p>
+    )
+    console.log("Comment",comments);
+    }
     return (
       <div className="streamingSerie">
         {this.props.serie && <div>
@@ -54,6 +78,15 @@ export default class SerieStreamingPage extends Component {
               </div>
             )
           })}
+          <div className="comments">
+            {comments}
+          </div>
+          <div>
+            <form onSubmit={this.comments}>
+              <input type="text" name="comment" placeholder="Leave a comment" />
+              <input type="submit" value="send" />
+            </form>
+          </div>
         </div>
   )
   }

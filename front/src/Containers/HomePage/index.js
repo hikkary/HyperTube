@@ -70,14 +70,25 @@ class HomePage extends Component {
   render() {
     const { translation, actions, movies, series, search } = this.props;
     const { displaySearch, displayBest } = this.state;
+    console.log("PROPS HOMEPAGE s", this.props);
+    console.log("PROPS HOMEPAGE s", this.props.search.length);
     return (
       <div>
+
         <Search onKeyDown={this.handleChange} onChange={this.displayNone}/>
+        <div className="NoMovie" style={{
+          display: displaySearch,
+          }}>
+        {((this.props.search && this.props.search.length === 0 )|| (this.props.search && this.props.search[0].errors)) &&
+           <p>No movie found</p>
+        }
+        </div>
         <div className="searchDiv" style={{
           display: displaySearch,
           }}>
           <SearchDisplay search={search} />
         </div>
+
         <div className="displayApp" style={{
           display: displayBest,
           }}>

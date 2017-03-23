@@ -66,6 +66,11 @@ export default class Register extends Component {
     this.props.actions.translation.toEnglish();
   }
 
+  errorHandler = (error) => {
+    const { translation } = this.props;
+    return translation.current[error];
+  }
+
   render(){
 	const { user } = this.props;
     const { current } = this.props.translation;
@@ -82,10 +87,11 @@ export default class Register extends Component {
         </div>
         <i className="fa fa-sign-in fa-2x signInIcon" aria-hidden="true" onClick={this.loginForm}></i>
         <div className="registerTitle">Sign up </div>
-		{user && user.errors && <div className="errorRegister">
-			{this.errorHandler(user.results.errors)}
-		</div>}
+
         <form onSubmit={this.register} className="registerForm">
+        {user && user.errors && <div className="errorRegister">
+    			{this.errorHandler(user.errors)}
+    		</div>}
           <TextField
             floatingLabelText={current.username}
             name="username"

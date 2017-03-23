@@ -21,7 +21,7 @@ export default class MoviesDisplay extends Component {
       max: 10,
     },
     filter: {
-      name: 'title',
+      name: 'seeds',
       sorted: 1,
     },
     title_search: '',
@@ -33,25 +33,36 @@ export default class MoviesDisplay extends Component {
   }
 
   componentDidMount = () => {
+    this._mounted = true;
     this.loadMovies = _.debounce(this.loadMovies, 1000);
     this.loadMovies();
   }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
   resetValues = (key) => {
     if (key !== 'page') {
       this.setState({ page: { valuePage: 0, valueScroll: 0 } });
     }
-    if (key === 'title') { this.setState({ genre: '' }); };
+    if (key === 'title') {
+      if (!this._mounted) return false;
+      this.setState({ genre: '' });
+    };
   }
 
   handleChange = (key, value) => {
     this.resetValues(key);
+    if (!this._mounted) return false;
     this.setState({ [key]: value }, () => {
       const {
         year,
         rate,
         genre,
-        sort = { name: 'title', value: 1 },
+        sort = { name: 'seeds', value: -1 },
         title,
         id,
         page
@@ -80,12 +91,36 @@ export default class MoviesDisplay extends Component {
     const { page } = this.state;
     const nextPage = page.valuePage + 1;
     this.handleChange('page', page);
+    if (!this._mounted) return false;
     this.setState({ page: { valuePage: nextPage, valueScroll: 1 } });
   }
 
   render(){
     const {current} = this.props.translation;
-    const { movies } = this.props;
+    let { movies } = this.props;
+    let allMovies = '';
+    if (movies && movies.length > 0 && !movies[0].errors) {
+      movies = _.uniqBy(movies, 'id');
+      allMovies = movies.map((movie, key) => {
+        return (
+        <div className="allInfo" key={key}>
+            <div onClick={() => this.goMoviePage(movie.id)}
+              className="movie"
+              style={{ backgroundImage: `url('${movie.largeImage}')` }}
+            >
+              <div className="textContainer">
+                <p>{current.rate}: {movie.rating} </p>
+                <p>{movie.year} </p>
+              </div>
+            </div>
+        <div className="title">
+          <p>{movie.title} </p>
+        </div>
+      </div>
+      )
+    });
+
+    }
     return(
       <div className="moviesContainer">
         <SearchMenu onKeyDown={this.handleChange}/>
@@ -102,28 +137,10 @@ export default class MoviesDisplay extends Component {
           loader={<div className="loader">Loading ...</div>}>
           {
             <div className="allMovies">
-                  {movies && movies.length > 0 && movies.map((movie, key) => {
-                    return(
-                      <div className="allInfo" key={key}>
-                          <div onClick={() => this.goMoviePage(movie.id)}
-                            className="movie"
-                            style={{ backgroundImage: `url('${movie.largeImage}')` }}
-                          >
-                            <div className="textContainer">
-                              <p>{current.rate}: {movie.rating} </p>
-                              <p>{movie.year} </p>
-                            </div>
-                          </div>
-                      <div className="title">
-                        <p>{movie.title} </p>
-                      </div>
-                    </div>
-                   )
-                   })
-                 }
+                {allMovies}
             </div>
           }
-          </InfiniteScroll>
+        </InfiniteScroll>
     </div>
     )
   }
