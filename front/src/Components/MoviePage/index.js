@@ -9,6 +9,7 @@ export default class MoviePage extends Component {
     movieInfos: '',
     quality: '',
     redraw: false,
+    error: '',
   }
 
   _mounted = false;
@@ -125,7 +126,12 @@ export default class MoviePage extends Component {
         movieId,
         userId,
       }
-    })
+    }).then((result) => {
+      console.log('yo', result);
+      if (result.data.errors) {
+        this.setState({ error: result.data.errors });
+      }
+    });
   }
 
   render() {

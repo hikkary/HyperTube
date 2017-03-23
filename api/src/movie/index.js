@@ -77,6 +77,7 @@ export const userSeenMovie = (req, res) => {
     data[0].save();
     User.find({ _id: userId })
       .then((user) => {
+        if (!user) return res.send({ status: false, errors: 'noUsername'});
         console.log('title movie', data[0].title);
         user[0].lastSeen.push(data[0].title);
         user[0].lastSeen = _.uniq(user[0].lastSeen);

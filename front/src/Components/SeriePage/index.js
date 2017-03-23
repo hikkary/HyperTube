@@ -31,6 +31,7 @@ export default class SeriePage extends Component {
               <p> E {episode.episode} S {season} {episode.title}</p>
             </div>
           )}
+          return null;
       });
       return episodes;
     }

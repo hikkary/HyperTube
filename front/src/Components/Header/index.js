@@ -3,10 +3,12 @@ import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import './sass/header.sass';
 import logo from  '../../../public/logo.gif';
+// import poule from '../../../public/poule.jpg';
 
 export default class Header extends React.Component {
 
   componentDidMount() {
+    this._mounted = true;
     const token = localStorage.getItem("token");
     const { getConnectedUser } = this.props.actions.user;
     if(!token) {
@@ -14,6 +16,8 @@ export default class Header extends React.Component {
     }
     getConnectedUser(token);
   };
+
+  _mounted = false;
 
   toMovies = () => {
     browserHistory.push('/app/movies');
@@ -43,6 +47,8 @@ export default class Header extends React.Component {
 
 	render(){
     const { user } = this.props;
+    console.log("PROPS",this.props.user.picture);
+    console.log("PROPS",typeof(this.props.user.picture));
 		return(
     <div>
       <div className="Header">
@@ -52,14 +58,8 @@ export default class Header extends React.Component {
             onClick={this.toProfile}
             style={{
               backgroundImage: `url('http://localhost:8080/public/${this.props.user.picture}')`,
-              backgroundSize: 'cover',
-              width: '100px',
-              height: '100px',
-              borderRadius: '50%',
               }}
-            className="profilePicture"
-              >
-          </div>}
+            className="profilePicture" ></div>}
           <FlatButton
             backgroundColor="#e0001b"
             onClick={this.toEditProfile}

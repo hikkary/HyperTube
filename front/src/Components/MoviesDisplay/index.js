@@ -99,11 +99,7 @@ export default class MoviesDisplay extends Component {
     const {current} = this.props.translation;
     let { movies } = this.props;
     let allMovies = '';
-<<<<<<< HEAD
     if (movies && movies.length > 0 && !movies[0].errors) {
-=======
-    if (movies && movies.length > 0) {
->>>>>>> origin/Andrea
       movies = _.uniqBy(movies, 'id');
       allMovies = movies.map((movie, key) => {
         return (

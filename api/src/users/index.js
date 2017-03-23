@@ -71,7 +71,8 @@ export const getUserInfo = (req, res) => {
 
 const userToDatabase = (req) => {
   if (!req.file) {
-    req.file = '';
+    req.file = {};
+    req.file.filename = 'poule.jpg';
   }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
@@ -128,7 +129,7 @@ export const login = async (req, res) => {
           return res.send({ status: false, errors: 'badLogin' });
         }
         if (!user.picture) {
-          user.picture = null;
+
         }
 
         const tokenUserinfo = {

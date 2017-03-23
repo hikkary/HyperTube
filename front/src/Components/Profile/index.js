@@ -46,11 +46,12 @@ export default class Profile extends Component {
     const { user, myId } = this.state;
     return (
       <div className="profile">
-      <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />
+      {user.picture && <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
         <div className="float">
           <div className="profileInfos">{user.username}</div>
           <div className="profileInfos">{user.firstname} {user.lastname}</div>
           <div className="profileInfos">{this.props.id === myId && user.email}</div>
+          <div className="profileInfos">Last 10 Movies/Shows seen:</div>
           <div className="profileInfos">{lastSeen}</div>
         </div>
       </div>
