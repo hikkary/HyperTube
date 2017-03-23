@@ -9,6 +9,7 @@ import EN from '../../../../public/fr-flag.gif';
 export default class Register extends Component {
   state= {
     message: '',
+    currentLanguage: 'en',
   }
 
   // componentWillReceiveProps = (newProps) => {

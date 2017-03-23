@@ -2,10 +2,27 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import './sass/header.sass';
-import logo from  '../../../public/logo.gif';
+import logo from  '../../../public/logo2.png';
 // import poule from '../../../public/poule.jpg';
 
 export default class Header extends React.Component {
+
+  state = {
+    lang: false
+  }
+
+  componentWillReceiveProps = (newProps) =>{
+    if (newProps.user.language){
+      if(newProps.user.language === 'fr' && !this.state.lang){
+        this.props.actions.translation.toFrench();
+        this.setState({ lang: true });
+      }
+      if(newProps.user.language === 'en' && !this.state.lang){
+        this.props.actions.translation.toEnglish();
+        this.setState({ lang: true });
+      }
+    }
+  }
 
   componentDidMount() {
     this._mounted = true;
@@ -47,12 +64,13 @@ export default class Header extends React.Component {
 
 	render(){
     const { user } = this.props;
+    const { current } = this.props.translation;
     console.log("PROPS",this.props.user.picture);
     console.log("PROPS",typeof(this.props.user.picture));
 		return(
     <div>
       <div className="Header">
-        <img onClick={this.toHome} className="logo" role="presentation" src={logo} height="60px" width="300px"/>
+        <img onClick={this.toHome} className="logo" role="presentation" src={logo} height="40px" width="260px"/>
         <div className="HeaderButton">
           {user.length !== 0 && this.props.user.picture && <div
             onClick={this.toProfile}
@@ -63,7 +81,7 @@ export default class Header extends React.Component {
           <FlatButton
             backgroundColor="#e0001b"
             onClick={this.toEditProfile}
-            label="editProfile"
+            label={current.editProfile}
             style={{
               backgroundColor: "#e0001b"
             }}
@@ -71,7 +89,7 @@ export default class Header extends React.Component {
             <FlatButton
               backgroundColor="#e0001b"
               onClick={this.toMovies}
-              label="Movies"
+              label={current.movies}
               style={{
                 backgroundColor: "#e0001b"
               }}
@@ -79,7 +97,7 @@ export default class Header extends React.Component {
             <FlatButton
               backgroundColor="#e0001b"
               onClick={this.toSeries}
-              label="Series"
+              label={current.series}
               style={{
                 backgroundColor: "#e0001b",
                 height: '100%',
@@ -88,7 +106,7 @@ export default class Header extends React.Component {
             <FlatButton
               backgroundColor="#e0001b"
               onClick={this.logout}
-              label="Logout"
+              label={current.logout}
               style={{
                 backgroundColor: "#e0001b",
                 height: '100%',

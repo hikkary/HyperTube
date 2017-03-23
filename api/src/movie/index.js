@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-// import axios from 'axios';
+import axios from 'axios';
 import _ from 'lodash';
 import Joi from 'joi';
 import { Movie, User } from '../Schema';
@@ -14,39 +14,23 @@ export const movie = (req, res) => {
   Movie.find({ id: data })
   .exec()
     .then((results) => {
-      // add imdb axios to get
-      // if (results) {
-      //     axios.get(`http://imdb.wemakesites.net/api/${results[0].imdb_code}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
-      //       .then(({ data: { data } }) => {
-      //         console.log('data', data);
-      //         // console.log('results', results);
-      //         // get infos from imdb axios
-      //         const compInfos = _.pick(data, [
-      //           'duration',
-      //           'cast',
-      //           'released',
-      //           'review',
-      //         ]);
-              // console.log("RESULT AVNAT" ,results.data);
-              // merge imdb infos + infos de la database
-              // console.log('compInfo', compInfos);
-              // const finalInfos = [
-              //   ...results,
-              //   ...compInfos,
-              // ]
-              // console.log('final infos', finalInfos);
-              // results.push("NIKE KEEK KE KEK KEKE KEK EKE KKE K EKE KE KEKE KK EKE KE KK E");
-              // results.push(compInfos);
-              // results = {...compInfos.data, ...results}
-              // console.log("RESULT APRES PUSH",results);
-              // const allInfos = Object.assign({}, results);
-              // console.log('all', allInfos);
-              // console.log('final results with everything', results);
-      res.send({ status: true, ...results });
+      console.log("id",results[0].imdb_code);
+      console.log("id",results[0]);
+      axios.get(`http://www.omdbapi.com/?i=${results[0].imdb_code}`)
+       .then((response) => {
+         console.log("RESP",response.data);
+         const compInfos = _.pick(response.data, [
+           'Runtime',
+           'Actors',
+           'Released',
+         ]);
+          console.log('CONPINFO', compInfos);
+         results = { ...compInfos, ...results }
+        console.log('RES', results);
+         res.send({ status: true, ...results });
+       });
     });
 };
-    // });
-// };
 
 export const addComment = async (req, res) => {
   const { error } = await Joi.validate({ comment: req.body.comment }, Comment, { abortEarly: false });
@@ -91,28 +75,31 @@ export const userSeenMovie = (req, res) => {
 
 export const getSubtitles =  (req, res) => {
   const OpenSubtitles = new OS('42hypertube');
-  console.log('hellooooo youuuu subbbbtitltes');
+  console.log('hellooooo youuuu subbbbtitltes')
   console.log('HASH HASH HAHS', req.body.hash);
-  console.log('WORK WORK WORK', req.body);
+  console.log('WORK WORK WORK LANGAUge', req.body.sublanguageid);
+  let language = '';
+  req.body.sublanguageid === 'eng' ? language = 'en' : language = 'fr';
   OpenSubtitles.search({
-    sublanguageid: 'fre',       // Can be an array.join, 'all', or be omitted.
+    sublanguageid: req.body.sublanguageid,       // Can be an array.join, 'all', or be omitted.
     hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
     imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
-  }).then( (subtitles) => {
-    const url = subtitles.fr.url;
-
+  }).then((subtitles) => {
+    const url = subtitles[language].url;
+    console.log('subtitles', subtitles);
+    console.log('subtitles LANG', subtitles[language].filename);
     const options = {
       directory: './public/subtitles',
-      filename: subtitles.fr.filename,
+      filename: subtitles[language].filename,
     };
 
-  const filename = subtitles.fr.filename.replace('.srt', '.vtt');
+  const filename = subtitles[language].filename.replace('.srt', '.vtt');
 
   download(url, options,  (err) => {
     if (err) throw err;
     console.log('meow');
 
-    fs.createReadStream(`./public/subtitles/${subtitles.fr.filename}`)
+    fs.createReadStream(`./public/subtitles/${subtitles[language].filename}`)
     .pipe(srt2vtt())
     .pipe(fs.createWriteStream(`./public/subtitles/${filename}`))
     res.send(filename)

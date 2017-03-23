@@ -122,7 +122,7 @@ export default class EditProfile extends Component {
           />
           {user && user.picture && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
           <RaisedButton
-            label="Edit your Profile Picture"
+            label={current.editImage}
             labelPosition="before"
             className="editButton"
             containerElement="label"
@@ -130,7 +130,7 @@ export default class EditProfile extends Component {
           >
             <input type="file" name="imageUpload" className="uploadInput" onChange={this.getImage} />
           </RaisedButton>
-          <RaisedButton type="submit" label="Edit Profile" className="editProfileSubmit" name="editProfile"/>
+          <RaisedButton type="submit" label={current.editProfile} className="editProfileSubmit" name="editProfile"/>
         </form>
       }
       {error && <div className="errorLogin">

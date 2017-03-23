@@ -25,12 +25,13 @@ export default class SortSeries extends Component {
   }
 
   render(){
+    const {current} = this.props.translation;
     // console.log('hey', this.props);
     return(
       <div className="sorted">
-        <FlatButton label="Sort By Title" onClick={this.sortTitle}/>
-        <FlatButton label="Sort By Year" onClick={this.sortYear}/>
-      <FlatButton label="Sort By Rate" onClick={this.sortRate} />
+        <FlatButton label={current.sortTitle} onClick={this.sortTitle}/>
+        <FlatButton label={current.sortYear} onClick={this.sortYear}/>
+      <FlatButton label={current.sortRate} onClick={this.sortRate} />
     </div>
     )
   }

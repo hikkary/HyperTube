@@ -8,10 +8,10 @@ import Header from '../../Components/Header';
 class App extends Component {
 
   render() {
-    const {actions, user } = this.props;
+    const {actions, user, translation } = this.props;
     return (
       <div>
-        <Header user={user} actions={actions} />
+        <Header translation={translation} user={user} actions={actions} />
         <div>
           {this.props.children}
         </div>

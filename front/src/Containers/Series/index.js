@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import SeriesDisplay from '../../Components/SeriesDisplay';
 
-export const Series = ({ series, actions }) =>
+export const Series = ({ series, actions, translation }) =>
   <div>
-    <SeriesDisplay series={series} actions={actions} />
+    <SeriesDisplay translation={translation} series={series} actions={actions} />
   </div>
 
 Series.propTypes = {
@@ -15,6 +15,7 @@ Series.propTypes = {
 
 const mapStateToProps = (state) => ({
   series: state.series,
+  translation: state.translation,
 });
 
 const mapDispatchToProps = dispatch => ({

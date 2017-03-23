@@ -138,6 +138,7 @@ export const login = async (req, res) => {
           firstname: user.firstname,
           id: user.id,
           email: user.email,
+          language: user.language,
           picture: user.picture,
         };
         const token = jwt.sign(tokenUserinfo, jwtSecret);
@@ -298,6 +299,7 @@ export const editProfile = (req, res) => {
             firstname: result.firstname,
             id: result.id,
             email: result.email,
+            language: result.language,
             picture: result.picture,
           }
           const token = jwt.sign(updatedUser, jwtSecret);

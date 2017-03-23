@@ -49,6 +49,7 @@ export default class Login extends Component {
   render() {
 	  console.log(this.props);
 	  const { user } = this.props;
+    const { current } = this.props.translation;
     return(
       <div>
         <div className="loginTitle">Sign in</div>
@@ -70,17 +71,17 @@ export default class Login extends Component {
 				{this.errorHandler(user.results.errors)}
 			</div>}
             <TextField
-              floatingLabelText="Username"
+              floatingLabelText={current.username}
               name="username"
   					  type="text"
             />
             <TextField
-              floatingLabelText="Password"
+              floatingLabelText={current.password}
               type="password"
               name="password"
             />
-            <RaisedButton type="submit" label="SIGN IN" style={{ margin: '20px 0' }}/>
-            <RaisedButton onClick={this.forgotPassword} label="FORGOT PASSWORD?"/>
+            <RaisedButton type="submit" label={current.signIn} style={{ margin: '20px 0' }}/>
+            <RaisedButton onClick={this.forgotPassword} label={current.forgotPassword}/>
           </form>
         <div>{this.state.message}</div>
       </div>

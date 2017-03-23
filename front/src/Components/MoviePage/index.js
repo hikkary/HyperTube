@@ -8,6 +8,7 @@ export default class MoviePage extends Component {
   state = {
     movieInfos: '',
     quality: '',
+    lang: '',
     redraw: false,
     error: '',
   }
@@ -19,6 +20,8 @@ export default class MoviePage extends Component {
     this.props.actions.movie.getMoviePage({
       id: this.props.id,
     });
+    if(this.props.user.language === 'en') { this.setState({lang: 'eng'})}
+    if(this.props.user.language === 'fr') { this.setState({lang: 'fre'})}
 // faire requet axios avec ces params:
 
 
@@ -47,7 +50,7 @@ export default class MoviePage extends Component {
       method: 'POST',
       url: `${api}/movie/subtitles`,
       data: {
-        sublanguageid: 'fre',
+        sublanguageid: this.state.lang,
         hash: this.state.quality,
         imdbid: newProps.movie.results[0].imdb_code,
       }

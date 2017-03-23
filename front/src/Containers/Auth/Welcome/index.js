@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import title from '../../../../public/logo2.png';
-import bg from '../../../../public/background-hypertube.jpg';
+import bg from '../../../../public/background-hypertube.png';
 import './Welcome.sass';
 
 export default class Welcome extends Component {
