@@ -45,7 +45,8 @@ export const addCommentSerie = (
   comment,
   username,
   id,
-  serie_id) => (dispatch) => {
+  serieId,
+  episodeId) => (dispatch) => {
   dispatch(pending());
   axios({
     method: 'PUT',
@@ -54,7 +55,8 @@ export const addCommentSerie = (
       comment,
       username,
       id,
-      serie_id,
+      serieId,
+      episodeId,
     }
   })
     .then((results) => {

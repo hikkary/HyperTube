@@ -20,28 +20,28 @@ const writeJson = (allSeries) => {
         if(content){
         console.log('dataaaaaaaaaaaaaa', content.data.episodes[0].torrents);
         }
-        axios.get(`http://imdb.wemakesites.net/api/${serie.imdb_id}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
-          // arg: response.data.data
-          .then(({ data: { data } }) => {
-            // console.log('imdb', data.episodes);
-            // console.log('eztv', serie.episodes);
-            if (data) {
-              let rate = '-';
-              if (data.review && data.review.rating !== null) { rate = Number(data.review.rating.split('/')[0]); }
-              else {
-                rate = -1;
-              }
+        // axios.get(`http://imdb.wemakesites.net/api/${serie.imdb_id}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
+        //   // arg: response.data.data
+        //   .then(({ data: { data } }) => {
+        //     // console.log('imdb', data.episodes);
+        //     // console.log('eztv', serie.episodes);
+        //     if (data) {
+        //       let rate = '-';
+        //       if (data.review && data.review.rating !== null) { rate = Number(data.review.rating.split('/')[0]); }
+        //       else {
+        //         rate = -1;
+        //       }
               const newSerie = new Serie({
                 images: serie.images,
-                description: data.description,
-                duration: data.duration,
-                rating: rate,
-                released: data.released,
-                cast: data.cast,
-                genres: data.genres,
-                directors: data.directors,
-                writers: data.writers,
-                review: data.review,
+                // description: data.description,
+                // duration: data.duration,
+                // rating: rate,
+                // released: data.released,
+                // cast: data.cast,
+                // genres: data.genres,
+                // directors: data.directors,
+                // writers: data.writers,
+                // review: data.review,
                 imdb_code: serie.imdb_id,
                 num_seasons: serie.num_seasons,
                 title: serie.title,
@@ -52,10 +52,10 @@ const writeJson = (allSeries) => {
               });
               newSerie.save()
                 .then(() => {
-                  // log(`${serie.title} added !`);
+                  log(`${serie.title} added !`);
                 });
-            }
-          })
+            // }
+          // })
       })
       .catch(() => {
         console.log('ok')
@@ -81,10 +81,10 @@ export const scrap = (req, res) => {
 };
 
 export const getInfo = (req, res) => {
-  axios.get(`http://imdb.wemakesites.net/api/${req.body.imdb}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
-  .then((data) => {
-    res.send(data.data);
-  });
+  // axios.get(`http://imdb.wemakesites.net/api/${req.body.imdb}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
+  // .then((data) => {
+  //   res.send(data.data);
+  // });
 };
 
 export const tenBest = (req, res) => {

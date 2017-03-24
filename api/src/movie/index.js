@@ -4,7 +4,7 @@ import _ from 'lodash';
 import Joi from 'joi';
 import { Movie, User } from '../Schema';
 import { Comment } from '../Joi';
-import OS from 'OpenSubtitles-api';
+import OS from 'opensubtitles-api';
 import download from 'download-file';
 import srt2vtt from 'srt-to-vtt';
 import fs from 'fs';

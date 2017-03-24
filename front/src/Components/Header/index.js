@@ -3,12 +3,19 @@ import { browserHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import './sass/header.sass';
 import logo from  '../../../public/logo2.png';
+import AppBar from 'material-ui/AppBar';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import Toggle from 'material-ui/Toggle';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 // import poule from '../../../public/poule.jpg';
 
 export default class Header extends React.Component {
 
   state = {
-    lang: false
+    lang: false,
   }
 
   componentWillReceiveProps = (newProps) =>{
@@ -68,7 +75,7 @@ export default class Header extends React.Component {
     console.log("PROPS",this.props.user.picture);
     console.log("PROPS",typeof(this.props.user.picture));
 		return(
-    <div>
+      <div>
       <div className="Header">
         <img onClick={this.toHome} className="logo" role="presentation" src={logo} height="40px" width="260px"/>
         <div className="HeaderButton">
@@ -78,40 +85,22 @@ export default class Header extends React.Component {
               backgroundImage: `url('http://localhost:8080/public/${this.props.user.picture}')`,
               }}
             className="profilePicture" ></div>}
-          <FlatButton
-            backgroundColor="#e0001b"
-            onClick={this.toEditProfile}
-            label={current.editProfile}
-            style={{
-              backgroundColor: "#e0001b"
-            }}
-          />
-            <FlatButton
-              backgroundColor="#e0001b"
-              onClick={this.toMovies}
-              label={current.movies}
-              style={{
-                backgroundColor: "#e0001b"
-              }}
-            />
-            <FlatButton
-              backgroundColor="#e0001b"
-              onClick={this.toSeries}
-              label={current.series}
-              style={{
-                backgroundColor: "#e0001b",
-                height: '100%',
-              }}
-            />
-            <FlatButton
-              backgroundColor="#e0001b"
-              onClick={this.logout}
-              label={current.logout}
-              style={{
-                backgroundColor: "#e0001b",
-                height: '100%',
-              }}
-            />
+        <IconMenu
+          iconButtonElement={
+            <IconButton
+              iconStyle={{ color: 'white' }}
+              >
+              <i className="material-icons">menu</i>
+            </IconButton>
+          }
+          targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+        >
+          <MenuItem primaryText={current.editProfile} onClick={this.toEditProfile} />
+          <MenuItem primaryText={current.movies} onClick={this.toMovies} />
+          <MenuItem primaryText={current.series} onClick={this.toSeries} />
+          <MenuItem primaryText={current.logout} onClick={this.logout} />
+        </IconMenu>
         </div>
 			</div>
       <div className="SubMenu" />

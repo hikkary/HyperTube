@@ -16,6 +16,17 @@ export default class SerieStreamingPage extends Component {
     });
   }
 
+  // componentWillReceiveProps = (newProps) => {
+  //   if (newProps.serie) {
+  //     console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
+  //     console.log('newprops', newProps.serie.torrents['480p'].url);
+  //     const hash = newProps.serie.torrents['480p'].url;
+  //     if (!this._mounted) return false;
+  //     this.setState({ quality: hash });
+  //     // this.onPlay(newProps.serie.results.id, this.props.user.id);
+  //   }
+  // }
+
   changeQuality = (hash) => {
     const splitHash = hash.split(':', 4);
     console.log(splitHash);
@@ -30,19 +41,23 @@ export default class SerieStreamingPage extends Component {
     console.log(e.target.comment.value);
     const { comment } = e.target;
     const { username, id } = this.props.user;
-    const serie_id = this.props.id;
+    const episodeId = this.props.id;
+    console.log(episodeId);
+    const serieId = this.props.serieId;
+    console.log(serieId);
     if (this.props.actions) {
       this.props.actions.serie.addCommentSerie(
         comment.value,
         username,
         id,
-        serie_id
+        serieId,
+        episodeId,
       );
     }
   }
 
-
   render() {
+    console.log('this.props', this.props);
     const { redraw } = this.state;
     let comments = [];
     if (this.props.serie && this.props.serie.comments) {
