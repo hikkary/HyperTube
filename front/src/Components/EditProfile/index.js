@@ -4,12 +4,23 @@ import api from '../../apiURI';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import './sass/EditProfile.sass';
+import FR from '../../../public/am-flag.png';
+import EN from '../../../public/fr-flag.png';
 
 export default class EditProfile extends Component {
   state = {
     user: '',
     error: '',
+    currentLanguage: '',
   }
+
+  // componentWillReceiveProps = (newProps) => {
+  //   if(newProps.user){
+  //     console.log(newProps.user.language);
+  //   this.setState({currentLanguage: newProps.user.language})
+  //   console.log(this.state, "STATE");
+  // }
+  // }
 
   onChange = (e) => {
     const text = e.target.value;
@@ -35,6 +46,7 @@ export default class EditProfile extends Component {
 
   editProfile = (e) => {
     e.preventDefault();
+    if(!this.state.currentLanguage) this.setState({currentLanguage: this.props.currentLanguage})
     const { user } = this.props.actions;
     const { username, firstname, lastname, email, } = e.target;
     const { image } = this.state;
@@ -45,7 +57,7 @@ export default class EditProfile extends Component {
     form.append('lastname', lastname.value)
     form.append('email', email.value)
     form.append('image', image)
-    // form.append('language', this.state.currentLanguage)
+    form.append('language', this.state.currentLanguage)
     axios({
       method: 'POST',
       url: `${api}/users/editProfile`,
@@ -65,6 +77,18 @@ export default class EditProfile extends Component {
     });
   }
 
+  toFrench = (e) => {
+    e.preventDefault()
+    this.setState({ currentLanguage: 'fr' })
+    this.props.actions.translation.toFrench();
+  }
+
+  toEnglish = (e) => {
+    e.preventDefault()
+    this.setState({ currentLanguage: 'en' })
+    this.props.actions.translation.toEnglish();
+  }
+
   errorHandler = (error) => {
     console.log('ggggggggg', error);
     const { translation } = this.props;
@@ -80,6 +104,7 @@ export default class EditProfile extends Component {
       <div className="editContainer">
         {user.length !== 0  &&
         <form onSubmit={this.editProfile} className="editProfileForm">
+
           <TextField
             floatingLabelText={current.username}
             name="username"
@@ -130,6 +155,13 @@ export default class EditProfile extends Component {
           >
             <input type="file" name="imageUpload" className="uploadInput" onChange={this.getImage} />
           </RaisedButton>
+          <p>LANGUAGE</p>
+          <button className="langButton" onClick={this.toFrench}>
+            <img src={EN} role="presentation" className="language" />
+          </button>
+          <button className="langButton" onClick={this.toEnglish}>
+            <img src={FR} role="presentation" className="language"/>
+          </button>
           <RaisedButton type="submit" label={current.editProfile} className="editProfileSubmit" name="editProfile"/>
         </form>
       }

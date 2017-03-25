@@ -1,5 +1,6 @@
 import { Serie } from '../Schema';
 import { Comment } from '../Joi';
+import _ from 'lodash';
 import Joi from 'joi';
 
 export const serie = (req, res) => {
@@ -13,7 +14,7 @@ export const serie = (req, res) => {
 
 export const episode = (req, res) => {
   const data = req.params.serie_id;
-  console.log(data);
+  // console.log(data);
   Serie.find({ imdb_code: data })
   .exec()
     .then((results) => {
@@ -41,19 +42,34 @@ export const addComment = async (req, res) => {
   .exec()
     .then((results) => {
       console.log('entered resultss');
-      let filteredEpisode = results[0].content.filter((episode) => {
-        if (episode.tvdb_id === Number(episodeId)) {
-          return episode;
-        }
-      });
-      if (!filteredEpisode.comments) {
+      // let filteredEpisode = results[0].content.filter((episode) => {
+      //   if (episode.tvdb_id === Number(episodeId)) {
+      //     return episode;
+      //   }
+      // });
+
+      // if (!filteredEpisode.comments) {
+      //   console.log('entered if');
+      //   filteredEpisode.comments = [];
+      // }
+      // filteredEpisode.comments.unshift({ comment, id, username });
+      // filteredEpisode.save().then((err) => { console.log(err);})
+
+      const index = _.indexOf(results[0].content, _.find(results[0].content, { tvdb_id: Number(episodeId) }));
+      console.log("Index Serie", index);
+
+      if (!results[0].content[index].comments) {
         console.log('entered if');
-        filteredEpisode.comments = [];
+        results[0].content[index].comments = [];
       }
-      filteredEpisode.comments.unshift({ comment, id, username });
+      results[0].content[index].comments.unshift({ comment, id, username });
+      console.log("episode Actuel",results[0].content[index]);
+      results[0].content.splice(index, 1, results[0].content[index]);
+
+      console.log("============================================ß");
       // IL NE VEUT PAS SAVE !! mais le console log de filteredEpisode est parfait
-      filteredEpisode.save().then((err) => { console.log(err);})
-      res.send({ status: true, results });
+      results[0].save().then((err) => { console.log(err);})
+      res.send({ status: true, ...results[0].content[index] });
     })
     .catch((err) => console.log(err));
 };

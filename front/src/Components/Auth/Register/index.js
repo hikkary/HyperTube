@@ -3,8 +3,8 @@ import { browserHistory } from 'react-router';
 import './sass/Register.sass';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import FR from '../../../../public/am-flag.gif';
-import EN from '../../../../public/fr-flag.gif';
+import FR from '../../../../public/am-flag.png';
+import EN from '../../../../public/fr-flag.png';
 
 export default class Register extends Component {
   state= {

@@ -75,7 +75,7 @@ class HomePage extends Component {
     return (
       <div>
 
-        <Search translation={translation} KeyDown={this.handleChange} onChange={this.displayNone}/>
+        <Search translation={translation} onKeyDown={this.handleChange} onChange={this.displayNone}/>
         <div className="NoMovie" style={{
           display: displaySearch,
           }}>

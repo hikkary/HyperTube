@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 export const PENDING = "PENDING";
 export const GET = "GET_MOVIE";
+export const ERROR = "GET_ERROR_MOVIE";
 
 export const pending = () => ({
   type: PENDING,
@@ -13,6 +14,12 @@ export const fetched = movie => ({
   type: GET,
   payload: movie,
 });
+
+export const error = error => ({
+  type: ERROR,
+  payload: error,
+});
+
 
 export const getMoviePage = ({
   id,
@@ -46,6 +53,7 @@ export const addCommentMovie = (
     }
   })
     .then((results) => {
+      if(results.data.errors) return dispatch(error(results.data))
       console.log('results axios', results);
       dispatch(fetched(results.data));
     })

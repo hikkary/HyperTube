@@ -93,8 +93,8 @@ export default class Header extends React.Component {
               <i className="material-icons">menu</i>
             </IconButton>
           }
-          targetOrigin={{horizontal: 'left', vertical: 'bottom'}}
-          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
         >
           <MenuItem primaryText={current.editProfile} onClick={this.toEditProfile} />
           <MenuItem primaryText={current.movies} onClick={this.toMovies} />

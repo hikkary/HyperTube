@@ -289,6 +289,7 @@ export const editProfile = (req, res) => {
         result.firstname = req.body.firstname;
         result.lastname = req.body.lastname;
         result.email = req.body.email;
+        result.language = req.body.language;
         result.picture = req.file.filename;
         result.save()
         // res.send({ status: ..... details: result})

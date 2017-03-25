@@ -113,6 +113,7 @@ export default class MoviePage extends Component {
         id,
         movie_id
       );
+      comment.value = '';
     }
   }
 
@@ -165,7 +166,7 @@ export default class MoviePage extends Component {
                 <p>{this.props.movie.results[0].title}</p>
               </div>
               <div className="movieInfo">
-                <p>{this.props.movie.results[0].rating} {this.props.movie.results[0].year}</p>
+                <p> Rate {this.props.movie.results[0].rating} Released {this.props.movie.results.Released} Runtime {this.props.movie.results.Runtime}</p>
               </div>
               <div className="movieSummary">
                 <p>{this.props.movie.results[0].summary}</p>
@@ -174,7 +175,7 @@ export default class MoviePage extends Component {
                 <p>Genre : {this.toList(this.props.movie.results[0].genres)}</p>
               </div>
               <div className="movieCast">
-                <p>With : {this.toList(this.props.movie.results[0].cast)}</p>
+                <p>With : {this.props.movie.results.Actors}</p>
               </div>
               <div className="movieDirectors">
                 <p>Director : {this.toList(this.props.movie.results[0].directors)}</p>
@@ -182,8 +183,18 @@ export default class MoviePage extends Component {
             </div>
             </div>
         }
+        <div className="media">
+          <div className="buttons">
+          {this.props.movie.results && this.props.movie.results[0].torrents.map((torrent, key) => {
+            if(torrent.quality === '3D') return false;
+            return(
+                <button key={key} className='oneButton' label={torrent.quality} onClick={() => this.quality(torrent.hash) }>{torrent.quality}</button>
+            )
+          })
+        }
+        </div>
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
-          <video crossOrigin width="720" height="540" controls autoPlay style={{
+          <video crossOrigin width="620" height="540" controls autoPlay style={{
           textAlign: 'center',
         }}>
         {(!this.props.movie.results[0].path &&  <source src={`${api}/stream/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
@@ -191,26 +202,21 @@ export default class MoviePage extends Component {
         }
           <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
         </video>
+
         </div>
 
         }
-        {this.props.movie.results && this.props.movie.results[0].torrents.map((torrent, key) => {
-          return(
-            <div key={key}>
-              <button label={torrent.quality} onClick={() => this.quality(torrent.hash) }>{torrent.quality}</button>
-            </div>
-          )
-        })
-      }
-      <div className="comments">
-        {comments}
-      </div>
-      <div>
+      <div className="allComments">
         <form onSubmit={this.comments}>
-          <input type="text" name="comment" placeholder="Leave a comment" />
-          <input type="submit" value="send" />
+          <input className="commentInput" type="text" name="comment" placeholder="Leave a comment" />
+          {/* <input type="submit" value="send" /> */}
+          <div className="comments">
+            {comments}
+          </div>
         </form>
+
       </div>
+    </div>
       </div>
 
     )

@@ -15,6 +15,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   actions: {
     user: bindActionCreators(allTheActions.user, dispatch),
+    translation: bindActionCreators(allTheActions.translation, dispatch),
   },
 });
 
