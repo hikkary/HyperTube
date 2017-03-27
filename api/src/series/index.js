@@ -17,31 +17,23 @@ const writeJson = (allSeries) => {
   allSeries.forEach(serie =>
     axios.get(`http://eztvapi.ml/show/${serie.imdb_id}`)
       .then((content) => {
-        if(content){
-        console.log('dataaaaaaaaaaaaaa', content.data.episodes[0].torrents);
-        }
-        // axios.get(`http://imdb.wemakesites.net/api/${serie.imdb_id}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
-        //   // arg: response.data.data
-        //   .then(({ data: { data } }) => {
-        //     // console.log('imdb', data.episodes);
-        //     // console.log('eztv', serie.episodes);
-        //     if (data) {
-        //       let rate = '-';
-        //       if (data.review && data.review.rating !== null) { rate = Number(data.review.rating.split('/')[0]); }
-        //       else {
-        //         rate = -1;
-        //       }
+        // if(content) {
+        // console.log('dataaaaaaaaaaaaaa', content.data);
+        // }
+        axios.get(`http://www.omdbapi.com/?i=${content.data.imdb_id}`)
+          .then((response) => {
+            console.log('response serie omdb dscsdcdsc', response.data.imdbRating);
               const newSerie = new Serie({
                 images: serie.images,
-                // description: data.description,
-                // duration: data.duration,
-                // rating: rate,
-                // released: data.released,
-                // cast: data.cast,
-                // genres: data.genres,
-                // directors: data.directors,
-                // writers: data.writers,
-                // review: data.review,
+                description: response.data.Plot,
+                duration: response.data.Runtime,
+                rating: Number(response.data.imdbRating),
+                released: response.data.Released,
+                cast: response.data.Actors,
+                genres: response.data.Genre,
+                directors: response.data.Director,
+                writers: response.data.Writer,
+                // review: response.data.review,
                 imdb_code: serie.imdb_id,
                 num_seasons: serie.num_seasons,
                 title: serie.title,
@@ -54,8 +46,7 @@ const writeJson = (allSeries) => {
                 .then(() => {
                   log(`${serie.title} added !`);
                 });
-            // }
-          // })
+          });
       })
       .catch(() => {
         console.log('ok')

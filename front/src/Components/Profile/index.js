@@ -39,7 +39,7 @@ export default class Profile extends Component {
     let lastSeen = '';
     if (this.state.user) {
       lastSeen = this.state.user.lastSeen.map((show, key) =>
-        <div key={key} className="profileInfos">{show}</div>
+        <ul key={key} className="seen"><li>{show}</li></ul>
       )
     }
     // tableau 5 derniers films vues et 5 dernieres series ?
@@ -49,9 +49,9 @@ export default class Profile extends Component {
       {user.picture && <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
         <div className="float">
           <div className="profileInfos">{user.username}</div>
-          <div className="profileInfos">{user.firstname} {user.lastname}</div>
-          <div className="profileInfos">{this.props.id === myId && user.email}</div>
-          <div className="profileInfos">Last 10 Movies/Shows seen:</div>
+          <div className="profileInfos"><i className="fa fa-user icons" aria-hidden="true"></i>{user.firstname} {user.lastname}</div>
+          {this.props.id === myId && <div className="profileInfos"> <i className="fa fa-envelope icons" aria-hidden="true"></i> {user.email}</div>}
+          <div className="profileInfos"><i className="fa fa-film icons" aria-hidden="true"></i>Last 10 movies/shows watched:</div>
           <div className="profileInfos">{lastSeen}</div>
         </div>
       </div>

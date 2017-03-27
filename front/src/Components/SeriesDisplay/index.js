@@ -81,10 +81,11 @@ export default class SeriesDisplay extends Component {
     return(
       <div className="seriesContainer">
         <SearchMenu translation={this.props.translation} onKeyDown={this.handleChange}/>
+        <SortSeries translation={this.props.translation} onChange={this.handleChange} />
+        <RangeSeries onChange={this.handleChange} />
         <div className="list">
           <MenuSeries onChange={this.handleChange} />
-          <RangeSeries onChange={this.handleChange} />
-          <SortSeries translation={this.props.translation} onChange={this.handleChange} />
+
         </div>
         <InfiniteScroll
           pageStart={0}

@@ -124,10 +124,10 @@ export default class MoviesDisplay extends Component {
     return(
       <div className="moviesContainer">
         <SearchMenu translation={this.props.translation} onKeyDown={this.handleChange}/>
+        <SortMovies translation={this.props.translation} onChange={this.handleChange} />
+        <RangeMovies translation={this.props.translation} onChange={this.handleChange} />
         <div className="list">
           <MenuMovies translation={this.props.translation} onChange={this.handleChange} />
-          <RangeMovies translation={this.props.translation} onChange={this.handleChange} />
-          <SortMovies translation={this.props.translation} onChange={this.handleChange} />
         </div>
         <InfiniteScroll
           pageStart={0}

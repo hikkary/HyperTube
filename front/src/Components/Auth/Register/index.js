@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import './sass/Register.sass';
 import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import TextField from 'material-ui/TextField';
 import FR from '../../../../public/am-flag.png';
 import EN from '../../../../public/fr-flag.png';
@@ -78,6 +79,7 @@ export default class Register extends Component {
 
 	return(
       <div>
+      <div className="registerTitle">Sign up
         <div className="translation">
           <button className="langButton" onClick={this.toFrench}>
             <img src={EN} role="presentation" className="language" />
@@ -86,9 +88,18 @@ export default class Register extends Component {
             <img src={FR} role="presentation" className="language"/>
           </button>
         </div>
+        </div>
+        <div>
+        <FloatingActionButton
+          backgroundColor="#e0001b" style={{
+            marginTop: '-30px',
+            float: 'right',
+            marginRight: '10px',
+          }}
+        >
         <i className="fa fa-sign-in fa-2x signInIcon" aria-hidden="true" onClick={this.loginForm}></i>
-        <div className="registerTitle">Sign up </div>
-
+        </FloatingActionButton>
+        </div>
         <form onSubmit={this.register} className="registerForm">
         {user && user.errors && <div className="errorRegister">
     			{this.errorHandler(user.errors)}

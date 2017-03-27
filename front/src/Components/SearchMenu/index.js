@@ -22,7 +22,7 @@ export default class SearchMenu extends Component {
     const { current } = this.props.translation;
     return(
       <div className="searchContainer">
-        <input type="text" className="Search" name="search" placeholder={current.search} onKeyDown={this.submit} onChange={this.handleChangeSearch}></input>
+        <input type="text" className="search" name="search" placeholder={current.search} onKeyDown={this.submit} onChange={this.handleChangeSearch}></input>
       </div>
     )
   }
