@@ -4,6 +4,7 @@ import api from '../apiURI';
 export const GET = "SERIES_GET";
 export const PENDING = "SERIES_PENDING";
 export const SCROLL = "SERIES_SCROLL";
+export const ERROR = "SERIES_ERROR";
 
 export const pending = () => ({
   type: PENDING,
@@ -19,6 +20,11 @@ export const scrolled = (series) => ({
   payload: series,
 });
 
+export const error = (series) => ({
+  type: ERROR,
+  payload: series,
+})
+
 export const getSeries = ({
   title = '',
   yearMin = 1900,
@@ -27,8 +33,8 @@ export const getSeries = ({
   rateMax = 10,
   genre = '',
   page = Number(0),
-  sort = 'title',
-  asc = 1,
+  sort = 'year',
+  asc = -1,
   scroll = 0,
 } = {}) => (dispatch) => {
   dispatch(pending());
@@ -36,6 +42,7 @@ export const getSeries = ({
     `${api}/series?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   )
   .then(({ data: series }) => {
+    if (series.errors) return (dispatch(error(series)));
     console.log("Series  :" ,typeof(series))
     console.log("Series  :" ,series)
     if (scroll === 1) {

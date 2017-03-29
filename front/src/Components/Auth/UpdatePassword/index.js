@@ -1,5 +1,6 @@
 import React 	from 'react';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import api from '../../../apiURI';
@@ -13,15 +14,17 @@ submit = (event) => {
 			method: 'POST',
 			url : `${api}/users/updatePassword`,
 			data : {
-				username: this.props.location.query.username,
-				key : this.props.location.query.key,
+				username: this.props.username,
+				key : this.props.id,
 				password: event.target.password.value,
 				newPass: event.target.newPass.value,
 			}
 	 })
 	 .then((results) => {
      console.log(results);
-		 // FAIRE LA SUITE
+		 if (results.data.status) {
+			 browserHistory.push('/login');
+		 }
 	 });
 }
 
@@ -44,7 +47,7 @@ submit = (event) => {
                }}/>
             <TextField
               floatingLabelText={current.confirmPassword}
-              type="newPass"
+              type="password"
               name="newPass"
               style={{
                 width: '70%',

@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import './sass/SerieStreamingPage.sass';
 import api from '../../apiURI';
+import axios from 'axios';
 
 export default class SerieStreamingPage extends Component {
   state = {
     redraw: false,
     quality: '',
+    lang: '',
   }
 
   componentDidMount() {
@@ -14,22 +16,39 @@ export default class SerieStreamingPage extends Component {
       id: this.props.id,
       serieId: this.props.serieId,
     });
+    console.log('DID MOUNT', this.props.user);
+    if(this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
+    if(this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+    // Mettre le hash a cote du path dans l'objet
   }
 
-  // componentWillReceiveProps = (newProps) => {
-  //   if (newProps.serie) {
-  //     console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
-  //     console.log('newprops', newProps.serie.torrents['480p'].url);
-  //     const hash = newProps.serie.torrents['480p'].url;
-  //     if (!this._mounted) return false;
-  //     this.setState({ quality: hash });
-  //     // this.onPlay(newProps.serie.results.id, this.props.user.id);
-  //   }
-  // }
+  componentWillReceiveProps = async(newProps) => {
+    if (newProps.serie && newProps.serie.torrents) {
+      if(newProps.user.language === 'en') { this.setState({ lang: 'eng' }) }
+      if(newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+      const hash = newProps.serie.torrents[0].url;
+      const splitHash = await hash.split(':', 4);
+      const finalSplit = await splitHash[3].split('&', 1);
+      this.setState({ quality: finalSplit[0] });
+      if (this.state.quality && this.state.lang) {
+      axios({
+        method: 'POST',
+        url: `${api}/serie/subtitles`,
+        data: {
+          sublanguageid: this.state.lang,
+          imdbid: this.props.serieId,
+        }
+      }).then((result) => {
+        console.log('res front subtitles', result);
+        this.setState({ filename: result.data });
+      })
+    }
+  }
+}
 
   changeQuality = (hash) => {
     const splitHash = hash.split(':', 4);
-    console.log(splitHash);
+    // console.log(splitHash);
     const finalSplit = splitHash[3].split('&', 1);
 
     this.setState({ quality: finalSplit[0] , redraw: true });
@@ -57,15 +76,15 @@ export default class SerieStreamingPage extends Component {
   }
 
   render() {
-    console.log('this.props', this.props);
+    // console.log('this.props', this.props);
+
     const { redraw } = this.state;
     let comments = [];
     if (this.props.serie && this.props.serie.comments) {
-
       comments = this.props.serie.comments.map((comment, key) =>
       <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>{comment.username}: {comment.comment}</p>
     )
-    console.log("Comment",comments);
+    // console.log("Comment",comments);
     }
     return (
       <div className="streamingSerie">
@@ -74,13 +93,15 @@ export default class SerieStreamingPage extends Component {
           <div className="episodeSummary">{this.props.serie.overview}</div>
         </div>}
 
-        {!redraw && this.state.quality && <div className="videoPlayer">
-          <video width="720" height="540" controls="false" style={{
+        {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
+          <video crossOrigin width="720" height="540" autoPlay controls style={{
           textAlign: 'center',
         }}>
-        {(!this.props.serie.path && <source src={`${api}/stream/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
-          (<source src={`http://localhost:8080/public/Media/${this.props.serie.path}`} type="video/mp4" />)
+        {(!this.props.serie.path && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
+          (<source src={`http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`} type="video/mp4" />)
         }
+        <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
+
         </video>
         </div>
         }

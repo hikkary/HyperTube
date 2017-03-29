@@ -22,7 +22,9 @@ const writeJson = (allSeries) => {
         // }
         axios.get(`http://www.omdbapi.com/?i=${content.data.imdb_id}`)
           .then((response) => {
-            console.log('response serie omdb dscsdcdsc', response.data.imdbRating);
+            console.log('response serie omdb dscsdcdsc', response.data.Genre);
+            const genres = response.data.Genre.split(',');
+            console.log(genres);
               const newSerie = new Serie({
                 images: serie.images,
                 description: response.data.Plot,
@@ -30,7 +32,7 @@ const writeJson = (allSeries) => {
                 rating: Number(response.data.imdbRating),
                 released: response.data.Released,
                 cast: response.data.Actors,
-                genres: response.data.Genre,
+                genres,
                 directors: response.data.Director,
                 writers: response.data.Writer,
                 // review: response.data.review,
@@ -79,7 +81,7 @@ export const getInfo = (req, res) => {
 };
 
 export const tenBest = (req, res) => {
-  Serie.find().sort({ seeds: -1 })
+  Serie.find().sort({ year: -1 })
   .limit(8)
   .then((results) => {
     res.send(results);
@@ -89,11 +91,10 @@ export const tenBest = (req, res) => {
 const RES_PER_PAGE = 30;
 
 export const get = async (req, res) => {
-  log(req.query);
   const { error } = await Joi.validate(req.query, getSeries, { abortEarly: false });
   if (error) return res.send({ status: false, errors: error.details });
   const { yearMin, yearMax, rateMin, rateMax, genre, page, asc, sort, title } = req.query;
-  log(title);
+  log('titles', title);
   const searchObj = {
     year: { $gt: (yearMin || 1900) - 1, $lt: (Number(yearMax) || Number(2017)) + Number(1) },
     rating: { $gt: (rateMin || 0) - 1, $lt: (Number(rateMax) || Number(10)) + Number(1) },
@@ -104,16 +105,18 @@ export const get = async (req, res) => {
   if (title) {
     searchObj.title = new RegExp(`${title}`, 'gi');
   }
+  console.log('search', searchObj);
   Serie.find(searchObj)
     .skip(page * RES_PER_PAGE)
     .limit(RES_PER_PAGE)
     .sort({ [sort]: asc })
     .exec()
     .then((data) => {
-      res.send(data.map(movie => _.pick(movie, [
+      res.send(data.map(serie => _.pick(serie, [
         'title',
         'rating',
         'year',
+        'genres',
         'imdb_code',
         'provider',
         'images',

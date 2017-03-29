@@ -18,10 +18,10 @@ export default class MoviePage extends Component {
   componentDidMount() {
     this._mounted = true;
     this.props.actions.movie.getMoviePage({
-      id: this.props.id,
+      id: Number(this.props.id),
     });
-    if(this.props.user.language === 'en') { this.setState({lang: 'eng'})}
-    if(this.props.user.language === 'fr') { this.setState({lang: 'fre'})}
+    if(this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
+    if(this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
 // faire requet axios avec ces params:
 
 
@@ -45,7 +45,10 @@ export default class MoviePage extends Component {
       const hash = newProps.movie.results[0].torrents[0].hash;
       if (!this._mounted) return false;
       this.setState({ quality: hash });
-      this.onPlay(newProps.movie.results[0].id, this.props.user.id);
+      console.log("AVANT LE FONCTION", this.props.user.id);
+      if(this.props.user.id){
+        this.onPlay(newProps.movie.results[0].id, this.props.user.id);
+      }
     axios({
       method: 'POST',
       url: `${api}/movie/subtitles`,
@@ -122,7 +125,7 @@ export default class MoviePage extends Component {
   }
 
   onPlay = (movieId, userId) => {
-    console.log('entereddddddd');
+    console.log('entereddddddd', userId);
     axios({
       method: 'POST',
       url: `${api}/movie/seenMovie`,
@@ -139,8 +142,10 @@ export default class MoviePage extends Component {
   }
 
   render() {
+    console.log("PRRRRROOOPS",this.props);
     let comments = [];
     if (this.props.movie.results && this.props.movie.results[0].comments) {
+      // console.log("PATHHHHH", this.props.movie.results[0].path[this.state.quality].path);
 
       comments = this.props.movie.results[0].comments.map((comment, key) =>
       <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>{comment.username}: {comment.comment}</p>
@@ -186,7 +191,7 @@ export default class MoviePage extends Component {
         <div className="media">
           <div className="buttons">
           {this.props.movie.results && this.props.movie.results[0].torrents.map((torrent, key) => {
-            if(torrent.quality === '3D') return false;
+            if(torrent.quality === '3D') return ;
             return(
                 <button key={key} className='oneButton' label={torrent.quality} onClick={() => this.quality(torrent.hash) }>{torrent.quality}</button>
             )
@@ -197,7 +202,7 @@ export default class MoviePage extends Component {
           <video crossOrigin width="620" height="540" controls autoPlay style={{
           textAlign: 'center',
         }}>
-        {(!this.props.movie.results[0].path &&  <source src={`${api}/stream/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
+        {(!this.props.movie.results[0].path[this.state.quality].path &&  <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />)
         }
           <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>

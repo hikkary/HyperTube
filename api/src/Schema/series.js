@@ -35,7 +35,7 @@ const serie = mongoose.Schema({
   },
   provider: String,
   content: Array,
-  path: String,
+  path: Object,
   comments: Array,
 });
 

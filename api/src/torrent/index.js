@@ -10,7 +10,7 @@ import Transcoder from 'stream-transcoder';
 // faire un filter qui recoit le file le plus lourd
 
 export const movieTorrent = (req, res) => {
-  console.log('BACK HASH', req.params.hash);
+  // console.log('BACK HASH', req.params.hash);
   const options = {
     connections: 5000,     // Max amount of peers to be connected to.
     uploads: 10,          // Number of upload slots.
@@ -33,18 +33,26 @@ export const movieTorrent = (req, res) => {
       // storage: '.'  // Use a custom storage backend rather than the default disk-backed one
 
   };
-
+  console.log(1);
   const engine = torrentStream(req.params.hash, options);
   let videoFile = '';
+  let videoSent = 0;
+  let stream = '';
+  console.log(2);
+
   engine.on('ready', () => {
     videoFile = engine.files.filter((file) => {
-      console.log('file', file);
-      console.log('type video filename', typeof (file.name));
+      // console.log('file', file);
+      // console.log('type video filename', typeof (file.name));
+      console.log(3);
+
       const pathFile = path.extname(file.name);
       console.log('pathfile', pathFile);
       if (pathFile === '.mp4' || pathFile === '.mkv' || pathFile === '.avi') {
         return (file);
       }
+      console.log(4);
+
     });
     const videoLength = videoFile[0].length;
     const range = req.headers.range;
@@ -54,6 +62,8 @@ export const movieTorrent = (req, res) => {
     const fileSize = videoLength;
     const end = positions[1] ? parseInt(positions[1], 10) : fileSize - 1;
     const chunksize = (end - start) + 1;
+    console.log(3);
+
     res.writeHead(206, {
       'Content-Range': `bytes ${start}-${end}/${fileSize}`,
       'Accept-Ranges': 'bytes',
@@ -62,11 +72,23 @@ export const movieTorrent = (req, res) => {
     });
         // qu'est ce que start? a quoi ca correspond?
     console.log('start : ', start, ' - end : ', end);
-    const stream = videoFile[0].createReadStream({ start, end });
-    return stream.pipe(res);
+    stream = videoFile[0].createReadStream({ start, end });
+    console.log(4);
+
+
   });
   engine.on('download', () => {
+    const download = engine.swarm.downloaded;
+    console.log('download', download);
     console.log(Math.floor((engine.swarm.downloaded * 8) / 10000024), 'M', videoFile[0].path);
+    const checkSize = videoFile[0].length / 5;
+    console.log('checkSize', checkSize);
+    if (download >= checkSize && videoSent === 0){
+      videoSent = 1;
+      return stream.pipe(res);
+    }
+    console.log(4);
+
   });
   engine.on('idle', () => {
     console.log('download Complete', videoFile[0].path);
@@ -77,7 +99,8 @@ export const movieTorrent = (req, res) => {
             if (movie) {
               console.log('Video Path', videoFile[0].path);
               // console.log(engine.files[0]); trouver le filename du ready
-              movie.path = videoFile[0].path;
+              const hash = req.params.hash;
+              movie.path = { ...movie.path, [hash]: { path: videoFile[0].path } };
               movie.save();
             }
           });
@@ -111,6 +134,8 @@ export const serieTorrent = (req, res) => {
 
   const engine = torrentStream(req.params.hash, options);
   let videoFile = '';
+  let videoSent = 0;
+  let stream = '';
   engine.on('ready', () => {
     console.log(engine.files);
     videoFile = engine.files.filter((file) => {
@@ -146,12 +171,24 @@ export const serieTorrent = (req, res) => {
     console.log('VIDEO FILE', videoFile[0].name);
     console.log('length', videoLength);
 
-    const stream = videoFile[0].createReadStream({ start, end });
-    return stream.pipe(res);
+
+
+
+    stream = videoFile[0].createReadStream({ start, end });
         //  stream.unpipe(res);
   });
   engine.on('download', async () => {
+    let download = engine.swarm.downloaded;
     console.log(Math.floor((engine.swarm.downloaded * 8) / 10000024), 'M', videoFile[0].path);
+
+    const checkSize = videoFile[0].length / 3;
+    console.log('checkSize', checkSize);
+    if (download >= checkSize && videoSent === 0){
+      console.log("STREAM ASTAR");
+      videoSent = 1;
+      return stream.pipe(res);
+    }
+
   });
   engine.on('idle', () => {
     console.log('download Complete', videoFile[0].path);
@@ -167,8 +204,14 @@ export const serieTorrent = (req, res) => {
               return episode;
             }
           });
-          // console.log('espisode info', episodeInfo);
-          episodeInfo = { ...episodeInfo[0], path: videoFile[0].path };
+          const hash = req.params.hash;
+
+          // episodeInfo.path = {...episodeInfo.path, [hash]: {path: videoFile[0].path }}
+          console.log('espisode info', episodeInfo);
+          const path = { ...episodeInfo[0].path, [hash]: {path: videoFile[0].path }}
+
+          episodeInfo = { ...episodeInfo[0], path};
+          console.log('apre perers', episodeInfo);
           const index = _.indexOf(serie.content, _.find(serie.content, { tvdb_id: episodeInfo.tvdb_id }));
           serie.content.splice(index, 1, episodeInfo);
           // serie.content[index].path = videoFile[0].path;

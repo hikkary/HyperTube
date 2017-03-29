@@ -52,6 +52,7 @@ export const addComment = async (req, res) => {
 };
 
 export const userSeenMovie = (req, res) => {
+  console.log(req.body);
   const { userId, movieId } = req.body;
   console.log('idssss', userId, movieId);
   Movie.find({ id: movieId })
@@ -59,10 +60,13 @@ export const userSeenMovie = (req, res) => {
     data[0].seenBy.push(userId);
     data[0].seenBy = _.uniq(data[0].seenBy);
     data[0].save();
+    console.log("USER IDD",userId);
     User.find({ _id: userId })
       .then((user) => {
         if (!user) return res.send({ status: false, errors: 'noUsername'});
         console.log('title movie', data[0].title);
+        console.log("USER OOO",user);
+
         user[0].lastSeen.push(data[0].title);
         user[0].lastSeen = _.uniq(user[0].lastSeen);
         user[0].lastSeen = user[0].lastSeen.slice(0, 10);
@@ -75,7 +79,6 @@ export const userSeenMovie = (req, res) => {
 
 export const getSubtitles =  (req, res) => {
   const OpenSubtitles = new OS('42hypertube');
-  console.log('hellooooo youuuu subbbbtitltes')
   console.log('HASH HASH HAHS', req.body.hash);
   console.log('WORK WORK WORK LANGAUge', req.body.sublanguageid);
   let language = '';
@@ -85,9 +88,10 @@ export const getSubtitles =  (req, res) => {
     hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
     imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
   }).then((subtitles) => {
+    // if(!subtitles[language]) return;
     const url = subtitles[language].url;
-    console.log('subtitles', subtitles);
-    console.log('subtitles LANG', subtitles[language].filename);
+    // console.log('subtitles', subtitles);
+    // console.log('subtitles LANG', subtitles[language].filename);
     const options = {
       directory: './public/subtitles',
       filename: subtitles[language].filename,

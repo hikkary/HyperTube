@@ -37,7 +37,8 @@ seriesRouter
   .get('/api/series/scrap', series.scrap)
   .get('/api/series/tenBest', series.tenBest)
   .put('/api/serie/comment', serie.addComment)
-  .post('/api/series/getInfo', series.getInfo);
+  .post('/api/series/getInfo', series.getInfo)
+  .post('/api/serie/subtitles', serie.getSubtitles);
 
 usersRouter
   .put('/api/users/login', users.login)
@@ -51,8 +52,8 @@ usersRouter
   .post('/api/users/getUserInfo', users.getUserInfo);
 
 stream
-  .get('/api/stream/:hash/:id/:user_id', torrent.movieTorrent)
-  .get('/api/stream/:hash/:serie_id/:id', torrent.serieTorrent);
+  .get('/api/stream/movie/:hash/:id/:user_id', torrent.movieTorrent)
+  .get('/api/stream/serie/:hash/:serie_id/:id', torrent.serieTorrent);
 
 app
   .use(cors()) // connexion front back

@@ -2,6 +2,10 @@ import { Serie } from '../Schema';
 import { Comment } from '../Joi';
 import _ from 'lodash';
 import Joi from 'joi';
+import OS from 'opensubtitles-api';
+import download from 'download-file';
+import srt2vtt from 'srt-to-vtt';
+import fs from 'fs';
 
 export const serie = (req, res) => {
   const data = req.params.id;
@@ -73,3 +77,32 @@ export const addComment = async (req, res) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const getSubtitles = (req, res) => {
+  const OpenSubtitles = new OS('42hypertube');
+  console.log('HASH HASH HAHS', req.body);
+  let language = '';
+  req.body.sublanguageid === 'eng' ? language = 'en' : language = 'fr';
+  OpenSubtitles.search({
+    sublanguageid: req.body.sublanguageid,
+    imdbid: req.body.serieId,
+  }).then((subtitles) => {
+    console.log('sub api', subtitles);
+    const url = subtitles[language].url;
+    console.log('filename', subtitles[language].filename);
+    const options = {
+      directory: './public/subtitles',
+      filename: subtitles[language].filename,
+    };
+    const filename = subtitles[language].filename.replace('.srt', '.vtt');
+
+    download(url, options, (err) => {
+      if (err) throw err;
+      console.log('meooooowww');
+      fs.createReadStream(`./public/subtitles/${subtitles[language].filename}`)
+      .pipe(srt2vtt())
+      .pipe(fs.createReadStream(`./public/subtitles/${filename}`))
+      res.send(filename);
+    });
+  });
+}

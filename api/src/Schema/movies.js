@@ -35,7 +35,7 @@ const movie = mongoose.Schema({
   largeImage: String,
   provider: String,
   torrents: Object,
-  path: String,
+  path: Object,
   comments: Array,
 });
 

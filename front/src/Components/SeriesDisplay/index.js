@@ -46,9 +46,18 @@ export default class SeriesDisplay extends Component {
   }
 
   handleChange = (key, value) => {
+    console.log('key', key);
     this.resetValues(key);
     this.setState({ [key]: value }, () => {
-      const { genre, id, year, rate, sort = { name: 'title', value: 1 }, title, page } = this.state;
+      const {
+        genre,
+        id,
+        year,
+        rate,
+        sort = { name: 'year', value: -1 },
+        title,
+        page
+      } = this.state;
       this.props.actions.series.getSeries({
         genre,
         yearMin: year.min,
@@ -78,6 +87,16 @@ export default class SeriesDisplay extends Component {
 
   render() {
     const { series } = this.props;
+    if(series) {
+      let genre = '';
+      genre = series.map((ser) => {
+        return ser.genres
+      })
+      console.log("Avant",genre);
+      genre = _.flattenDepth(genre, 1)
+      genre = _.uniq(genre)
+      console.log("Apres", genre);
+    }
     return(
       <div className="seriesContainer">
         <SearchMenu translation={this.props.translation} onKeyDown={this.handleChange}/>
@@ -96,7 +115,7 @@ export default class SeriesDisplay extends Component {
         >
         {
           <div className="allSeries">
-            {series && series.length > 0 && series.map((src, key) => {
+            {series && series.length > 0 && !series[0].errors && series.map((src, key) => {
               return (
                 <div key={key} className="displaySeries">
                   {((src.images && src.images.poster.length > 0 && <div onClick={() => this.goSeriePage(src.imdb_code)} className="serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
