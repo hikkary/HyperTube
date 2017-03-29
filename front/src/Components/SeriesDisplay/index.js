@@ -99,7 +99,7 @@ export default class SeriesDisplay extends Component {
             {series && series.length > 0 && series.map((src, key) => {
               return (
                 <div key={key} className="displaySeries">
-                  {((src.images && src.images.poster.length > 0 && <div onClick={() => this.goSeriePage(src.imdb_code)} className="Serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
+                  {((src.images && src.images.poster.length > 0 && <div onClick={() => this.goSeriePage(src.imdb_code)} className="serie" style={{ backgroundImage: `url('${src.images.poster}')` }}>
                     <div className="rateYear">
                       <p>Year: {src.year}</p>
                       <p>Seasons: {src.num_seasons}</p>
@@ -107,7 +107,7 @@ export default class SeriesDisplay extends Component {
                     </div>
                   </div>)
                   ||
-                  (<div onClick={() => this.goSeriePage(src.imdb_code)} className="Serie" style={{ backgroundImage: `url('${img}')` }}>
+                  (<div onClick={() => this.goSeriePage(src.imdb_code)} className="serie" style={{ backgroundImage: `url('${img}')` }}>
                       <div className="rateYear">
                         <p>Year: {src.year}</p>
                         <p>Seasons: {src.num_seasons}</p>

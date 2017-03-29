@@ -155,7 +155,7 @@ export default class EditProfile extends Component {
           >
             <input type="file" name="imageUpload" className="uploadInput" onChange={this.getImage} />
           </RaisedButton>
-          <p>LANGUAGE</p>
+          <p className="lan">LANGUAGE</p>
           <button className="langButton" onClick={this.toFrench}>
             <img src={EN} role="presentation" className="language" />
           </button>

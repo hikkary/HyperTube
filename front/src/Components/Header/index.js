@@ -1,15 +1,15 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
 import './sass/header.sass';
 import logo from  '../../../public/logo2.png';
-import AppBar from 'material-ui/AppBar';
+// import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import Toggle from 'material-ui/Toggle';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+// import Toggle from 'material-ui/Toggle';
+// import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+// import NavigationClose from 'material-ui/svg-icons/navigation/close';
 // import poule from '../../../public/poule.jpg';
 
 export default class Header extends React.Component {

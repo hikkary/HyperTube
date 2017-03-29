@@ -8,7 +8,7 @@ import Movies from './Containers/Movies';
 import MoviePage from './Containers/MoviePage';
 import SeriePage from './Containers/SeriePage';
 import Login from './Containers/Auth/Login';
-import forgotPassword from './Containers/Auth/ForgotPassword/ForgotPassword';
+import ForgotPassword from './Containers/Auth/ForgotPassword';
 import Register from './Containers/Auth/Register';
 import Profile from './Containers/Profile';
 import EditProfile from './Containers/EditProfile';
@@ -24,7 +24,7 @@ import * as translation from './Actions/translation';
 // import * as series from './Actions/series';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import updatePassword from './Containers/Auth/ForgotPassword/UpdatePassword'
+import UpdatePassword from './Containers/Auth/UpdatePassword';
 injectTapEventPlugin();
 
 const initialState = {
@@ -55,8 +55,8 @@ ReactDOM.render(
         <Route path="/" component={Welcome}>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <Route path="/forgotPassword" component={forgotPassword} />
-        	<Route path="/updatePassword" component={updatePassword} />
+          <Route path="/forgotPassword" component={ForgotPassword} />
+        	<Route path="/updatePassword" component={UpdatePassword} />
         </Route>
         <Route path="/app" component={App}>
           <Route path="homePage" component={HomePage}/>

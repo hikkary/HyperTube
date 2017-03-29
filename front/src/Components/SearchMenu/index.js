@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './sass/SearchMenu.sass';
 
 export default class SearchMenu extends Component {
   state={
