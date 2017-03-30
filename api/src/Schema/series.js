@@ -1,4 +1,5 @@
 import mongoose from '../mongoose';
+import findOrCreate from 'findorcreate-promise';
 
 const serie = mongoose.Schema({
   id: String,
@@ -38,6 +39,8 @@ const serie = mongoose.Schema({
   path: Object,
   comments: Array,
 });
+
+serie.plugin(findOrCreate);
 
 const Serie = mongoose.model('series', serie);
 

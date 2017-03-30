@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { Movie, Serie, User } from '../Schema';
 import fs from 'fs';
 import Transcoder from 'stream-transcoder';
+import ffmpeg from 'ffmpeg';
 // const myFile = `https://yts.ag/torrent/download/02C577D9A9CC90FFCCFC69082D03F74A0C8DD306`;
 
 // faire un filter qui recoit le file le plus lourd

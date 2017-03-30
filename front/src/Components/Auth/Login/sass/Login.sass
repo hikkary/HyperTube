@@ -1,7 +1,14 @@
+$break-small: 1024px
+$break: 736px
+
 .logoTitle
   height: 100px
   width: 500px
   margin-bottom: 30px
+  // @media screen and (max-width: $break-small)
+    display: none
+  @media screen and (max-width: $break)
+    display: none
 
 .loginTitle
   font-size: 40px
@@ -9,6 +16,8 @@
   background-color: #363637
   color: white
   padding: 30px
+  // @media screen and (max-width: $break-small)
+    width: 100%
 
 .loginForm
   width: 100%
@@ -17,6 +26,8 @@
   flex-direction: column
   justify-content: center
   align-items: center
+  // @media screen and (max-width: $break-small)
+    // width: 100%
 
 .errorLogin
 	border-radius: 5px

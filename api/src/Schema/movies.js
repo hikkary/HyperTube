@@ -1,4 +1,5 @@
 import mongoose from '../mongoose';
+import findOrCreate from 'findorcreate-promise';
 
 const movie = mongoose.Schema({
   id: Number,
@@ -39,6 +40,9 @@ const movie = mongoose.Schema({
   comments: Array,
 });
 
+movie.plugin(findOrCreate);
+
 const Movie = mongoose.model('movies', movie);
+
 
 export default Movie;

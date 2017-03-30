@@ -99,7 +99,7 @@ export default class SerieStreamingPage extends Component {
           <video crossOrigin width="720" height="540" autoPlay controls style={{
           textAlign: 'center',
         }}>
-        {(!this.props.serie.path && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
+        {((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality]) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`} type="video/mp4" />)
         }
         <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>

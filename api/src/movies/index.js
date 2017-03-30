@@ -9,9 +9,6 @@ import { getMovies } from '../Joi/search';
 const log = require('debug')('hypertube:movies.js');
 
 const movieToDatabase = (allMovies) => {
-  mongoose.connection.collections['movies'].drop((err) => {
-      console.log('collection dropped');
-  });
   allMovies = _.flattenDepth(allMovies, 1);
   allMovies.map((movie) => {
     let rate = -1;
@@ -27,7 +24,7 @@ const movieToDatabase = (allMovies) => {
       sum = seeds.reduce((a = 0, b = 0) => a + b, 0);
       console.log('sum', sum);
     }
-    const newMovie = new Movie({
+    const newMovie = {
       id: movie.id,
       imdb_code: movie.imdb_code,
       title: movie.title,
@@ -42,8 +39,9 @@ const movieToDatabase = (allMovies) => {
       provider: 'YTS',
       torrents: movie.torrents,
       seeds: sum,
-    });
-    newMovie.save();
+    };
+    Movie.findOrCreate({ id: movie.id }, newMovie, { upsert: true }).catch((err) => { console.log(err); });
+    // newMovie.save();
   });
 };
 
@@ -62,6 +60,7 @@ const recursiveScrap = (page, allMovies) => {
 };
 
 export const scrap = (req, res) => {
+  setInterval(() => { recursiveScrap(0, []) }, 3600000);
   recursiveScrap(0, []);
   res.send(true);
 };

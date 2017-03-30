@@ -11,9 +11,6 @@ const log = debug('hypertube:api:series');
 
 const writeJson = (allSeries) => {
   allSeries = _.flattenDepth(allSeries, 1);
-  mongoose.connection.collections.series.drop((err) => {
-    log('collection dropped');
-  });
   allSeries.forEach(serie =>
     axios.get(`http://eztvapi.ml/show/${serie.imdb_id}`)
       .then((content) => {
@@ -25,7 +22,7 @@ const writeJson = (allSeries) => {
             console.log('response serie omdb dscsdcdsc', response.data.Genre);
             const genres = response.data.Genre.split(',');
             console.log(genres);
-              const newSerie = new Serie({
+              const newSerie = {
                 images: serie.images,
                 description: response.data.Plot,
                 duration: response.data.Runtime,
@@ -43,11 +40,12 @@ const writeJson = (allSeries) => {
                 year: serie.year,
                 provider: 'EZTV',
                 content : content.data.episodes,
-              });
-              newSerie.save()
-                .then(() => {
-                  log(`${serie.title} added !`);
-                });
+              };
+              Serie.findOrCreate({ imdb_code: serie.imdb_id }, newSerie, { upsert: true }).catch((err) => { console.log(err); });
+              // newSerie.save()
+                // .then(() => {
+                  // log(`${serie.title} added !`);
+                // });
           });
       })
       .catch(() => {
@@ -69,6 +67,7 @@ const recursiveEztv = (page, allSeries) => {
 
 export const scrap = (req, res) => {
   const allSeries = [];
+  setInterval(() => { recursiveEztv(1, allSeries) }, 3600000);
   recursiveEztv(1, allSeries);
   res.send(true);
 };

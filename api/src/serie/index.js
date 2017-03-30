@@ -86,6 +86,7 @@ export const getSubtitles = (req, res) => {
     season: req.body.season,
     episode: req.body.episode,
   }).then(async (subtitles) => {
+    console.log('hello subtitles');
     console.log('sub api', subtitles);
     let language = '';
     req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';

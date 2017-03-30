@@ -82,14 +82,11 @@ export const getSubtitles =  (req, res) => {
   console.log('HASH HASH HAHS', req.body.hash);
   console.log('WORK WORK WORK LANGAUge', req.body.sublanguageid);
     OpenSubtitles.search({
-    sublanguageid: req.body.sublanguageid,       // Can be an array.join, 'all', or be omitted.
     hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
     imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
   }).then((subtitles) => {
 	let language = '';
 	req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';
-
-
 	let getSubtitles = _.filter(subtitles,(sub) => {
       // console.log('sub', sub);
       if(sub.lang === language){
