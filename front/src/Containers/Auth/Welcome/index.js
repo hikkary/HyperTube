@@ -19,7 +19,6 @@ export default class Welcome extends Component {
     return(
       <div className="authContainer">
         <img src={title} role="presentation" className="logoTitle" />
-        {this.state.button && <FlatButton label="GET STARTED" style={{ color: 'white' }} onClick={this.getStarted}/>}
           <div className="authBackground"
             style={{ backgroundImage: `url(${bg})` }}
           />
@@ -30,3 +29,5 @@ export default class Welcome extends Component {
     )
   }
 }
+
+// {this.state.button && <FlatButton label="GET STARTED" style={{ color: 'white' }} onClick={this.getStarted}/>}

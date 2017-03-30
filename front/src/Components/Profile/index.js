@@ -47,8 +47,8 @@ export default class Profile extends Component {
     return (
       <div className="profile">
       {user.picture && <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
+      <div className="profileUsername">{user.username}</div>
         <div className="float">
-          <div className="profileInfos">{user.username}</div>
           <div className="profileInfos"><i className="fa fa-user icons" aria-hidden="true"></i>{user.firstname} {user.lastname}</div>
           {this.props.id === myId && <div className="profileInfos"> <i className="fa fa-envelope icons" aria-hidden="true"></i> {user.email}</div>}
           <div className="profileInfos"><i className="fa fa-film icons" aria-hidden="true"></i>Last 10 movies/shows watched:</div>

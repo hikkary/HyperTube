@@ -1,3 +1,5 @@
+$break: 736px
+
 .uploadInput
   cursor: 'pointer'
   position: 'absolute'
@@ -21,16 +23,17 @@
   width: 100%
   height: 100%
 
+
 .registerTitle
   font-size: 40px
   padding: 30px
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
   color: white
   background-color: #363637
-
+  @media screen and (max-width: $break)
+    font-size: 30px
 
 .registerSubmit
-  // font-size: 30px
   margin-top: 25px
 
 .translation
@@ -44,15 +47,12 @@
   border: none
   box-shadow: 0px 1px 2px
 
-  // float: right
-
 .langButton
   border: none
   text-decoration: none
   background-color: #363637
   cursor: pointer
   outline: none
-
 
 .signInIcon
   // float: right

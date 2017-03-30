@@ -1,4 +1,4 @@
-$break-small: 1024px
+// $break-small: 1024px
 $break: 736px
 
 .authBackground
@@ -17,6 +17,8 @@ $break: 736px
   background-color: white
   width: 500px
   height: 500px
+  @media screen and (max-width: $break)
+    width: 100%
 
 .authRegister
   box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)
@@ -24,6 +26,8 @@ $break: 736px
   width: 500px
   height: 700px
   overflow: hidden
+  @media screen and (max-width: $break)
+    width: 100%
 
 
 .authContainer
@@ -33,3 +37,5 @@ $break: 736px
   align-items: center
   width: 100vw
   height: 100vh
+  @media screen and (max-width: $break)
+    display: block
