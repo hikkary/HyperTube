@@ -37,6 +37,8 @@ export default class SerieStreamingPage extends Component {
         data: {
           sublanguageid: this.state.lang,
           imdbid: this.props.serieId,
+          season: newProps.serie.season,
+          episode: newProps.serie.episode,
         }
       }).then((result) => {
         console.log('res front subtitles', result);

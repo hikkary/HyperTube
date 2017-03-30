@@ -202,10 +202,10 @@ export default class MoviePage extends Component {
           <video crossOrigin width="620" height="540" controls autoPlay style={{
           textAlign: 'center',
         }}>
-        {(!this.props.movie.results[0].path[this.state.quality].path &&  <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
+        {(!this.props.movie.results[0].path &&  <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />)
         }
-          <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
+          <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles"  default/>
         </video>
 
         </div>

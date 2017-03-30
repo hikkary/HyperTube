@@ -81,28 +81,53 @@ export const addComment = async (req, res) => {
 export const getSubtitles = (req, res) => {
   const OpenSubtitles = new OS('42hypertube');
   console.log('HASH HASH HAHS', req.body);
-  let language = '';
-  req.body.sublanguageid === 'eng' ? language = 'en' : language = 'fr';
   OpenSubtitles.search({
-    sublanguageid: req.body.sublanguageid,
-    imdbid: req.body.serieId,
-  }).then((subtitles) => {
+    imdbid: req.body.imdbid,
+    season: req.body.season,
+    episode: req.body.episode,
+  }).then(async (subtitles) => {
     console.log('sub api', subtitles);
-    const url = subtitles[language].url;
-    console.log('filename', subtitles[language].filename);
+    let language = '';
+    req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';
+    console.log('lang', language);
+    // console.log('sub lang', subtitles.language);
+    let getSubtitles = await _.filter(subtitles,(sub) => {
+      // console.log('sub', sub);
+      if(sub.lang === language){
+        return sub
+      }
+    });
+    if (getSubtitles.length === 0){
+      getSubtitles = await  _.filter(subtitles,(sub) => {
+        // console.log('sub', sub);
+        if(sub.lang === 'English'){
+          return sub
+        }
+      });
+    }
+    if(getSubtitles.length === 0){
+      return res.send({status: false, details: 'no subtitles'})
+    }
+
+    console.log('sous tititt', getSubtitles[0]);
     const options = {
       directory: './public/subtitles',
-      filename: subtitles[language].filename,
+      filename: getSubtitles[0].filename,
     };
-    const filename = subtitles[language].filename.replace('.srt', '.vtt');
 
+    const url = getSubtitles[0].url;
+
+    const filename = getSubtitles[0].filename.replace('.srt', '.vtt');
+    console.log(filename);
+    console.log(getSubtitles[0].filename);
+    const formerFilename = getSubtitles[0].filename
     download(url, options, (err) => {
       if (err) throw err;
       console.log('meooooowww');
-      fs.createReadStream(`./public/subtitles/${subtitles[language].filename}`)
+      fs.createReadStream(`./public/subtitles/${formerFilename}`)
       .pipe(srt2vtt())
-      .pipe(fs.createReadStream(`./public/subtitles/${filename}`))
+      .pipe(fs.createWriteStream(`./public/subtitles/${filename}`))
       res.send(filename);
-    });
+    })
   });
 }
