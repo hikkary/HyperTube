@@ -42,9 +42,15 @@ export default class MoviePage extends Component {
     if (newProps.movie.results) {
       console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
       console.log('newprops', newProps.movie.results[0].torrents[0].hash);
-      const hash = newProps.movie.results[0].torrents[0].hash;
+	  if (newProps.movie.results[0].torrents[0].quality === '3D'){
+		  const hash = newProps.movie.results[0].torrents[1].hash;
+		  this.setState({ quality: hash });
+	  }
+	  else{
+		  const hash = newProps.movie.results[0].torrents[0].hash;
+		  this.setState({ quality: hash });
+  		}
       if (!this._mounted) return false;
-      this.setState({ quality: hash });
       console.log("AVANT LE FONCTION", this.props.user.id);
       if(this.props.user.id){
         this.onPlay(newProps.movie.results[0].id, this.props.user.id);
@@ -202,8 +208,8 @@ export default class MoviePage extends Component {
           <video crossOrigin width="620" height="540" controls autoPlay style={{
           textAlign: 'center',
         }}>
-        {(!this.props.movie.results[0].path &&  <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
-          (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path}`} type="video/mp4" />)
+        {((!this.props.movie.results[0].path) || (this.props.movie.results[0].path && !this.props.movie.results[0].path[this.state.quality]) &&  <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
+          (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path[this.state.quality].path}`} type="video/mp4" />)
         }
           <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles"  default/>
         </video>
