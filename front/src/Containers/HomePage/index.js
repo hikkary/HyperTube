@@ -6,6 +6,7 @@ import BestOfMovies from '../../Components/BestOfMovies';
 import BestOfSeries from '../../Components/BestOfSeries';
 import SearchDisplay from '../../Components/SearchDisplay';
 import Search from '../../Components/SearchMenuHomePage';
+import './sass/HomePage.sass'
 
 class HomePage extends Component {
   state= {
@@ -76,7 +77,7 @@ class HomePage extends Component {
       <div>
 
         <Search translation={translation} onKeyDown={this.handleChange} onChange={this.displayNone}/>
-        <div className="NoMovie" style={{
+        <div className="noMedia" style={{
           display: displaySearch,
           }}>
         {((this.props.search && this.props.search.length === 0 )|| (this.props.search && this.props.search[0].errors)) &&
