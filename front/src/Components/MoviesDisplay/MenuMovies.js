@@ -31,6 +31,7 @@ export default class MenuMovies extends Component {
   }
 
   all = () => (
+	  <div className="onGenre">
     <button
       className={this.state.genreButton}
       onClick={() => this.props.onChange('genre', '')}
@@ -41,19 +42,20 @@ export default class MenuMovies extends Component {
       }}>
       All
       </button>
+  </div>
   )
 
   render(){
     // const {current} = this.props.translation;
     const { genreButton } = this.state;
     return(
-        <div>
+        <div className='onList'>
         <p className="genreTitle" onClick={this.displayMenu}>
         {this.state.operatorGenre} GENRES</p>
           {this.all()}
           {Genres.map((genre, key) => {
             return(
-              <div key={key}>
+              <div className="onGenre" key={key}>
                 <button
                   className={genreButton}
                   onClick={() => this.props.onChange('genre', genre)}
