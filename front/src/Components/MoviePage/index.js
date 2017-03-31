@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router';
 import './sass/moviePage.sass';
 import api from '../../apiURI';
 import axios from 'axios';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class MoviePage extends Component {
   state = {
@@ -81,8 +82,10 @@ export default class MoviePage extends Component {
   toList = (list) => {
     if (this.props.movie) {
       console.log('DANS GENRE LIST');
-      return list.reduce((accu, name) => accu ? `${accu}, ${name}` : name, '')
-	  }
+      const infos = list.reduce((accu, name) => accu ? `${accu}, ${name}` : name, '')
+      if (infos) return infos;
+      else return 'N/A';
+    }
   }
 
   // play = () => {
@@ -150,11 +153,12 @@ export default class MoviePage extends Component {
   render() {
     console.log("PRRRRROOOPS",this.props);
     let comments = [];
-    if (this.props.movie.results && this.props.movie.results[0].comments) {
+    if (this.props.movie.results && this.props.user && this.props.movie.results[0].comments) {
       // console.log("PATHHHHH", this.props.movie.results[0].path[this.state.quality].path);
-
       comments = this.props.movie.results[0].comments.map((comment, key) =>
-      <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>{comment.username}: {comment.comment}</p>
+      <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>
+        <img role="presentation" className="picUser" src={`http://localhost:8080/public/${this.props.user.picture}`} />
+        {comment.username} {comment.comment}</p>
     )
     console.log("Comment",comments);
     }
@@ -177,7 +181,9 @@ export default class MoviePage extends Component {
                 <p>{this.props.movie.results[0].title}</p>
               </div>
               <div className="movieInfo">
-                <p> Rate {this.props.movie.results[0].rating} Released {this.props.movie.results.Released} Runtime {this.props.movie.results.Runtime}</p>
+                <p> Rate: {this.props.movie.results[0].rating} </p>
+                <p> Released: {this.props.movie.results.Released} </p>
+                <p> Runtime: {this.props.movie.results.Runtime}</p>
               </div>
               <div className="movieSummary">
                 <p>{this.props.movie.results[0].summary}</p>
@@ -195,37 +201,39 @@ export default class MoviePage extends Component {
             </div>
         }
         <div className="media">
-          <div className="buttons">
-          {this.props.movie.results && this.props.movie.results[0].torrents.map((torrent, key) => {
-            if(torrent.quality === '3D') return ;
-            return(
-                <button key={key} className='oneButton' label={torrent.quality} onClick={() => this.quality(torrent.hash) }>{torrent.quality}</button>
-            )
-          })
-        }
-        </div>
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
-          <video crossOrigin width="620" height="540" controls autoPlay style={{
+          <video crossOrigin width="640" height="360" controls autoPlay style={{
           textAlign: 'center',
         }}>
-        {((!this.props.movie.results[0].path) || (this.props.movie.results[0].path && !this.props.movie.results[0].path[this.state.quality]) &&  <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
+        {((!this.props.movie.results[0].path) || (this.props.movie.results[0].path && !this.props.movie.results[0].path[this.state.quality]) && <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path[this.state.quality].path}`} type="video/mp4" />)
         }
           <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles"  default/>
         </video>
-
         </div>
-
         }
+        <div className="buttons">
+        {this.props.movie.results && this.props.movie.results[0].torrents.map((torrent, key) => {
+          if(torrent.quality === '3D') return ;
+          return(
+              <FlatButton key={key} className='oneButton' label={torrent.quality} onClick={() => this.quality(torrent.hash)}
+                style={{
+                  marginTop: '10px',
+                  marginLeft: '10px',
+                  color: 'white',
+                }}
+                ></FlatButton>
+          )
+        })
+      }
+      </div>
       <div className="allComments">
-        <form onSubmit={this.comments}>
-          <input className="commentInput" type="text" name="comment" placeholder="Leave a comment" />
-          {/* <input type="submit" value="send" /> */}
+        <form onSubmit={this.comments} className="formComments">
           <div className="comments">
             {comments}
           </div>
+          <input className="commentInput" type="text" name="comment" placeholder="Write a comment..." />
         </form>
-
       </div>
     </div>
       </div>

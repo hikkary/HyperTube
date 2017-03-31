@@ -11,7 +11,8 @@ import ffmpeg from 'ffmpeg';
 // faire un filter qui recoit le file le plus lourd
 
 export const movieTorrent = async(req, res) => {
-  // console.log('BACK HASH', req.params.hash);
+  console.log('HELLO');
+  console.log('BACK HASH', req.params.hash);
   const options = {
     connections: 5000,     // Max amount of peers to be connected to.
     uploads: 10,          // Number of upload slots.

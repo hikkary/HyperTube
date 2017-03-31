@@ -125,6 +125,7 @@ export const getSubtitles =  (req, res) => {
     .pipe(srt2vtt())
 	.pipe(fs.createWriteStream(`./public/subtitles/${filename}`))
     res.send(filename)
+    console.log('end of subtitles');
   });
     // console.log('sub', subtitles);
     // subtitles = Object {
