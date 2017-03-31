@@ -1,3 +1,5 @@
+$break: 736px
+
 .allSeries
   display: flex
   justify-content: space-around
@@ -5,6 +7,10 @@
   margin-left: 15vw
   flex-wrap: wrap
   background-color: #363637
+  @media screen and (max-width: $break){
+  width: 80vw
+  justify-content: center
+  margin-left: 10vw !important}
 
 .seriesContainer
   background-color: #363637

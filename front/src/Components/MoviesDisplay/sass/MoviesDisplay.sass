@@ -1,3 +1,6 @@
+$break-small: 1024px
+$break: 736px
+
 body
   margin: 0
 
@@ -10,6 +13,16 @@ body
   justify-content: space-around
   flex-direction: row
   flex-wrap: wrap
+  @media screen and (max-width: $break){
+  width: 80vw
+  justify-content: center
+  margin-left: 10vw !important}
+
+.searchContainer input
+  width: 30vw
+  @media screen and (max-width: $break){
+  width: 80vw
+  margin: 15px}
 
 .TenBestMovies
   padding-top: 15px
@@ -67,7 +80,7 @@ body
   position: absolute
   color: white
   transition: 1s
-  & .genreButton
+	 & .genreButton
       height: 25px
       font-size: 15px
       width: 99%
@@ -76,6 +89,37 @@ body
       cursor: pointer
       background-color: rgba(0, 0, 0, 0.1)
       border: none
+
+
+@media screen and (max-width: $break){
+// .onGenre
+// 	height: 25px
+// 	width: 100%
+.genreTitle
+	width: 100%
+	margin: 5px
+.onList
+	display: flex
+	width: 95vw
+	flex-direction: row
+	flex-wrap: wrap
+	justify-content: center
+.list
+	width: 95vw
+	height: 25vh
+	margin-bottom: 12vh
+	position: relative
+	color: white
+	transition: 1s
+	& .genreButton
+		height: 25px
+		font-size: 15px
+		width: 100%
+		outline: none
+		color: white
+		cursor: pointer
+		background-color: rgba(0, 0, 0, 0.1)
+		border: none}
 
 .title
   width: inherit
@@ -104,6 +148,9 @@ body
   width: 26vw
   // padding: 100px 30px 0
   z-index: 3
+  @media screen and (max-width: $break){
+	 width: 80vw
+ 	margin-top: 30px}
 
 .input-range
   margin-bottom: 50px
@@ -120,3 +167,5 @@ body
   margin: 10px 0 15px 0
   // margin-left: 15vw
   text-align: center
+  @media screen and (max-width: $break){
+	 background-color: rgba(255, 255, 255, 0.1)}
