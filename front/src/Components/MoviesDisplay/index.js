@@ -6,10 +6,12 @@ import SortMovies from './SortMovies';
 import SearchMenu from '../SearchMenu';
 import _ from 'lodash';
 import './sass/MoviesDisplay.sass';
+import './sass/spinner.css';
 import InfiniteScroll from 'react-infinite-scroller';
 
 export default class MoviesDisplay extends Component {
   state = {
+	hasMore:true,
     ready : false,
     genres: '',
     year: {
@@ -37,6 +39,18 @@ export default class MoviesDisplay extends Component {
     this.loadMovies = _.debounce(this.loadMovies, 1000);
     this.loadMovies();
   }
+
+  componentWillReceiveProps (newProps){
+	if(newProps.movies && newProps.movies.length === 0){
+		this.setState({ hasMore: false });
+	} else {
+		this.setState({ hasMore: true });
+	}
+	if(newProps.movies[0] && newProps.movies[0].errors){
+		this.setState({ hasMore: false });
+	}
+  }
+
 
   componentWillUnmount() {
     this._mounted = false;
@@ -129,12 +143,17 @@ export default class MoviesDisplay extends Component {
         <div className="list">
           <MenuMovies translation={this.props.translation} onChange={this.handleChange} />
         </div>
+		{!this.state.hasMore && <div className="noMedia"> <p>NO MEDIA FOUND</p></div>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadMovies}
           initialLoad={false}
-          hasMore={true}
-          loader={<div className="loader">Loading ...</div>}>
+          hasMore={this.state.hasMore}
+          loader={<div className="spinner">
+			  <div className="bounce1"></div>
+			  <div className="bounce2"></div>
+			  <div className="bounce3"></div>
+			</div>}>
           {
             <div className="allMovies">
                 {allMovies}

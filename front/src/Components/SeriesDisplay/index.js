@@ -11,6 +11,7 @@ import img from '../../../public/series_default.png';
 
 export default class SeriesDisplay extends Component {
   state={
+	hasMore: true,
     ready: false,
     genre: '',
     year: {
@@ -36,6 +37,17 @@ export default class SeriesDisplay extends Component {
     console.log("PROPS DID MOUNT SERIESDISPLAY",this.props);
     this.loadSeries = _.debounce(this.loadSeries, 1000);
     this.handleChange();
+  }
+
+  componentWillReceiveProps (newProps){
+	  if(newProps.series && newProps.series.length === 0){
+		  this.setState({ hasMore: false });
+	  } else {
+		  this.setState({ hasMore: true });
+	  }
+	  if(newProps.series[0] && newProps.series[0].errors){
+		  this.setState({ hasMore: false });
+	  }
   }
 
   resetValues = (key) => {
@@ -106,11 +118,16 @@ export default class SeriesDisplay extends Component {
           <MenuSeries onChange={this.handleChange} />
 
         </div>
+		{!this.state.hasMore && <div className="noMedia"> <p>NO MEDIA FOUND</p></div>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadSeries}
-          hasMore={true}
-          loader={<div className="loader">Loading ...</div>}
+          hasMore={this.state.hasMore}
+          loader={<div className="spinner">
+			  <div className="bounce1"></div>
+			  <div className="bounce2"></div>
+			  <div className="bounce3"></div>
+			</div>}
           initialLoad={false}
         >
         {
