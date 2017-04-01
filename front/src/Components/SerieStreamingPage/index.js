@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import {browserHistory} from 'react-router';
 import _ from 'lodash';
+import FlatButton from 'material-ui/FlatButton';
 import './sass/SerieStreamingPage.sass';
 import api from '../../apiURI';
 import axios from 'axios';
@@ -50,6 +52,12 @@ export default class SerieStreamingPage extends Component {
   }
 }
 
+  return = () => {
+    console.log("MES PROPS",this.props);
+    const {serieId} = this.props;
+    browserHistory.push(`/app/series/${serieId}`)
+  }
+
   changeQuality = (hash) => {
     const splitHash = hash.split(':', 4);
     // console.log(splitHash);
@@ -76,6 +84,7 @@ export default class SerieStreamingPage extends Component {
         serieId,
         episodeId,
       );
+      comment.value = '';
     }
   }
 
@@ -85,11 +94,13 @@ export default class SerieStreamingPage extends Component {
 	console.log("PROPS RENDER ", this.props);
     const { redraw } = this.state;
     let comments = [];
-    if (this.props.serie && this.props.serie.comments) {
+    if (this.props.serie && this.props.user && this.props.serie.comments) {
       comments = this.props.serie.comments.map((comment, key) =>
-      <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>{comment.username}: {comment.comment}</p>
+      <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>
+        <img role="presentation" className="picUser" src={`http://localhost:8080/public/${this.props.user.picture}`} />
+        {comment.username} {comment.comment}</p>
     )
-    // console.log("Comment",comments);
+    console.log("Comment",comments);
     }
     return (
       <div className="streamingSerie">
@@ -97,6 +108,7 @@ export default class SerieStreamingPage extends Component {
           <div className="episodeTitle">{this.props.serie.title}</div>
           <div className="episodeSummary">{this.props.serie.overview}</div>
         </div>}
+        <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
 
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
           <video crossOrigin width="720" height="540" autoPlay controls style={{
@@ -110,21 +122,32 @@ export default class SerieStreamingPage extends Component {
         </video>
         </div>
         }
-
+          <div className="buttons">
           {this.props.serie && _.map(this.props.serie.torrents, (torrent, key) => {
+            if(key === '0') return ;
             return(
               <div key={key}>
-                <button onClick={() => { this.changeQuality(torrent.url) } }>{key}</button>
+                <FlatButton key={key}
+                  className='oneButton'
+                  label={key}
+                  onClick={() => { this.changeQuality(torrent.url) } }
+                  style={{
+                    marginTop: '10px',
+                    marginLeft: '10px',
+                    color: 'white',
+                  }}>
+
+                </FlatButton>
               </div>
             )
           })}
-          <div className="comments">
-            {comments}
-          </div>
-          <div>
-            <form onSubmit={this.comments}>
-              <input type="text" name="comment" placeholder="Leave a comment" />
-              <input type="submit" value="send" />
+        </div>
+          <div className="allComments">
+            <form onSubmit={this.comments} className="formComments">
+              <div className="comments">
+                {comments}
+              </div>
+              <input className="commentInput" type="text" name="comment" placeholder="Write a comment..." />
             </form>
           </div>
         </div>
