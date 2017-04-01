@@ -109,6 +109,25 @@ export default class MoviesDisplay extends Component {
     this.setState({ page: { valuePage: nextPage, valueScroll: 1 } });
   }
 
+  seen = (movie) => {
+
+    console.log('MY ID', this.props.user.id);
+    console.log('MY PROPS', this.props);
+    console.log('MY Seen', movie);
+    if (movie){
+    const seen = movie.seenBy.map((user) =>{
+      if(user === this.props.user.id)
+      {
+        return "movieSeen"
+      }
+    })
+    console.log("SEEEN" ,seen);
+    if(seen.length !== 0) return "movieSeen";
+    else return "movie";
+  }
+
+  }
+
   render(){
     const {current} = this.props.translation;
     let { movies } = this.props;
@@ -119,7 +138,7 @@ export default class MoviesDisplay extends Component {
         return (
         <div className="allInfo" key={key}>
             <div onClick={() => this.goMoviePage(movie.id)}
-              className="movie"
+              className={this.seen(movie)}
               style={{ backgroundImage: `url('${movie.largeImage}')` }}
             >
               <div className="textContainer">

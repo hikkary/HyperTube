@@ -93,6 +93,7 @@ export const get = async (req, res) => {
         'rating',
         'year',
         'id',
+        'seenBy',
         'provider',
         'largeImage',
       ])));

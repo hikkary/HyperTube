@@ -45,8 +45,8 @@ export default class MoviePage extends Component {
 
   componentWillReceiveProps = (newProps) => {
     if (newProps.movie.results) {
-      console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
-      console.log('newprops', newProps.movie.results[0].torrents[0].hash);
+
+
 	  if (newProps.movie.results[0].torrents[0].quality === '3D'){
 		  const hash = newProps.movie.results[0].torrents[1].hash;
 		  this.setState({ quality: hash });
