@@ -59,19 +59,38 @@ export default class SeriePage extends Component {
     return (
       <div>
         <div className="infoContainer">
-        {this.props.serie && this.props.serie.images &&  <div className="displayBigPoster" style={{
+        {this.props.serie && this.props.serie.images &&
+			<div className="allSerieInfo">
+			<div className="displayBigPoster" style={{
             backgroundImage: `url('${this.props.serie.images.poster}')`
           }}>
+		   </div>
+
             <div className="serieTitle">
               <p>{this.props.serie.title}</p>
             </div>
             <div className="serieInfo">
-              <p>{this.props.serie.rating}</p>
+              <p>Rate: {Math.floor(this.props.serie.rating)}</p>
             </div>
+			<div className="serieReleased">
+              <p>Released: {this.props.serie.released}</p>
+		   </div>
+		   <div className="serieDuration">
+				<p>Released: {this.props.serie.duration}</p>
+		  </div>
             <div className="serieSummary">
               <p>{this.props.serie.description}</p>
             </div>
-          </div> }
+			<div className="serieGenre">
+			  <p>Genres: {this.props.serie.genres}</p>
+			</div>
+			<div className="serieCast">
+			  <p>With: {this.props.serie.cast}</p>
+			</div>
+			<div className="serieDirectors">
+			  <p>Directors: {this.props.serie.directors}</p>
+			</div>
+		</div>}
           <div className={this.state.divDisplay}>
             {this.props.serie && this.props.serie.content && (this.seasonDisplay())}
           </div>

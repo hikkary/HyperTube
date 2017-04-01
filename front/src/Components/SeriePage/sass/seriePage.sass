@@ -1,3 +1,5 @@
+$break: 736px
+
 .infoContainer
   display: flex
   flex-wrap: wrap
@@ -12,10 +14,31 @@
   // background-position: center
   background-size: cover
   background-position: 100% 20%
-  background-size: 60%
+  background-size: 100%
+  filter: blur(1px)
+  z-index: -1
+  position: absolute
 
-.serieTitle, .serieInfo, .serieSummary
+.allSerieInfo
+	height: 400px
+	width: 100%
+	background-color: rgba(0, 0, 0, 0.4)
+	@media screen and (max-width: $break)
+	    overflow: scroll
+
+.serieTitle, .serieInfo, .serieSummary, .serieReleased, .serieDuration, .serieSummary, .serieGenre, .serieCast, .serieDirectors
   color: white
+  text-shadow: 2px 1px black
+
+
+.serieTitle
+	font-size: 30px
+	line-height: 20px
+	font-weight: bold
+	margin: 0px
+
+.serieSummary, .serieCast
+	width: 40%
 
 .seasonDisplay
   display: flex
