@@ -22,6 +22,14 @@ export default class SeriePage extends Component {
     browserHistory.push(`/app/series/${serieId}/${id}`);
   }
 
+  return = () => {
+    if(this.state.divDisplay === "seasonDisplay"){
+      browserHistory.push('/app/series')
+    } else {
+      this.setState({divDisplay: 'seasonDisplay', currentSeason: null})
+    }
+  }
+
   episodesList = (season) => {
     if (this.props.serie.content) {
       const episodes = this.props.serie.content.map((episode, key) => {
@@ -91,6 +99,8 @@ export default class SeriePage extends Component {
 			  <p>Directors: {this.props.serie.directors}</p>
 			</div>
 		</div>}
+          <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
+
           <div className={this.state.divDisplay}>
             {this.props.serie && this.props.serie.content && (this.seasonDisplay())}
           </div>
