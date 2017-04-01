@@ -13,7 +13,11 @@ export default class SerieStreamingPage extends Component {
     lang: '',
   }
 
+  _mounted = false
+
+
   componentDidMount() {
+    this._mounted = true;
     this.props.actions.serie.getEpisode({
       id: this.props.id,
       serieId: this.props.serieId,
@@ -24,7 +28,12 @@ export default class SerieStreamingPage extends Component {
     // Mettre le hash a cote du path dans l'objet
   }
 
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
   componentWillReceiveProps = async(newProps) => {
+    if (!this._mounted) return false;
     if (newProps.serie && newProps.serie.torrents) {
       if(newProps.user.language === 'en') { this.setState({ lang: 'eng' }) }
       if(newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) }
@@ -45,6 +54,7 @@ export default class SerieStreamingPage extends Component {
           episode: newProps.serie.episode,
         }
       }).then((result) => {
+        if (!this._mounted) return false;
         console.log('res front subtitles', result);
         this.setState({ filename: result.data });
       })
@@ -59,6 +69,8 @@ export default class SerieStreamingPage extends Component {
   }
 
   changeQuality = (hash) => {
+    if (!this._mounted) return false;
+
     const splitHash = hash.split(':', 4);
     // console.log(splitHash);
     const finalSplit = splitHash[3].split('&', 1);
@@ -68,6 +80,7 @@ export default class SerieStreamingPage extends Component {
   }
 
   comments = (e) => {
+    if (!this._mounted) return false;
     e.preventDefault();
     console.log(e.target.comment.value);
     const { comment } = e.target;
