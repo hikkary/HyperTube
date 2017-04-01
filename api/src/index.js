@@ -38,6 +38,7 @@ seriesRouter
   .get('/api/series/tenBest', series.tenBest)
   .put('/api/serie/comment', serie.addComment)
   .post('/api/series/getInfo', series.getInfo)
+  .post('/api/serie/seenSerie', serie.userSeenSerie)
   .post('/api/serie/subtitles', serie.getSubtitles);
 
 usersRouter

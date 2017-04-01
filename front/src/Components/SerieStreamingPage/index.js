@@ -101,6 +101,27 @@ export default class SerieStreamingPage extends Component {
     }
   }
 
+  onPlay = (serieId, userId, episodeId) => {
+    console.log('entereddddddd', userId);
+    axios({
+      method: 'POST',
+      url: `${api}/serie/seenSerie`,
+      data: {
+        serieId,
+        userId,
+        episodeId,
+      }
+    }).then((result) => {
+      console.log('yo', result);
+      if (result.data.errors) {
+        this.setState({ error: result.data.errors });
+      }
+    });
+
+
+  }
+
+
   render() {
     // console.log('this.props', this.props);
 	console.log("STATE REMDER", this.state);
@@ -124,7 +145,7 @@ export default class SerieStreamingPage extends Component {
         <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
 
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
-          <video crossOrigin width="720" height="540" autoPlay controls style={{
+          <video crossOrigin width="720" height="540" onPlay={this.onPlay(this.props.serieId, this.props.user.id, this.props.serie.tvdb_id)} autoPlay controls style={{
           textAlign: 'center',
         }}>
         {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||

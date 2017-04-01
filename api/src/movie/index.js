@@ -67,7 +67,7 @@ export const userSeenMovie = (req, res) => {
         console.log('title movie', data[0].title);
         console.log("USER OOO",user);
 
-        user[0].lastSeen.push(data[0].title);
+        user[0].lastSeen.unshift(data[0].title);
         user[0].lastSeen = _.uniq(user[0].lastSeen);
         user[0].lastSeen = user[0].lastSeen.slice(0, 10);
         user[0].save();

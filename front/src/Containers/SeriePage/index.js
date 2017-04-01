@@ -4,15 +4,16 @@ import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import SeriePage from '../../Components/SeriePage';
 
-const Serie = ({ serie, translation, actions, id }) =>
+const Serie = ({ serie, user, translation, actions, id }) =>
   <div>
-    <SeriePage serie={serie} id={id} translation={translation} actions={actions} />
+    <SeriePage serie={serie} user={user} id={id} translation={translation} actions={actions} />
   </div>
 
 const mapStateToProps = (state, ownProps) => ({
   translation: state.translation,
   id: ownProps.params.id,
   serie: state.serie,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => ({

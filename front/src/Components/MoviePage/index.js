@@ -152,7 +152,10 @@ export default class MoviePage extends Component {
         this.setState({ error: result.data.errors });
       }
     });
+
+
   }
+
 
   render() {
     console.log("PRRRRROOOPS",this.props);
