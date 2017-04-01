@@ -34,8 +34,9 @@ export default class SeriePage extends Component {
     if (this.props.serie.content) {
       const episodes = this.props.serie.content.map((episode, key) => {
         if(episode.season === season){
+          let divName = episode.episode % 2 !== 0 ? 'episodes one' : 'episodes two'
           return(
-            <div key={key} className="episodes" onClick={() => { this.serieStreaming(episode) } }>
+            <div key={key} className={divName} onClick={() => { this.serieStreaming(episode) } }>
               <p> E {episode.episode} S {season} {episode.title}</p>
             </div>
           )}
