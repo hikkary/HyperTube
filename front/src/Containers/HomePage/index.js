@@ -65,6 +65,7 @@ class HomePage extends Component {
   }
 
   displayNone = () => {
+
     this.setState({displayBest: '', displaySearch: 'none' });
   }
 

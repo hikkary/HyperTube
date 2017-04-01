@@ -26,6 +26,8 @@ export default class MenuSeries extends Component {
   }
 
   displayMenu = (e) => {
+    let genre = document.getElementsByClassName('list')[0]
+    genre.style.height === '35vh' ? genre.style.height = "5vh" : genre.style.height = "35vh";
     this.state.genreButton === 'genreButton' ? this.setState({ genreButton: 'buttonList', operatorGenre: '+' }) : this.setState({ genreButton: 'genreButton', operatorGenre: '-' }) ;
   }
 
