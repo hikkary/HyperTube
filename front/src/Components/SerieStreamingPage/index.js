@@ -151,7 +151,7 @@ export default class SerieStreamingPage extends Component {
         </video>
         </div>
         }
-          <div className="buttons">
+          <div className="buttonsSerie">
           {this.props.serie && _.map(this.props.serie.torrents, (torrent, key) => {
             if(key === '0') return ;
             return(
@@ -171,12 +171,12 @@ export default class SerieStreamingPage extends Component {
             )
           })}
         </div>
-          <div className="allComments">
-            <form onSubmit={this.comments} className="formComments">
-              <div className="comments">
+          <div className="allCommentsSerie">
+            <form onSubmit={this.comments} className="formCommentsSerie">
+              <div className="commentsSerie">
                 {comments}
               </div>
-              <input className="commentInput" type="text" name="comment" placeholder="Write a comment..." />
+              <input className="commentInputSerie" type="text" name="comment" placeholder="Write a comment..." />
             </form>
           </div>
         </div>
