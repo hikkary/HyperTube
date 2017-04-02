@@ -140,7 +140,7 @@ export default class SerieStreamingPage extends Component {
         <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
 
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
-          <video crossOrigin width="720" height="540" onPlay={this.onPlay(this.props.serieId, this.props.user.id, this.props.serie.tvdb_id)} autoPlay controls style={{
+          <video crossOrigin width="640" height="360" onPlay={this.onPlay(this.props.serieId, this.props.user.id, this.props.serie.tvdb_id)} autoPlay controls style={{
           textAlign: 'center',
         }}>
         {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||

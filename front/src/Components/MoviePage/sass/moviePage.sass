@@ -1,113 +1,53 @@
-$break-small: 1024px
+$break-small: 1020px
 $break: 736px
 
 .infoContainer
   display: flex
   flex-wrap: wrap
-  // height: 100vh
-
-.SubMenu
-  // display: none
-.media
-  width: 100%
-  height: auto
-  display: flex
-  justify-content: center
-  align-items: center
-  flex-wrap: wrap
-
-.videoPlayer
-  display: flex
-  // display: inline-block
-  width: 100%
-  height: 100%
-  // display: block
-  // position: relative
-  justify-content: center
-  // margin: 0
-  // padding: 0
-  // overflow: hidden
-  // font-size: 0
-  video
-    // border: 1px solid red
-    // position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    display: block
-    // margin: 0 auto
-
-
-.buttons
-  height: 80px
-  justify-content: center
-  display: flex
-  align-items: center
-
-
-.allComments
-  width: 100%
-  display: flex
-  justify-content: center
-
-.comments
-  max-height: 300px
-  overflow: hidden
-
-.commentInput
-  width: 614px
-  height: 30px
-  color: black
-  font-size: 15px
-  padding-left: 5px
-  background-color: #f2efec
-  outline: none
-
-.formComments
-  background-color: #f2efec
-
-.userComment
-  cursor: pointer
-  width: 100%
-  color: black
-  padding-left: 5px
-  // padding-bottom: 10px
-  // border-bottom: 1px solid white
-
-.picUser
-  width: 30px
-  height: 30px
-  border-radius: 50%
+  flex-direction: row
+  height: 400px
 
 .displayBigPoster
-  height: 500px
+  height: 400px
   width: 100%
   background-color: black
   background-repeat: no-repeat
   background-position: center
   background-size: cover
+  z-index: -1
+  position: absolute
+
+.allMoviesInfo
+  width: 100%
+  height: 400px
+  background-color: rgba(0, 0, 0, 0.4)
+  @media screen and (max-width: $break-small)
+    overflow-y: scroll
+  @media screen and (max-width: $break)
+  	overflow-y: scroll
 
 .movieTitle
   color: white
   font-size: 30px
-  p
-    margin: 0px 0px 5px 5px
+  line-height: 20px
+  font-weight: bold
+  margin: 0px
 
 .movieInfo, .movieGenre, .movieCast, .movieDirectors
   color: white
-  width: 40%
   p
     margin: 0px 0px 5px 5px
 
 .movieSummary
-  // height: 30%
-  overflow-y: hidden
-  color: #363637
+  // color: #363637
+  color: white
   width: 40%
-  font-weight: bold
+  // font-weight: bold
   p
     margin: 15px 0px 15px 5px
+
+.movieCast
+  width: 40%
 
 .oneMovie,
   height: 400px
@@ -142,3 +82,90 @@ $break: 736px
     & p
       color: white
       font-weight: bold
+
+
+.SubMenu
+  // display: none
+.media
+  width: 100%
+  height: auto
+  display: flex
+  justify-content: center
+  align-items: center
+  flex-wrap: wrap
+
+.videoPlayer
+  display: flex
+  width: 100%
+  justify-content: center
+  video
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    display: block
+    // margin: 0 auto
+
+.buttons
+  height: 80px
+  justify-content: center
+  display: flex
+  align-items: center
+
+.allCommentsMovie
+  width: 100%
+  display: flex
+  justify-content: center
+  @media screen and (max-width: $break)
+    width: 100%
+    height: 50vh
+
+.commentsMovie
+  max-height: 300px
+  overflow: hidden
+  background-color: #f2efec
+  @media screen and (max-width: $break)
+    width: 100%
+    overflow-y: scroll
+
+.commentInputMovie
+  width: 614px
+  height: 30px
+  color: black
+  font-size: 15px
+  padding-left: 5px
+  background-color: #f2efec
+  outline: none
+  @media screen and (max-width: $break)
+    width: 100%
+    padding: 0
+    margin: 0
+    border: none
+
+.userCommentMovie
+  cursor: pointer
+  width: 100%
+  color: black
+  padding-left: 5px
+
+.formCommentsMovie
+  @media screen and (max-width: $break)
+    width: 90%
+
+.picUser
+  width: 30px
+  height: 30px
+  border-radius: 50%
+
+.return
+  height: 50px
+  width: 100%
+  margin-top: 10px
+  & i
+    font-size: 50px
+    height: 50px
+    width: 50px
+    color: white
+    margin: 10px
+    & :hover
+    cursor: pointer

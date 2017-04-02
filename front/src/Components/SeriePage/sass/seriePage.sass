@@ -25,11 +25,12 @@ $break: 736px
 	width: 100%
 	background-color: rgba(0, 0, 0, 0.4)
 	@media screen and (max-width: $break)
-	    overflow: scroll
+	    overflow-y: scroll
 
-.serieTitle, .serieInfo, .serieSummary, .serieReleased, .serieDuration, .serieSummary, .serieGenre, .serieCast, .serieDirectors
+.serieTitle, .serieInfo, .serieSummary,.serieReleased, .serieDuration, .serieGenre, .serieCast, .serieDirectors
   color: white
-  text-shadow: 2px 1px black
+  // text-shadow: 2px 1px black
+
 
 .return
   height: 50px
@@ -49,8 +50,11 @@ $break: 736px
 	font-weight: bold
 	margin: 0px
 
-.serieSummary, .serieCast
+.serieSummary
 	width: 40%
+  color: #363637
+  text-shadow: 2px 1px black
+
 
 .seasonDisplay
   display: flex

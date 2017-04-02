@@ -163,7 +163,7 @@ export default class MoviePage extends Component {
     if (this.props.movie.results && this.props.user && this.props.movie.results[0].comments) {
       // console.log("PATHHHHH", this.props.movie.results[0].path[this.state.quality].path);
       comments = this.props.movie.results[0].comments.map((comment, key) =>
-      <p className="userComment" onClick={()=> this.goProfile(comment.id)} key={key}>
+      <p className="userCommentMovie" onClick={()=> this.goProfile(comment.id)} key={key}>
         <img role="presentation" className="picUser" src={`http://localhost:8080/public/${this.props.user.picture}`} />
         {comment.username} {comment.comment}</p>
     )
@@ -180,10 +180,12 @@ export default class MoviePage extends Component {
     // }// console.log('props movies' , movie);
     return (
     <div>
-          {this.props.movie.results && <div className="infoContainer">
+      <div className="infoContainer">
+          {this.props.movie.results &&
+            <div className="allMoviesInfo">
             <div className="displayBigPoster" style={{
               backgroundImage: `url('${this.props.movie.results[0].largeImage}')`
-            }}>
+            }}></div>
               <div className="movieTitle">
                 <p>{this.props.movie.results[0].title}</p>
               </div>
@@ -204,7 +206,7 @@ export default class MoviePage extends Component {
               <div className="movieDirectors">
                 <p>Director : {this.toList(this.props.movie.results[0].directors)}</p>
               </div>
-            </div>
+
             </div>
         }
         <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
@@ -235,17 +237,17 @@ export default class MoviePage extends Component {
         })
       }
       </div>
-      <div className="allComments">
-        <form onSubmit={this.comments} className="formComments">
-          <div className="comments">
+      <div className="allCommentsMovie">
+        <form onSubmit={this.comments} className="formCommentsMovie">
+          <div className="commentsMovie">
             {comments}
           </div>
-          <input className="commentInput" type="text" name="comment" placeholder="Write a comment..." />
+          <input className="commentInputMovie" type="text" name="comment" placeholder="Write a comment..." />
         </form>
       </div>
     </div>
       </div>
-
+</div>
     )
   }
 }
