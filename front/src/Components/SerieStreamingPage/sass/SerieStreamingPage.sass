@@ -1,3 +1,5 @@
+$break: 736px
+
 body
   margin: 0
 
@@ -23,10 +25,23 @@ body
   width: 100%
   display: flex
   justify-content: center
+  @media screen and (max-width: $break)
+    width: 100%
 
 .comments
   max-height: 300px
   overflow: hidden
+  @media screen and (max-width: $break)
+    width: 100%
+    max-width: 100%
+
+.userComment
+    cursor: pointer
+    width: 100%
+    color: black
+    padding-left: 5px
+    @media screen and (max-width: $break)
+      width: 100%
 
 .commentInput
   width: 614px
@@ -36,3 +51,9 @@ body
   padding-left: 5px
   background-color: #f2efec
   outline: none
+  @media screen and (max-width: $break)
+    width: 100%
+
+@media screen and (max-width: $break)
+  video
+    width: 100%
