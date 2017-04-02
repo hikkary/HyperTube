@@ -57,9 +57,15 @@ export const userSeenMovie = (req, res) => {
   console.log('idssss', userId, movieId);
   Movie.find({ id: movieId })
   .then((data) => {
-    data[0].seenBy.push(userId);
-    data[0].seenBy = _.uniq(data[0].seenBy);
-    data[0].save();
+    //Regle le bug des affiche multiple qui n;affiche pas seens
+    data.map((movie) => {
+      movie.seenBy.push(userId);
+      movie.seenBy = _.uniq(data[0].seenBy);
+      movie.save();
+    })
+    // data[0].seenBy.push(userId);
+    // data[0].seenBy = _.uniq(data[0].seenBy);
+    // data[0].save({"multi": true});
     console.log("USER IDD",userId);
     User.find({ _id: userId })
       .then((user) => {
