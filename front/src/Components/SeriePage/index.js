@@ -22,13 +22,42 @@ export default class SeriePage extends Component {
     browserHistory.push(`/app/series/${serieId}/${id}`);
   }
 
+  return = () => {
+    if(this.state.divDisplay === "seasonDisplay"){
+      browserHistory.push('/app/series')
+    } else {
+      this.setState({divDisplay: 'seasonDisplay', currentSeason: null})
+    }
+  }
+
+  seen = (serie) => {
+
+    console.log('MY ID', this.props.user.id);
+    console.log('MY PROPS', this.props);
+
+    if (serie && serie.seenBy){
+    const seen = serie.seenBy.map((user) =>{
+      if(user === this.props.user.id)
+      {
+        return "Seen"
+      }
+    })
+    console.log("SEEEN" ,seen);
+    if(seen.length !== 0) return <i className="fa fa-eye" aria-hidden="true"></i>;
+    else return ;
+  }
+
+  }
+
+
   episodesList = (season) => {
     if (this.props.serie.content) {
       const episodes = this.props.serie.content.map((episode, key) => {
         if(episode.season === season){
+          let divName = episode.episode % 2 !== 0 ? 'episodes one' : 'episodes two'
           return(
-            <div key={key} className="episodes" onClick={() => { this.serieStreaming(episode) } }>
-              <p> E {episode.episode} S {season} {episode.title}</p>
+            <div key={key} className={divName} onClick={() => { this.serieStreaming(episode) } }>
+              <p> E {episode.episode} S {season} {episode.title} {this.seen(episode)}</p>
             </div>
           )}
           return null;
@@ -59,19 +88,40 @@ export default class SeriePage extends Component {
     return (
       <div>
         <div className="infoContainer">
-        {this.props.serie && this.props.serie.images &&  <div className="displayBigPoster" style={{
+        {this.props.serie && this.props.serie.images &&
+			<div className="allSerieInfo">
+			<div className="displayBigPoster" style={{
             backgroundImage: `url('${this.props.serie.images.poster}')`
           }}>
+		   </div>
+
             <div className="serieTitle">
               <p>{this.props.serie.title}</p>
             </div>
             <div className="serieInfo">
-              <p>{this.props.serie.rating}</p>
+              <p>Rate: {Math.floor(this.props.serie.rating)}</p>
             </div>
+			<div className="serieReleased">
+              <p>Released: {this.props.serie.released}</p>
+		   </div>
+		   <div className="serieDuration">
+				<p>Released: {this.props.serie.duration}</p>
+		  </div>
             <div className="serieSummary">
               <p>{this.props.serie.description}</p>
             </div>
-          </div> }
+			<div className="serieGenre">
+			  <p>Genres: {this.props.serie.genres}</p>
+			</div>
+			<div className="serieCast">
+			  <p>With: {this.props.serie.cast}</p>
+			</div>
+			<div className="serieDirectors">
+			  <p>Directors: {this.props.serie.directors}</p>
+			</div>
+		</div>}
+          <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
+
           <div className={this.state.divDisplay}>
             {this.props.serie && this.props.serie.content && (this.seasonDisplay())}
           </div>

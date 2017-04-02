@@ -1,4 +1,4 @@
-import { Serie } from '../Schema';
+import { Serie, User } from '../Schema';
 import { Comment } from '../Joi';
 import _ from 'lodash';
 import Joi from 'joi';
@@ -76,6 +76,47 @@ export const addComment = async (req, res) => {
       res.send({ status: true, ...results[0].content[index] });
     })
     .catch((err) => console.log(err));
+};
+
+export const userSeenSerie= (req, res) => {
+  console.log(req.body);
+  const { userId, serieId, episodeId } = req.body;
+  console.log('idssss', userId, serieId);
+  Serie.find({ imdb_code: serieId })
+  .then((data) => {
+    console.log(data);
+    console.log("================");
+    console.log(data)
+    console.log("================");
+    const index = _.indexOf(data[0].content, _.find(data[0].content, { tvdb_id: Number(episodeId) }));
+    console.log("INDDEX", index);
+    if(!data[0].content[index].seenBy)
+    {
+      data[0].content[index].seenBy = [];
+    }
+
+    data[0].content[index].seenBy.unshift(userId);
+    data[0].content.splice(index, 1, data[0].content[index])
+
+    data[0].save();
+    // data[0].seenBy.push(userId);
+    // data[0].seenBy = _.uniq(data[0].seenBy);
+    // data[0].save();
+    console.log("USER IDD",userId);
+    User.find({ _id: userId })
+      .then((user) => {
+        if (!user) return res.send({ status: false, errors: 'noUsername'});
+        console.log('title movie', data[0].title);
+        console.log("USER OOO",user);
+
+        user[0].lastSeen.unshift(data[0].title);
+        user[0].lastSeen = _.uniq(user[0].lastSeen);
+        user[0].lastSeen = user[0].lastSeen.slice(0, 10);
+        user[0].save();
+        res.send({ status: true });
+        console.log('user', user[0]);
+      });
+  });
 };
 
 export const getSubtitles = (req, res) => {

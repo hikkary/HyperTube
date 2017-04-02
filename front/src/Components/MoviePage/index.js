@@ -39,10 +39,14 @@ export default class MoviePage extends Component {
     this._mounted = false;
   }
 
+  return = () =>{
+    browserHistory.push('/app/movies');
+  }
+
   componentWillReceiveProps = (newProps) => {
     if (newProps.movie.results) {
-      console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
-      console.log('newprops', newProps.movie.results[0].torrents[0].hash);
+
+
 	  if (newProps.movie.results[0].torrents[0].quality === '3D'){
 		  const hash = newProps.movie.results[0].torrents[1].hash;
 		  this.setState({ quality: hash });
@@ -148,7 +152,10 @@ export default class MoviePage extends Component {
         this.setState({ error: result.data.errors });
       }
     });
+
+
   }
+
 
   render() {
     console.log("PRRRRROOOPS",this.props);
@@ -200,6 +207,7 @@ export default class MoviePage extends Component {
             </div>
             </div>
         }
+        <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
         <div className="media">
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
           <video crossOrigin width="640" height="360" controls autoPlay style={{
