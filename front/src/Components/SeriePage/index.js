@@ -31,8 +31,6 @@ export default class SeriePage extends Component {
   }
 
   seen = (serie) => {
-    // console.log('MY ID', this.props.user.id);
-    // console.log('MY PROPS', this.props);
     if (serie && serie.seenBy) {
       const seen = serie.seenBy.map((user) => {
         if(user === this.props.user.id)
