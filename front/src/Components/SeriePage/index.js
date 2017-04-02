@@ -31,22 +31,19 @@ export default class SeriePage extends Component {
   }
 
   seen = (serie) => {
-
-    console.log('MY ID', this.props.user.id);
-    console.log('MY PROPS', this.props);
-
-    if (serie && serie.seenBy){
-    const seen = serie.seenBy.map((user) =>{
-      if(user === this.props.user.id)
-      {
-        return "Seen"
-      }
-    })
-    console.log("SEEEN" ,seen);
-    if(seen.length !== 0) return <i className="fa fa-eye" aria-hidden="true"></i>;
-    else return ;
-  }
-
+    // console.log('MY ID', this.props.user.id);
+    // console.log('MY PROPS', this.props);
+    if (serie && serie.seenBy) {
+      const seen = serie.seenBy.map((user) => {
+        if(user === this.props.user.id)
+        {
+          return "Seen";
+        }
+      });
+      console.log("SEEEN" ,seen);
+      if (seen.length !== 0) return <i className="fa fa-eye" aria-hidden="true"></i>;
+      else return ;
+    }
   }
 
 
@@ -54,7 +51,7 @@ export default class SeriePage extends Component {
     if (this.props.serie.content) {
       const episodes = this.props.serie.content.map((episode, key) => {
         if(episode.season === season){
-          let divName = episode.episode % 2 !== 0 ? 'episodes one' : 'episodes two'
+          let divName = episode.episode % 2 !== 0 ? 'episodes one' : 'episodes two';
           return(
             <div key={key} className={divName} onClick={() => { this.serieStreaming(episode) } }>
               <p> E {episode.episode} S {season} {episode.title} {this.seen(episode)}</p>
@@ -127,7 +124,7 @@ export default class SeriePage extends Component {
           </div>
           <div className="listEpisodes">
               {this.props.serie && this.props.serie.content && this.state.currentSeason && this.episodesList(this.state.currentSeason)}
-          </div>}
+          </div>
         </div>
       </div>
     )

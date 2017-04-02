@@ -13,8 +13,7 @@ export default class SerieStreamingPage extends Component {
     lang: '',
   }
 
-  _mounted = false
-
+  _mounted = false;
 
   componentDidMount() {
     this._mounted = true;
@@ -70,11 +69,9 @@ export default class SerieStreamingPage extends Component {
 
   changeQuality = (hash) => {
     if (!this._mounted) return false;
-
     const splitHash = hash.split(':', 4);
     // console.log(splitHash);
     const finalSplit = splitHash[3].split('&', 1);
-
     this.setState({ quality: finalSplit[0] , redraw: true });
     setTimeout(() => this.setState({ redraw: false }), 0)
   }
@@ -117,8 +114,6 @@ export default class SerieStreamingPage extends Component {
         this.setState({ error: result.data.errors });
       }
     });
-
-
   }
 
 

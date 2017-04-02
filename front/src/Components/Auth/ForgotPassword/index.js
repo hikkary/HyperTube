@@ -47,7 +47,7 @@ class ForgotPassword extends React.Component {
             Forgot Your Password ?
           </div>
           <form className="formPass" onSubmit={this.forgotPassword}>
-          {this.state.errors && <div className="errorLogin">
+          {this.state.errors && <div className="error" style={{ margin: 'auto' }}>
     				{this.errorHandler(this.state.errors)}
     			</div>}
             <TextField
@@ -56,14 +56,13 @@ class ForgotPassword extends React.Component {
               name="username"
               style={{
                 width: '60%',
-
                }}
             />
             <RaisedButton type="submit" name="submit" label={current.resetPassword}
               style={{
                 width: '60%',
                 marginTop: '50px'
-             }}
+              }}
             />
           </form>
         </div>

@@ -86,8 +86,6 @@ export default class SeriesDisplay extends Component {
     });
   };
 
-
-
   goSeriePage = (id) => {
     browserHistory.push(`/app/series/${id}`);
   }
