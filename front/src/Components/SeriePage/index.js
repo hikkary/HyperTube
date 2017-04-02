@@ -40,6 +40,12 @@ export default class SeriePage extends Component {
           return "Seen";
         }
       });
+      seen = seen.filter((see) => {
+        if (see){
+          return see
+          }
+      })
+
       console.log("SEEEN" ,seen);
       if (seen.length !== 0) return <i className="fa fa-eye" aria-hidden="true"></i>;
       else return ;
