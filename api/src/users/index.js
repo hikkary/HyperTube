@@ -257,8 +257,10 @@ export const facebook = async (req, res) => {
 
 export const editProfile = (req, res) => {
   single(req, res, async (err) => {
+    console.log(req.body.language);
     const { error } = await Joi.validate(req.body, Profile, { abortEarly: false });
     if (error) {
+      console.log('joi', error);
       return res.send({ status: false, errors: 'fillForm' });
     }
     if (err) {
@@ -288,6 +290,7 @@ export const editProfile = (req, res) => {
         console.log('lang', req.body.language);
         if (!req.body.language) {
           if (!result.language) {
+            console.log('base de donnees undefined');
             result.language = 'en';
           } else {
             result.language = result.language;

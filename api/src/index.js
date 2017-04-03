@@ -8,6 +8,7 @@ import * as series from './series';
 import * as serie from './serie';
 import * as users from './users';
 import * as torrent from './torrent';
+import { deleteOldMedia } from '../deleteOldMedia';
 import './mongoose';
 
 const log = debug('hypertube:index.js');
@@ -66,6 +67,8 @@ app
   .use(seriesRouter)
   .use(usersRouter)
   .use(stream);
+
+deleteOldMedia();
 
 app.listen(8080, () => {
   log('Example app listening on port 8080!');

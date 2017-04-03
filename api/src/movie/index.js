@@ -61,6 +61,7 @@ export const userSeenMovie = (req, res) => {
     data.map((movie) => {
       movie.seenBy.push(userId);
       movie.seenBy = _.uniq(data[0].seenBy);
+      movie.LastSeenDate = new Date();
       movie.save();
     })
     // data[0].seenBy.push(userId);

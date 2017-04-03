@@ -60,6 +60,7 @@ export default class EditProfile extends Component {
     })
     .then((results) => {
       if (results.data.errors) {
+        console.log(results.data.errors);
         return this.setState({ error: results.data.errors });
       }
       localStorage.setItem('token', results.headers['x-access-token']);

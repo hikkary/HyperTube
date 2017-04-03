@@ -38,6 +38,7 @@ const movie = mongoose.Schema({
   torrents: Object,
   path: Object,
   comments: Array,
+  lastSeenDate: Date,
 });
 
 movie.plugin(findOrCreate);

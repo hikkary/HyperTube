@@ -97,7 +97,7 @@ export const userSeenSerie= (req, res) => {
 
     data[0].content[index].seenBy.unshift(userId);
     data[0].content.splice(index, 1, data[0].content[index])
-
+    data[0].lastSeenDate = new Date();
     data[0].save();
     // data[0].seenBy.push(userId);
     // data[0].seenBy = _.uniq(data[0].seenBy);

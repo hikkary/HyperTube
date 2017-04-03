@@ -45,38 +45,36 @@ export default class MoviePage extends Component {
 
   componentWillReceiveProps = (newProps) => {
     if (newProps.movie.results) {
-
-
-	  if (newProps.movie.results[0].torrents[0].quality === '3D'){
-		  const hash = newProps.movie.results[0].torrents[1].hash;
-		  this.setState({ quality: hash });
-	  }
-	  else{
-		  const hash = newProps.movie.results[0].torrents[0].hash;
-		  this.setState({ quality: hash });
-  		}
-      if (!this._mounted) return false;
-      if(this.props.user.id){
-        this.onPlay(newProps.movie.results[0].id, this.props.user.id);
-      }
-    axios({
-      method: 'POST',
-      url: `${api}/movie/subtitles`,
-      data: {
-        sublanguageid: this.state.lang,
-        hash: this.state.quality,
-        imdbid: newProps.movie.results[0].imdb_code,
-      }
-    }).then((result) => {
-      if (!this._mounted) return false;
-      this.setState({ filename: result.data });
-    });
-    // if (newProps.movie && newProps.movie.results.path) {
-    //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
-    //   console.log('newprops', newProps.movie.results[0].torrents[0].hash);
-    //   const hash = newProps.movie.results[0].torrents[0].hash;
-    //   this.setState({ quality: hash });
-    // }
+  	  if (newProps.movie.results[0].torrents[0].quality === '3D'){
+  		  const hash = newProps.movie.results[0].torrents[1].hash;
+  		  this.setState({ quality: hash });
+  	  }
+  	  else{
+  		  const hash = newProps.movie.results[0].torrents[0].hash;
+  		  this.setState({ quality: hash });
+    		}
+        if (!this._mounted) return false;
+        if(this.props.user.id){
+          this.onPlay(newProps.movie.results[0].id, this.props.user.id);
+        }
+      axios({
+        method: 'POST',
+        url: `${api}/movie/subtitles`,
+        data: {
+          sublanguageid: this.state.lang,
+          hash: this.state.quality,
+          imdbid: newProps.movie.results[0].imdb_code,
+        }
+      }).then((result) => {
+        if (!this._mounted) return false;
+        this.setState({ filename: result.data });
+      });
+      // if (newProps.movie && newProps.movie.results.path) {
+      //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
+      //   console.log('newprops', newProps.movie.results[0].torrents[0].hash);
+      //   const hash = newProps.movie.results[0].torrents[0].hash;
+      //   this.setState({ quality: hash });
+      // }
     }
   }
 
