@@ -120,7 +120,14 @@ export default class MoviesDisplay extends Component {
       {
         return "movieSeen"
       }
+      return;
     })
+    seen = seen.filter((see) => {
+      if (see){
+        return see
+        }
+    })
+
     console.log("SEEEN" ,seen);
     if(seen.length !== 0) return "movieSeen";
     else return "movie";

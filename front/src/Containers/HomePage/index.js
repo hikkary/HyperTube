@@ -70,7 +70,7 @@ class HomePage extends Component {
   }
 
   render() {
-    const { translation, actions, movies, series, search } = this.props;
+    const { translation, actions, movies, series, user, search } = this.props;
     const { displaySearch, displayBest } = this.state;
     console.log("PROPS HOMEPAGE s", this.props);
     console.log("PROPS HOMEPAGE s", this.props.search.length);
@@ -88,14 +88,14 @@ class HomePage extends Component {
         <div className="searchDiv" style={{
           display: displaySearch,
           }}>
-          <SearchDisplay search={search} />
+          <SearchDisplay user={user} search={search} />
         </div>
 
         <div className="displayApp" style={{
           display: displayBest,
           }}>
-          <BestOfMovies movies={movies} actions={actions} translation={translation} />
-          <BestOfSeries series={series} actions={actions} translation={translation} />
+          <BestOfMovies movies={movies} actions={actions} user={user} translation={translation} />
+          <BestOfSeries series={series} actions={actions} user={user} translation={translation} />
         </div>
       </div>
     )
@@ -108,7 +108,7 @@ HomePage.propTypes = {
   search: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = ({ translation, movies, series, search }) => ({ translation, movies, series, search });
+const mapStateToProps = ({ translation, movies, series, user, search }) => ({ translation, movies, series, user, search });
 
 const mapDispatchToProps = dispatch => ({
   actions: {

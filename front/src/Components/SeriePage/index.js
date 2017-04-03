@@ -31,8 +31,6 @@ export default class SeriePage extends Component {
   }
 
   seen = (serie) => {
-    // console.log('MY ID', this.props.user.id);
-    // console.log('MY PROPS', this.props);
     if (serie && serie.seenBy) {
       const seen = serie.seenBy.map((user) => {
         if(user === this.props.user.id)
@@ -40,6 +38,12 @@ export default class SeriePage extends Component {
           return "Seen";
         }
       });
+      seen = seen.filter((see) => {
+        if (see){
+          return see
+          }
+      })
+
       console.log("SEEEN" ,seen);
       if (seen.length !== 0) return <i className="fa fa-eye" aria-hidden="true"></i>;
       else return ;

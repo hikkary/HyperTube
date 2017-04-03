@@ -55,6 +55,32 @@ export default class SearchDisplay extends Component {
    </div>
   )
 
+  seen = (movie) => {
+
+    console.log('MY ID', this.props.user.id);
+    console.log('MY PROPS', this.props);
+
+    if (movie){
+    const seen = movie.seenBy.map((user) =>{
+      if(user === this.props.user.id)
+      {
+        return "movieSeen"
+      }
+      return;
+    })
+    seen = seen.filter((see) => {
+      if (see){
+        return see
+        }
+    })
+
+    console.log("SEEEN" ,seen);
+    if(seen.length !== 0) return "movieSeen";
+    else return "movie";
+  }
+}
+
+
   moviesDisplay = (src, key) => (
     <div
       className="allInfo"
@@ -62,7 +88,7 @@ export default class SearchDisplay extends Component {
       >
     <div
       onClick={() => this.goMoviePage(src.id)}
-      className="movie"
+      className={this.seen(src)}
       style={{ backgroundImage: `url('${src.largeImage}')` }}
     >
       <div className="textContainer">

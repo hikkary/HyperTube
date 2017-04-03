@@ -15,6 +15,27 @@ export default class BestOfMovies extends Component {
     browserHistory.push(`/app/movies/${id}`);
   }
 
+  seen = (movie) => {
+    if (movie && movie.seenBy) {
+      const seen = movie.seenBy.map((user) => {
+        if(user === this.props.user.id)
+        {
+          return "Seen";
+        }
+      });
+      seen = seen.filter((see) => {
+        if (see){
+          return see
+          }
+      })
+
+      console.log("SEEEN" ,seen);
+      if (seen.length !== 0) return "movieSeen";
+      else return "movie";
+    }
+  }
+
+
   render(){
     let allMovies = [];
     const {current} = this.props.translation;
@@ -27,7 +48,7 @@ export default class BestOfMovies extends Component {
         return (
         <div className="allInfo" key={key}>
             <div onClick={() => this.goMoviePage(movie.id)}
-              className="movie"
+              className={this.seen(movie)}
               style={{ backgroundImage: `url('${movie.largeImage}')` }}
             >
               <div className="textContainer">
