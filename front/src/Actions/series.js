@@ -43,8 +43,6 @@ export const getSeries = ({
   )
   .then(({ data: series }) => {
     if (series.errors) return (dispatch(error(series)));
-    console.log("Series  :" ,typeof(series))
-    console.log("Series  :" ,series)
     if (scroll === 1) {
       dispatch(scrolled(series))
     } else {

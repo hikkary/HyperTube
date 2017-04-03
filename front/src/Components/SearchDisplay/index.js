@@ -56,30 +56,26 @@ export default class SearchDisplay extends Component {
   )
 
   seen = (movie) => {
-
     console.log('MY ID', this.props.user.id);
     console.log('MY PROPS', this.props);
-
-    if (movie){
-    const seen = movie.seenBy.map((user) =>{
-      if(user === this.props.user.id)
-      {
-        return "movieSeen"
-      }
-      return;
-    })
-    seen = seen.filter((see) => {
-      if (see){
-        return see
+    if (movie) {
+      let seen = movie.seenBy.map((user) =>{
+        if (user === this.props.user.id) {
+          return "movieSeen";
         }
-    })
-
-    console.log("SEEEN" ,seen);
-    if(seen.length !== 0) return "movieSeen";
-    else return "movie";
+        return false;
+      });
+      seen = seen.filter((see) => {
+        if (see) {
+          return see;
+        }
+        return false;
+      });
+      console.log("SEEEN" ,seen);
+      if (seen.length !== 0) return "movieSeen";
+      else return "movie";
+    }
   }
-}
-
 
   moviesDisplay = (src, key) => (
     <div
@@ -105,13 +101,10 @@ export default class SearchDisplay extends Component {
 
   render() {
     const { search } = this.props;
-    console.log("SEARCH INFOOOOO",search);
     return(
       <div className="searchContainer">
         <div className="moviesAndSeries">
           {search && search.map((src, key) => {
-            console.log(src.provider);
-            // console.log(src.images.poster);
             return (
               (src.provider === 'EZTV' && this.seriesDisplay(src,key)) || (src.provider === 'YTS' &&
               this.moviesDisplay(src, key)

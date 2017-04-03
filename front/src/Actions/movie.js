@@ -29,8 +29,6 @@ export const getMoviePage = ({
     `${api}/movie/${id}`,
   )
   .then(({ data: movie }) => {
-    // const test = _.flattenDepth(movie.results, 1);
-    // console.log('test action', movie.finalInfos);
     dispatch(fetched({ results: movie }));
   })
   .catch(console.error);
@@ -54,7 +52,6 @@ export const addCommentMovie = (
   })
     .then((results) => {
       if(results.data.errors) return dispatch(error(results.data))
-      console.log('results axios', results);
       dispatch(fetched(results.data));
     })
     .catch(console.error);

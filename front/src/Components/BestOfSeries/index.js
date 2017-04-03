@@ -7,7 +7,6 @@ export default class BestOfSeries extends Component {
   componentDidMount = () => {
     const { actions } = this.props;
     actions.series.TenBestSeries();
-    // console.log('best series', this.props);
   }
 
   goSeriePage = (id) => {

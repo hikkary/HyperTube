@@ -34,7 +34,6 @@ export default class SeriesDisplay extends Component {
   }
 
   componentDidMount = () => {
-    console.log("PROPS DID MOUNT SERIESDISPLAY",this.props);
     this.loadSeries = _.debounce(this.loadSeries, 1000);
     this.handleChange();
   }
@@ -58,7 +57,6 @@ export default class SeriesDisplay extends Component {
   }
 
   handleChange = (key, value) => {
-    console.log('key', key);
     this.resetValues(key);
     this.setState({ [key]: value }, () => {
       const {
@@ -99,16 +97,15 @@ export default class SeriesDisplay extends Component {
 
   render() {
     const { series } = this.props;
-    if(series) {
-      let genre = '';
-      genre = series.map((ser) => {
-        return ser.genres
-      })
-      console.log("Avant",genre);
-      genre = _.flattenDepth(genre, 1)
-      genre = _.uniq(genre)
-      console.log("Apres", genre);
-    }
+    // if (series) {
+    //   let genre = '';
+    //   genre = series.map((ser) => {
+    //     return ser.genres;
+    //   });
+    //   genre = _.flattenDepth(genre, 1);
+    //   genre = _.uniq(genre);
+    //   console.log(genre);
+    // }
     return(
       <div className="seriesContainer">
         <SearchMenu translation={this.props.translation} onKeyDown={this.handleChange}/>
@@ -116,7 +113,6 @@ export default class SeriesDisplay extends Component {
         <RangeSeries onChange={this.handleChange} />
         <div className="list">
           <MenuSeries onChange={this.handleChange} />
-
         </div>
 		{!this.state.hasMore && <div className="noMedia"> <p>NO MEDIA FOUND</p></div>}
         <InfiniteScroll

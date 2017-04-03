@@ -21,7 +21,6 @@ export default class SerieStreamingPage extends Component {
       id: this.props.id,
       serieId: this.props.serieId,
     });
-    console.log('DID MOUNT', this.props.user);
     if(this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
     if(this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
     // Mettre le hash a cote du path dans l'objet
@@ -40,8 +39,6 @@ export default class SerieStreamingPage extends Component {
       const splitHash = await hash.split(':', 4);
       const finalSplit = await splitHash[3].split('&', 1);
       this.setState({ quality: finalSplit[0] });
-	  console.log('NEW PROPS FINAL', newProps);
-	  console.log('NEW STATE FINAL', this.state);
       if (this.state.quality && this.state.lang) {
       axios({
         method: 'POST',
@@ -54,7 +51,6 @@ export default class SerieStreamingPage extends Component {
         }
       }).then((result) => {
         if (!this._mounted) return false;
-        console.log('res front subtitles', result);
         this.setState({ filename: result.data });
       })
     }
@@ -62,7 +58,6 @@ export default class SerieStreamingPage extends Component {
 }
 
   return = () => {
-    console.log("MES PROPS",this.props);
     const {serieId} = this.props;
     browserHistory.push(`/app/series/${serieId}`)
   }
@@ -70,7 +65,6 @@ export default class SerieStreamingPage extends Component {
   changeQuality = (hash) => {
     if (!this._mounted) return false;
     const splitHash = hash.split(':', 4);
-    // console.log(splitHash);
     const finalSplit = splitHash[3].split('&', 1);
     this.setState({ quality: finalSplit[0] , redraw: true });
     setTimeout(() => this.setState({ redraw: false }), 0)
@@ -79,13 +73,10 @@ export default class SerieStreamingPage extends Component {
   comments = (e) => {
     if (!this._mounted) return false;
     e.preventDefault();
-    console.log(e.target.comment.value);
     const { comment } = e.target;
     const { username, id } = this.props.user;
     const episodeId = this.props.id;
-    console.log(episodeId);
     const serieId = this.props.serieId;
-    console.log(serieId);
     if (this.props.actions) {
       this.props.actions.serie.addCommentSerie(
         comment.value,
@@ -99,7 +90,6 @@ export default class SerieStreamingPage extends Component {
   }
 
   onPlay = (serieId, userId, episodeId) => {
-    console.log('entereddddddd', userId);
     axios({
       method: 'POST',
       url: `${api}/serie/seenSerie`,
@@ -109,7 +99,6 @@ export default class SerieStreamingPage extends Component {
         episodeId,
       }
     }).then((result) => {
-      console.log('yo', result);
       if (result.data.errors) {
         this.setState({ error: result.data.errors });
       }
@@ -118,9 +107,6 @@ export default class SerieStreamingPage extends Component {
 
 
   render() {
-    // console.log('this.props', this.props);
-	console.log("STATE REMDER", this.state);
-	console.log("PROPS RENDER ", this.props);
     const { redraw } = this.state;
     let comments = [];
     if (this.props.serie && this.props.user && this.props.serie.comments) {
@@ -128,9 +114,9 @@ export default class SerieStreamingPage extends Component {
       <p className="userCommentSerie" onClick={()=> this.goProfile(comment.id)} key={key}>
         <img role="presentation" className="picUser" src={`http://localhost:8080/public/${this.props.user.picture}`} />
         {comment.username} {comment.comment}</p>
-    )
-    console.log("Comment",comments);
+      )
     }
+    
     return (
       <div className="streamingSerie">
         {this.props.serie && <div>

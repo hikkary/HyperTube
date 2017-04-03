@@ -35,12 +35,9 @@ Promise.all([
     `${api}/series?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   )])
   .then((result) => {
-    console.log('results before arrayyy', result);
     let data = [];
     data.push(result[0].data,result[1].data) // 2 params in promise all func sent
     data = _.flattenDepth(data, 1);
-    // console.log("DATAAAAAAA",data);
     dispatch(fetched(data))
-    // console.log(result);
   });
 };

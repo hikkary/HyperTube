@@ -44,7 +44,6 @@ export const getMovie = ({
     `${api}/movies?title=${title}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&genre=${genre}&page=${page}&asc=${asc}&sort=${sort}`,
   )
   .then(({ data: movies }) => {
-    console.log("MOOOOOVIES",movies);
     if(movies.errors) return dispatch(error(movies))
     if(scroll === 1)dispatch(scrolled(movies))
     else dispatch(fetched(movies))
@@ -73,7 +72,6 @@ export const getGenre = (genre) => (dispatch) => {
     }
   })
   .then(({ data: movies }) => {
-    console.log('genresssss', movies);
     dispatch(fetched(movies));
   })
   .catch(console.error)

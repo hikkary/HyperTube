@@ -10,7 +10,6 @@ export default class SeriePage extends Component {
   }
 
   componentDidMount() {
-    // console.log('this.props.id', this.props.id);
     this.props.actions.serie.getSeriePage({
       id: this.props.id,
     })
@@ -32,18 +31,18 @@ export default class SeriePage extends Component {
 
   seen = (serie) => {
     if (serie && serie.seenBy) {
-      const seen = serie.seenBy.map((user) => {
-        if(user === this.props.user.id)
-        {
+      let seen = serie.seenBy.map((user) => {
+        if (user === this.props.user.id) {
           return "Seen";
         }
+        return false;
       });
       seen = seen.filter((see) => {
         if (see){
-          return see
-          }
-      })
-
+          return see;
+        }
+        return false;
+      });
       console.log("SEEEN" ,seen);
       if (seen.length !== 0) return <i className="fa fa-eye" aria-hidden="true"></i>;
       else return ;

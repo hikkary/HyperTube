@@ -14,14 +14,6 @@ export default class EditProfile extends Component {
     currentLanguage: '',
   }
 
-  // componentWillReceiveProps = (newProps) => {
-  //   if(newProps.user){
-  //     console.log(newProps.user.language);
-  //   this.setState({currentLanguage: newProps.user.language})
-  //   console.log(this.state, "STATE");
-  // }
-  // }
-
   onChange = (e) => {
     const text = e.target.value;
     this.setState({ [e.target.name]: text });
@@ -67,7 +59,6 @@ export default class EditProfile extends Component {
       data: form,
     })
     .then((results) => {
-      console.log('results', results.data);
       if (results.data.errors) {
         return this.setState({ error: results.data.errors });
       }
@@ -90,7 +81,6 @@ export default class EditProfile extends Component {
   }
 
   errorHandler = (error) => {
-    console.log('ggggggggg', error);
     const { translation } = this.props;
     return translation.current[error];
   }
@@ -99,7 +89,6 @@ export default class EditProfile extends Component {
     const { current } = this.props.translation;
     const { user } = this.props;
     const { error } = this.state;
-    console.log("user",user);
     return (
       <div className="editContainer">
         {user.length !== 0  &&

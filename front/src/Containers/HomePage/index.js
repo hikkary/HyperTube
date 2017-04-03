@@ -72,8 +72,6 @@ class HomePage extends Component {
   render() {
     const { translation, actions, movies, series, user, search } = this.props;
     const { displaySearch, displayBest } = this.state;
-    console.log("PROPS HOMEPAGE s", this.props);
-    console.log("PROPS HOMEPAGE s", this.props.search.length);
     return (
       <div>
 

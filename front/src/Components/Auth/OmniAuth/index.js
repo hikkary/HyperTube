@@ -26,8 +26,6 @@ export default class OmniAuth extends Component {
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       FB.api('/me?fields=email,first_name,last_name,picture', (response) => {
-        console.log('response', JSON.stringify(response));
-        console.log('response', response);
         axios({
           method: 'POST',
           url: `${apiURI}/users/facebook_auth`,
@@ -38,11 +36,11 @@ export default class OmniAuth extends Component {
       })
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
-      console.error('ERROR FB')
+      console.error('ERROR FB');
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      console.error('ERROR FB UNKNOWN')
+      console.error('ERROR FB UNKNOWN');
     }
   }
 
@@ -69,69 +67,3 @@ export default class OmniAuth extends Component {
     )
   }
 }
-
-
-// handle42 = (e) => {
-//   axios({
-//     method: 'POST',
-//     url : 'https://api.intra.42.fr/oauth/token',
-//     data: {
-//       grant_type:'client_credentials',
-//       client_id: uid,
-//       client_secret: secret,
-//     }})
-//     .then((response) =>{
-//       console.log(response
-//       );
-//       // response.get('/me')
-//     //   axios({
-//     //     headers: {
-// 		// 		 'Authorization': 'Bearer '+response.data.access_token,
-// 		// 	 },
-//     //     method: 'POST',
-//     //     url : 'https://api.intra.42.fr/v2/me',
-//      //
-//     //  })
-//     //  .then((response) => {
-//     //    console.log(response);
-//     //  })
-//     })
-// }
-
-
-    // VERIFIE LE CODE ENVOYER APRES LA CONNEXION VIA 42, DOIT LECHANGER CONTRE UN TOKEN
-    // MAIS SA BUGg
-    // if(window.location.search){
-    //   let code = window.location.search.split('=')
-    //   console.log(code[1]);
-    //   // alert('ok');
-    //   axios({
-    //     method: 'POST',
-    //     url: 'https://api.intra.42.fr/oauth/token',
-    //     data:{
-    //       grant_type: 'authorization_code',
-    //       client_id: uid,
-    //       client_secret: secret,
-    //       code: code[1],
-    //     }
-    //   })
-    //   .then((response) =>{
-    //     console.log(response);
-    //   })
-    //
-    // }
-
-    // handleAuthorize42 = (e) => {
-    //
-    //   //FAIT UNE REQUETE A LAPI 42, SI TOUT EST OK ON LANCE LA FENETRE POUR SE CO
-    //   axios.get(`${apiURI}/users/42_auth`)
-    //   .then((response, err) =>{
-    //     if (err) {
-    //       console.log(err)
-    //       return
-    //     }
-    //     console.log(response);
-    //     window.open('https://api.intra.42.fr/oauth/authorize?client_id=540af455e551d8238c17215920325a8a350b087bf1762bc51f34339956719cfa&redirect_uri=http://localhost:3000&response_type=code&scope=public')
-    //   })
-    //
-    // }

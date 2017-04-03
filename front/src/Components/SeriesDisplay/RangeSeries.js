@@ -20,7 +20,6 @@ export default class RangeSeries extends Component {
   }
 
   handleChangeYearToProps = () => {
-    console.log("YWRUWERIEW OEWJR",this.state.year);
     this.props.onChange('year', this.state.year);
   }
 
@@ -33,9 +32,6 @@ export default class RangeSeries extends Component {
   }
 
   render(){
-    // console.log('hey', this.props);
-    // const {current} = this.props.translation;
-    // const { genreButton } = this.state;
     return(
       <div className="ranges">
         <InputRange

@@ -8,28 +8,26 @@ import './sass/updatePassword.sass';
 
 export default class ChangePassword extends React.Component{
 
-submit = (event) => {
-	event.preventDefault();
-	 axios({
-			method: 'POST',
-			url : `${api}/users/updatePassword`,
-			data : {
-				username: this.props.username,
-				key : this.props.id,
-				password: event.target.password.value,
-				newPass: event.target.newPass.value,
-			}
-	 })
-	 .then((results) => {
-     console.log(results);
-		 if (results.data.status) {
-			 browserHistory.push('/login');
-		 }
-	 });
-}
+	submit = (event) => {
+		event.preventDefault();
+		 axios({
+				method: 'POST',
+				url : `${api}/users/updatePassword`,
+				data : {
+					username: this.props.username,
+					key : this.props.id,
+					password: event.target.password.value,
+					newPass: event.target.newPass.value,
+				}
+		 })
+		 .then((results) => {
+			 if (results.data.status) {
+				 browserHistory.push('/login');
+			 }
+		 });
+	}
 
 	render() {
-		console.log(this.props);
 		const { current } = this.props.translation;
 		return(
 			<div className="updatePassword">

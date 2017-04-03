@@ -3,7 +3,6 @@ import { browserHistory } from 'react-router';
 import title from '../../../../public/logo2.png';
 import bg from '../../../../public/background-hypertube.png';
 import './Welcome.sass';
-import FlatButton from 'material-ui/FlatButton';
 
 export default class Welcome extends Component {
   state = {

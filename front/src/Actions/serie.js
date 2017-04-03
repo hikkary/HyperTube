@@ -16,7 +16,6 @@ export const fetched = serie => ({
 export const getSeriePage = ({
   id,
 } = {}) => (dispatch) => {
-  console.log('id action' , id);
   dispatch(pending());
   axios.get(
     `${api}/serie/${id}`,
@@ -30,7 +29,6 @@ export const getSeriePage = ({
 export const getEpisode = ({
   id, serieId
 } = {}) => (dispatch) => {
-  console.log('serie id action' , serieId);
   dispatch(pending());
   axios.get(
     `${api}/serie/${serieId}/${id}`,
@@ -60,7 +58,6 @@ export const addCommentSerie = (
     }
   })
     .then((results) => {
-      console.log('results axios', results);
       dispatch(fetched(results.data));
     })
     .catch(console.error);

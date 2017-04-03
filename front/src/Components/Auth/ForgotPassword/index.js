@@ -23,23 +23,19 @@ class ForgotPassword extends React.Component {
       })
       .then((results) => {
         //add message
-        if(results.data.errors)
-        {
+        if(results.data.errors) {
           this.setState({ errors: results.data.errors })
         }
-        console.log(results);
       });
   }
 
   errorHandler = (error) => {
 		const { translation } = this.props;
-    console.log(translation);
 		return translation.current[error];
 	}
 
   render() {
     const { current } = this.props.translation;
-    console.log('propsss', this.props);
     return (
       <div className="forgot">
         <div className="formCss">

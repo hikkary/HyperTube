@@ -13,7 +13,6 @@ export default class Login extends Component {
 
   componentWillReceiveProps = (newProps) => {
     if(newProps.user){
-      console.log('status', newProps.status);
       if (newProps.user.results.status === true) // Gerer du cote de joi le retour
         localStorage.setItem('token', newProps.user.headers['x-access-token']);
       }
@@ -47,7 +46,6 @@ export default class Login extends Component {
 	}
 
   render() {
-	  console.log(this.props);
 	  const { user } = this.props;
     const { current } = this.props.translation;
     return(

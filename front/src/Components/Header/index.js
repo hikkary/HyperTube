@@ -53,7 +53,6 @@ export default class Header extends React.Component {
   };
 
   toEditProfile = () => {
-    console.log('entered edit profile');
     browserHistory.push('/app/user/editProfile');
   };
 
@@ -65,8 +64,6 @@ export default class Header extends React.Component {
 	render(){
     const { user } = this.props;
     const { current } = this.props.translation;
-    console.log("PROPS",this.props.user.picture);
-    console.log("PROPS",typeof(this.props.user.picture));
 		return(
       <div>
       <div className="Header">

@@ -13,11 +13,6 @@ export default class Register extends Component {
     currentLanguage: 'en',
   }
 
-  // componentWillReceiveProps = (newProps) => {
-    // console.log('REgister newProps',newProps);
-    // this.setState({ message: newProps.register.details });
-  // }
-
   uploadImage = async(e) => {
     e.persist();
     if (!e.target.files[0]) {

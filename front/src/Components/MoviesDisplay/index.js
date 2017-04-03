@@ -41,16 +41,15 @@ export default class MoviesDisplay extends Component {
   }
 
   componentWillReceiveProps (newProps){
-	if(newProps.movies && newProps.movies.length === 0){
-		this.setState({ hasMore: false });
-	} else {
-		this.setState({ hasMore: true });
-	}
-	if(newProps.movies[0] && newProps.movies[0].errors){
-		this.setState({ hasMore: false });
-	}
+  	if (newProps.movies && newProps.movies.length === 0) {
+  		this.setState({ hasMore: false });
+  	} else {
+  		this.setState({ hasMore: true });
+  	}
+  	if (newProps.movies[0] && newProps.movies[0].errors) {
+  		this.setState({ hasMore: false });
+  	}
   }
-
 
   componentWillUnmount() {
     this._mounted = false;
@@ -110,29 +109,25 @@ export default class MoviesDisplay extends Component {
   }
 
   seen = (movie) => {
-
     console.log('MY ID', this.props.user.id);
     console.log('MY PROPS', this.props);
-
-    if (movie){
-    const seen = movie.seenBy.map((user) =>{
-      if(user === this.props.user.id)
-      {
-        return "movieSeen"
-      }
-      return;
-    })
-    seen = seen.filter((see) => {
-      if (see){
-        return see
+    if (movie) {
+      let seen = movie.seenBy.map((user) =>{
+        if(user === this.props.user.id) {
+          return "movieSeen"
         }
-    })
-
-    console.log("SEEEN" ,seen);
-    if(seen.length !== 0) return "movieSeen";
-    else return "movie";
-  }
-
+        return false;
+      })
+      seen = seen.filter((see) => {
+        if (see){
+          return see;
+        }
+        return false;
+      });
+      console.log("SEEEN" ,seen);
+      if (seen.length !== 0) return "movieSeen";
+      else return "movie";
+    }
   }
 
   render(){

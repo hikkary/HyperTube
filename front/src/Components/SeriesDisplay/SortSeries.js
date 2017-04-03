@@ -26,7 +26,6 @@ export default class SortSeries extends Component {
 
   render(){
     const {current} = this.props.translation;
-    // console.log('hey', this.props);
     return(
       <div className="sorted">
         <FlatButton label={current.sortTitle} onClick={this.sortTitle}/>

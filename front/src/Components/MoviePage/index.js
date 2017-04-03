@@ -56,7 +56,6 @@ export default class MoviePage extends Component {
 		  this.setState({ quality: hash });
   		}
       if (!this._mounted) return false;
-      console.log("AVANT LE FONCTION", this.props.user.id);
       if(this.props.user.id){
         this.onPlay(newProps.movie.results[0].id, this.props.user.id);
       }
@@ -69,7 +68,6 @@ export default class MoviePage extends Component {
         imdbid: newProps.movie.results[0].imdb_code,
       }
     }).then((result) => {
-      console.log('res subtitles', result);
       if (!this._mounted) return false;
       this.setState({ filename: result.data });
     });
@@ -85,28 +83,11 @@ export default class MoviePage extends Component {
 
   toList = (list) => {
     if (this.props.movie) {
-      console.log('DANS GENRE LIST');
       const infos = list.reduce((accu, name) => accu ? `${accu}, ${name}` : name, '')
       if (infos) return infos;
       else return 'N/A';
     }
   }
-
-  // play = () => {
-  //   axios({
-  //     method: 'POST',
-  //     url: `${api}/stream`,
-  //     data: {
-  //       hash: this.state.quality,
-  //     }
-  //   })
-  // }
-
-  // showControl = (e) => {
-  //   console.log("ON EST ENTRER DNAS SHOW CONTROL");
-  //   console.log(e);
-  //   e.controls = true;
-  // }
 
   quality = (hash) => {
     this.setState({ quality: hash, redraw: true });
@@ -118,7 +99,6 @@ export default class MoviePage extends Component {
 
   comments = (e) => {
     e.preventDefault();
-    console.log(e.target.comment.value);
     const { comment } = e.target;
     const { username, id } = this.props.user;
     const movie_id = this.props.id;
@@ -138,7 +118,6 @@ export default class MoviePage extends Component {
   }
 
   onPlay = (movieId, userId) => {
-    console.log('entereddddddd', userId);
     axios({
       method: 'POST',
       url: `${api}/movie/seenMovie`,
@@ -147,37 +126,25 @@ export default class MoviePage extends Component {
         userId,
       }
     }).then((result) => {
-      console.log('yo', result);
       if (result.data.errors) {
         this.setState({ error: result.data.errors });
       }
     });
-
-
   }
 
-
   render() {
-    console.log("PRRRRROOOPS",this.props);
     let comments = [];
     if (this.props.movie.results && this.props.user && this.props.movie.results[0].comments) {
-      // console.log("PATHHHHH", this.props.movie.results[0].path[this.state.quality].path);
       comments = this.props.movie.results[0].comments.map((comment, key) =>
       <p className="userCommentMovie" onClick={()=> this.goProfile(comment.id)} key={key}>
         <img role="presentation" className="picUser" src={`http://localhost:8080/public/${this.props.user.picture}`} />
         {comment.username} {comment.comment}</p>
-    )
-    console.log("Comment",comments);
+      )
     }
-    const { redraw } = this.state
-  setTimeout(() => {
-    console.log('QUALITY HASH RENDER', this.state.quality);
-  },3000)
-  // console.log('state hash', this.state.quality);
-    // if (this.props.movie){
-    //   const { movie } = this.props;
-    //   console.log('MOVIE ', movie);
-    // }// console.log('props movies' , movie);
+    const { redraw } = this.state;
+    setTimeout(() => {
+    }, 3000);
+
     return (
     <div>
       <div className="infoContainer">
@@ -224,8 +191,8 @@ export default class MoviePage extends Component {
         }
         <div className="buttons">
         {this.props.movie.results && this.props.movie.results[0].torrents.map((torrent, key) => {
-          if(torrent.quality === '3D') return ;
-          return(
+          if (torrent.quality === '3D') return false;
+          return (
               <FlatButton key={key} className='oneButton' label={torrent.quality} onClick={() => this.quality(torrent.hash)}
                 style={{
                   marginTop: '10px',

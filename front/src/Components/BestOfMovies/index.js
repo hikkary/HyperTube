@@ -8,7 +8,6 @@ export default class BestOfMovies extends Component {
   componentDidMount = () => {
     const { actions } = this.props;
     actions.movies.TenBestMovies();
-    // console.log('ten best movies props did mount', this.props);
   }
 
   goMoviePage = (id) => {
@@ -17,18 +16,19 @@ export default class BestOfMovies extends Component {
 
   seen = (movie) => {
     if (movie && movie.seenBy) {
-      const seen = movie.seenBy.map((user) => {
+      let seen = movie.seenBy.map((user) => {
         if(user === this.props.user.id)
         {
           return "Seen";
         }
+        return false;
       });
       seen = seen.filter((see) => {
-        if (see){
-          return see
-          }
-      })
-
+        if (see) {
+          return see;
+        }
+        return false;
+      });
       console.log("SEEEN" ,seen);
       if (seen.length !== 0) return "movieSeen";
       else return "movie";
