@@ -285,11 +285,21 @@ export const editProfile = (req, res) => {
             if (err) throw err;
           });
         }
+        console.log('lang', req.body.language);
+        if (!req.body.language) {
+          if (!result.language) {
+            result.language = 'en';
+          } else {
+            result.language = result.language;
+          }
+        } else {
+          result.language = req.body.language;
+        }
+        console.log('result language' , result.language);
         result.username = req.body.username;
         result.firstname = req.body.firstname;
         result.lastname = req.body.lastname;
         result.email = req.body.email;
-        result.language = req.body.language;
         result.picture = req.file.filename;
         result.save()
         // res.send({ status: ..... details: result})

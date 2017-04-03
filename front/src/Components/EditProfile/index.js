@@ -165,7 +165,7 @@ export default class EditProfile extends Component {
           <RaisedButton type="submit" label={current.editProfile} className="editProfileSubmit" name="editProfile"/>
         </form>
       }
-      {error && <div className="errorLogin">
+      {error && <div className="errorEditProfile" style={{ margin: 'auto' }}>
 				{this.errorHandler(error)}
 			</div>}
     </div>
