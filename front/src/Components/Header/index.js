@@ -107,8 +107,10 @@ export default class Header extends React.Component {
           <MenuItem primaryText={current.editProfile} onClick={this.toEditProfile} />
           <MenuItem primaryText={current.movies} onClick={this.toMovies} />
           <MenuItem primaryText={current.series} onClick={this.toSeries} />
-          <MenuItem primaryText={current.deleteAccount} onClick={this.deleteAccount} />
-          <MenuItem primaryText={current.logout} onClick={this.logout} />
+          <MenuItem primaryText={current.deleteAccount} onClick={() => {
+            if (confirm('Delete Your Account?') === true) {
+            this.deleteAccount(); } } }/>
+          <MenuItem primaryText={current.logout} onClick={this.logout}/>
         </IconMenu>
         </div>
 			</div>
