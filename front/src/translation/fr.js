@@ -34,4 +34,5 @@ export default {
   sortTitle: 'Trier par Titre',
   sortYear: 'Trier par Annee',
   sortRate: 'Trier par Note',
+  deleteAccount: 'Supprimer Votre Compte',
 }

@@ -114,7 +114,7 @@ export default class SeriesDisplay extends Component {
         <div className="list">
           <MenuSeries onChange={this.handleChange} />
         </div>
-		{!this.state.hasMore && <div className="noMedia"> <p>NO MEDIA FOUND</p></div>}
+		{!this.state.hasMore && <div className="noMedia"> <p>NO SERIES FOUND</p></div>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadSeries}

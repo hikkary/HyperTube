@@ -321,3 +321,13 @@ export const editProfile = (req, res) => {
       });
   });
 };
+
+export const deleteAccount = (req, res) => {
+  User.findOne({ _id: req.body.id })
+    .then((result) => {
+      console.log('USER', result);
+      if (!result) return res.send({ status: false, error: 'noUsername' });
+      result.remove();
+      res.send({ status: true });
+    });
+};

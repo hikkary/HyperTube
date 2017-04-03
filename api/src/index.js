@@ -50,7 +50,8 @@ usersRouter
   .post('/api/users/updatePassword', users.updatePassword)
   .get('/api/users/42_auth', users.handleAuthorize42)
   .get('/api/users/connectedUser', users.connectedUser)
-  .post('/api/users/getUserInfo', users.getUserInfo);
+  .post('/api/users/getUserInfo', users.getUserInfo)
+  .post('/api/users/deleteAccount', users.deleteAccount);
 
 stream
   .get('/api/stream/movie/:hash/:id/:user_id', torrent.movieTorrent)

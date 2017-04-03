@@ -34,4 +34,5 @@ export default {
   sortTitle: 'Sort by Title',
   sortYear: 'Sort by Year',
   sortRate: 'Sort by Rate',
+  deleteAccount: 'Delete Account',
 }

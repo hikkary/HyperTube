@@ -5,6 +5,8 @@ import logo from  '../../../public/logo2.png';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import axios from 'axios';
+import api from '../../apiURI';
 
 export default class Header extends React.Component {
   state = {
@@ -56,6 +58,22 @@ export default class Header extends React.Component {
     browserHistory.push('/app/user/editProfile');
   };
 
+  deleteAccount = () => {
+    axios({
+      method: 'POST',
+      url: `${api}/users/deleteAccount`,
+      data: {
+        id: this.props.user.id,
+      }
+    }).then((result) => {
+      // console.log('res', result);
+      if (result.data.status === true) {
+        localStorage.removeItem('token');
+        browserHistory.push('/login');
+      }
+    });
+  };
+
   logout = () => {
     localStorage.removeItem('token');
     browserHistory.push('/login');
@@ -89,6 +107,7 @@ export default class Header extends React.Component {
           <MenuItem primaryText={current.editProfile} onClick={this.toEditProfile} />
           <MenuItem primaryText={current.movies} onClick={this.toMovies} />
           <MenuItem primaryText={current.series} onClick={this.toSeries} />
+          <MenuItem primaryText={current.deleteAccount} onClick={this.deleteAccount} />
           <MenuItem primaryText={current.logout} onClick={this.logout} />
         </IconMenu>
         </div>
