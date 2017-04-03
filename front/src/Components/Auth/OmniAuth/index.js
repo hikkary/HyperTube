@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import apiURI from '../../../apiURI';
 import axios from 'axios';
 import './OmniAuth.sass';
-import FBlogo from '../../../../public/facebook_logo.png';
+import FBlogo from '../../../../public/fb-black.png';
 import fortyTwoLogo from '../../../../public/42_logo.png';
 import Glogo from '../../../../public/google_logo.png';
 /* global FB */
