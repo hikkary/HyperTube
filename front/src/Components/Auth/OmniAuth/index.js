@@ -4,6 +4,7 @@ import axios from 'axios';
 import './OmniAuth.sass';
 import FBlogo from '../../../../public/facebook_logo.png';
 import fortyTwoLogo from '../../../../public/42_logo.png';
+import Glogo from '../../../../public/google_logo.png';
 /* global FB */
 
 export default class OmniAuth extends Component {
@@ -59,10 +60,11 @@ export default class OmniAuth extends Component {
 
   render() {
     return(
-      <div>
+      <div className="omniAuth">
         <a href="#" onClick={this.handleClick}><img src={FBlogo} role="presentation" className="fblogo" ></img></a>
         <a href='https://api.intra.42.fr/oauth/authorize?client_id=adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2F42_auth&response_type=code'>
           <img src={fortyTwoLogo} role="presentation" className="fortyTwoLogo" ></img></a>
+          <a href="#" onClick={this.gmail}><img src={Glogo} role="presentation" className="Glogo"></img></a>
       </div>
     )
   }

@@ -136,7 +136,6 @@ export default class MoviePage extends Component {
     if (this.props.movie.results && this.props.user && this.props.movie.results[0].comments) {
       comments = this.props.movie.results[0].comments.map((comment, key) =>
       <p className="userCommentMovie" onClick={()=> this.goProfile(comment.id)} key={key}>
-        <img role="presentation" className="picUser" src={`http://localhost:8080/public/${this.props.user.picture}`} />
         {comment.username} {comment.comment}</p>
       )
     }

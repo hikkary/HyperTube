@@ -114,7 +114,6 @@ export default class SerieStreamingPage extends Component {
     if (this.props.serie && this.props.user && this.props.serie.comments) {
       comments = this.props.serie.comments.map((comment, key) =>
       <p className="userCommentSerie" onClick={()=> this.goProfile(comment.id)} key={key}>
-        <img role="presentation" className="picUser" src={`http://localhost:8080/public/${this.props.user.picture}`} />
         {comment.username} {comment.comment}</p>
       )
     }
