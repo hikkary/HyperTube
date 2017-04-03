@@ -39,21 +39,23 @@ export default class SerieStreamingPage extends Component {
       const splitHash = await hash.split(':', 4);
       const finalSplit = await splitHash[3].split('&', 1);
       this.setState({ quality: finalSplit[0] });
-      if (this.state.quality && this.state.lang) {
-      axios({
-        method: 'POST',
-        url: `${api}/serie/subtitles`,
-        data: {
-          sublanguageid: this.state.lang,
-          imdbid: this.props.serieId,
-          season: newProps.serie.season,
-          episode: newProps.serie.episode,
-        }
-      }).then((result) => {
-        if (!this._mounted) return false;
-        this.setState({ filename: result.data });
-      })
-    }
+      this.setState({ filename: true });
+
+    //   if (this.state.quality && this.state.lang) {
+    //   axios({
+    //     method: 'POST',
+    //     url: `${api}/serie/subtitles`,
+    //     data: {
+    //       sublanguageid: this.state.lang,
+    //       imdbid: this.props.serieId,
+    //       season: newProps.serie.season,
+    //       episode: newProps.serie.episode,
+    //     }
+    //   }).then((result) => {
+    //     if (!this._mounted) return false;
+    //     this.setState({ filename: result.data });
+    //   })
+    // }
   }
 }
 
@@ -116,7 +118,7 @@ export default class SerieStreamingPage extends Component {
         {comment.username} {comment.comment}</p>
       )
     }
-    
+
     return (
       <div className="streamingSerie">
         {this.props.serie && <div>
@@ -132,7 +134,6 @@ export default class SerieStreamingPage extends Component {
         {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`} type="video/mp4" />)
         }
-        <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
 
         </video>
         </div>

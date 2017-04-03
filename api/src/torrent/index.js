@@ -69,12 +69,15 @@ export const movieTorrent = async(req, res) => {
     const end = positions[1] ? parseInt(positions[1], 10) : fileSize - 1;
     const chunksize = (end - start) + 1;
     console.log(3);
+		let mime = videoFile[0].name.split('.');
+		mime = _.last(mime);
 
+		console.log("MIMI", mime);
     res.writeHead(206, {
       'Content-Range': `bytes ${start}-${end}/${fileSize}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': chunksize,
-      'Content-Type': `video/${path.extname(videoFile[0].name)}`,
+      'Content-Type': `video/${mime}`,
     });
         // qu'est ce que start? a quoi ca correspond?
     console.log('start : ', start, ' - end : ', end);
@@ -142,6 +145,7 @@ export const serieTorrent = (req, res) => {
   let videoFile = '';
   let videoSent = 0;
   let stream = '';
+	let finalPathFile = '';
   engine.on('ready', () => {
     console.log(engine.files);
     videoFile = engine.files.filter((file) => {
@@ -150,6 +154,7 @@ export const serieTorrent = (req, res) => {
       const pathFile = path.extname(file.name);
       console.log('pathfile', pathFile);
       if (pathFile === '.mp4' || pathFile === '.mkv' || pathFile === '.avi') {
+				finalPathFile = pathFile;
         return (file);
       }
     });
@@ -164,25 +169,31 @@ export const serieTorrent = (req, res) => {
     const file_size = videoLength;
     const end = positions[1] ? parseInt(positions[1], 10) : file_size - 1;
     const chunksize = (end - start) + 1;
-
+		let mime = videoFile[0].name.split('.');
+		mime = _.last(mime);
+		if (mime === 'avi') {
+			mime = 'mp4';
+		}
     res.writeHead(206, {
       'Content-Range': `bytes ${start}-${end}/${file_size}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': chunksize,
-      'Content-Type': `video/${path.extname(videoFile[0].name)}`,
+      'Content-Type': `video/${mime}`,
     });
-      // res.writeHead(200, { 'Content-Length': videoLength, 'Content-Type': `video/${path.extname(videoFile[0].name)}` });
-    // console.log('start : ', start, ' - end : ', end);
-    //
-    // console.log('VIDEO FILE', videoFile[0].name);
-    // console.log('length', videoLength);
-
-
-
-
-    stream = videoFile[0].createReadStream({ start, end });
+    stream = videoFile[0].createReadStream({ start, end,  flags: 'r', });
         //  stream.unpipe(res);
-    return stream.pipe(res);
+				console.log("PATH FILE", finalPathFile);
+				if (finalPathFile !== '.avi') {
+    			stream.pipe(res);
+			} else {
+				console.log("ON TRANSCOOOOODE A PARIS");
+							new Transcoder(stream)
+								.videoCodec('h264')
+								.audioCodec('aac')
+								.format('mp4')
+								.stream().pipe(res);
+
+			}
 
   });
   engine.on('download', async () => {

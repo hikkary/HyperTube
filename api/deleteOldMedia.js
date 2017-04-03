@@ -5,7 +5,7 @@ import _ from 'lodash';
 import rimraf from 'rimraf';
 
 export const deleteOldMedia = () => {
-  cron.schedule('00 30 11 * * 1-7', () => {
+  cron.schedule('00 30 11 * * 1-5', () => {
     console.log('cron goooooo');
     Movie.find({})
       .then((results) => {

@@ -57,18 +57,19 @@ export default class MoviePage extends Component {
         if(this.props.user.id){
           this.onPlay(newProps.movie.results[0].id, this.props.user.id);
         }
-      axios({
-        method: 'POST',
-        url: `${api}/movie/subtitles`,
-        data: {
-          sublanguageid: this.state.lang,
-          hash: this.state.quality,
-          imdbid: newProps.movie.results[0].imdb_code,
-        }
-      }).then((result) => {
-        if (!this._mounted) return false;
-        this.setState({ filename: result.data });
-      });
+        this.setState({filename: true})
+      // axios({
+      //   method: 'POST',
+      //   url: `${api}/movie/subtitles`,
+      //   data: {
+      //     sublanguageid: this.state.lang,
+      //     hash: this.state.quality,
+      //     imdbid: newProps.movie.results[0].imdb_code,
+      //   }
+      // }).then((result) => {
+      //   if (!this._mounted) return false;
+      //   this.setState({ filename: result.data });
+      // });
       // if (newProps.movie && newProps.movie.results.path) {
       //   console.log('ON RENTRE ICI DANS LE SATANE RECEIVE PROPS');
       //   console.log('newprops', newProps.movie.results[0].torrents[0].hash);
@@ -183,7 +184,6 @@ export default class MoviePage extends Component {
         {(((!this.props.movie.results[0].path) || (this.props.movie.results[0].path && !this.props.movie.results[0].path[this.state.quality])) && <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path[this.state.quality].path}`} type="video/mp4" />)
         }
-          <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles"  default/>
         </video>
         </div>
         }

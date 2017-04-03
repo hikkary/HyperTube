@@ -85,77 +85,62 @@ export const userSeenMovie = (req, res) => {
 };
 
 export const getSubtitles =  (req, res) => {
-  const OpenSubtitles = new OS('42hypertube');
-  console.log('HASH HASH HAHS', req.body.hash);
-  console.log('WORK WORK WORK LANGAUge', req.body.sublanguageid);
-    OpenSubtitles.search({
-    hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
-    imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
-  }).then((subtitles) => {
-	let language = '';
-	req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';
-	let getSubtitles = _.filter(subtitles,(sub) => {
-      // console.log('sub', sub);
-      if(sub.lang === language){
-        return sub
-      }
-    });
-    if (getSubtitles.length === 0){
-      getSubtitles =  _.filter(subtitles,(sub) => {
+  try {
+    const OpenSubtitles = new OS('42hypertube');
+    console.log('HASH HASH HAHS', req.body.hash);
+    console.log('WORK WORK WORK LANGAUge', req.body.sublanguageid);
+      OpenSubtitles.search({
+      hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
+      imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
+    }).then((subtitles) => {
+  	let language = '';
+  	req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';
+  	let getSubtitles = _.filter(subtitles,(sub) => {
         // console.log('sub', sub);
-        if(sub.lang === 'English'){
+        if(sub.lang === language){
           return sub
         }
       });
-    }
-    if(getSubtitles.length === 0){
-      return res.send({status: false, details: 'no subtitles'})
-    }
-    // if(!subtitles[language]) return;
-    // console.log('subtitles', subtitles);
-    // console.log('subtitles LANG', subtitles[language].filename);
-    const options = {
-      directory: './public/subtitles',
-	  filename: getSubtitles[0].filename,
-    };
-	const url = getSubtitles[0].url;
+      if (getSubtitles.length === 0){
+        getSubtitles =  _.filter(subtitles,(sub) => {
+          // console.log('sub', sub);
+          if(sub.lang === 'English'){
+            return sub
+          }
+        });
+      }
+      if(getSubtitles.length === 0){
+        return res.send({status: false, details: 'no subtitles'})
+      }
+      // if(!subtitles[language]) return;
+      // console.log('subtitles', subtitles);
+      // console.log('subtitles LANG', subtitles[language].filename);
+      const options = {
+        directory: './public/subtitles',
+  	  filename: getSubtitles[0].filename,
+      };
+  	const url = getSubtitles[0].url;
 
-	const filename = getSubtitles[0].filename.replace('.srt', '.vtt');
+  	const filename = getSubtitles[0].filename.replace('.srt', '.vtt');
 
-  download(url, options,  (err) => {
-    if (err) throw err;
-    console.log('meow');
+    download(url, options,  (err) => {
+      if (err) throw err;
+      console.log('meow');
 
-	const formerFilename = getSubtitles[0].filename
+  	const formerFilename = getSubtitles[0].filename
 
-	fs.createReadStream(`./public/subtitles/${formerFilename}`)
-    .pipe(srt2vtt())
-	.pipe(fs.createWriteStream(`./public/subtitles/${filename}`))
-    res.send(filename)
-    console.log('end of subtitles');
-  });
-    // console.log('sub', subtitles);
-    // subtitles = Object {
-        // en: {
-        //     downloads: "432",
-        //     encoding: "ASCII",
-        //     id: "192883746",
-        //     lang: "en",
-        //     langName: "English",
-        //     score: 9,
-        //     url: "http://dl.opensubtitles.org/download/subtitle_file_id",
-        //     filename: "some_movie.tag.srt"
-        // }
-        // fr: {
-        //     download: "221",
-        //     encoding: "UTF-8",
-        //     id: "1992536558",
-        //     lang: "fr",
-        //     langName: "French",
-        //     score: 6,
-        //     url: "http://dl.opensubtitles.org/download/subtitle_file_id",
-        //     filename: "some_movie.tag.srt"
-        // }
-    // }
-  });
+  	fs.createReadStream(`./public/subtitles/${formerFilename}`)
+      .pipe(srt2vtt())
+  	.pipe(fs.createWriteStream(`./public/subtitles/${filename}`))
+      res.send(filename)
+      console.log('end of subtitles');
+    });
+
+    });
+}
+catch(e) {
+  console.log(e);
+  sleep(100)
+  getSubtitles(req, res);
+};
 };
