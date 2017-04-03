@@ -35,4 +35,7 @@ export default {
   sortYear: 'Trier par Annee',
   sortRate: 'Trier par Note',
   deleteAccount: 'Supprimer Votre Compte',
+  noMoviesFound: 'PAS DE FILMS TROUVES',
+  noSeriesFound: 'PAS DE SERIES TROUVES',
+  noMediaFound: 'PAS DE MEDIA TROUVES',
 }

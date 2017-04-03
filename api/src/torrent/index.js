@@ -84,8 +84,6 @@ export const movieTorrent = async(req, res) => {
     stream = videoFile[0].createReadStream({ start, end });
     console.log(4);
     return stream.pipe(res);
-
-
   });
   engine.on('download', () => {
     const download = engine.swarm.downloaded;
@@ -180,21 +178,24 @@ export const serieTorrent = (req, res) => {
       'Content-Length': chunksize,
       'Content-Type': `video/${mime}`,
     });
-    stream = videoFile[0].createReadStream({ start, end,  flags: 'r', });
+    stream = videoFile[0].createReadStream({ start, end });
         //  stream.unpipe(res);
 				console.log("PATH FILE", finalPathFile);
-				if (finalPathFile !== '.avi') {
-    			stream.pipe(res);
-			} else {
-				console.log("ON TRANSCOOOOODE A PARIS");
-							new Transcoder(stream)
-								.videoCodec('h264')
-								.audioCodec('aac')
-								.format('mp4')
-								.stream().pipe(res);
 
-			}
+					if (finalPathFile === '.avi')
+					{
+						console.log("ON TRANSCOOOOODE A PARIS");
+								new Transcoder(stream)
+										.videoCodec('h264')
+										.audioCodec('aac')
+										.format('mp4')
+										.stream()
+										.pipe(res);
 
+
+					}
+					else
+						stream.pipe(res);
   });
   engine.on('download', async () => {
     let download = engine.swarm.downloaded;
@@ -211,6 +212,8 @@ export const serieTorrent = (req, res) => {
   engine.on('idle', () => {
     console.log('download Complete', videoFile[0].path);
     console.log('ID', req.params.serie_id);
+
+
     Serie.findOne({ imdb_code: req.params.serie_id })
       .then((serie) => {
         if (serie) {

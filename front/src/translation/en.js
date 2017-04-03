@@ -35,4 +35,7 @@ export default {
   sortYear: 'Sort by Year',
   sortRate: 'Sort by Rate',
   deleteAccount: 'Delete Account',
+  noMoviesFound: 'NO MOVIES FOUND',
+  noSeriesFound: 'NO SERIES FOUND',
+  noMediaFound: 'NO MEDIA FOUND',
 }

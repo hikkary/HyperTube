@@ -97,6 +97,7 @@ export default class SeriesDisplay extends Component {
 
   render() {
     const { series } = this.props;
+    const { current } = this.props.translation;
     // if (series) {
     //   let genre = '';
     //   genre = series.map((ser) => {
@@ -114,7 +115,7 @@ export default class SeriesDisplay extends Component {
         <div className="list">
           <MenuSeries onChange={this.handleChange} />
         </div>
-		{!this.state.hasMore && <div className="noMedia"> <p>NO SERIES FOUND</p></div>}
+		{!this.state.hasMore && <div className="noMedia"> <p>{current.noSeriesFound}</p></div>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadSeries}

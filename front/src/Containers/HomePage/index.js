@@ -72,6 +72,7 @@ class HomePage extends Component {
   render() {
     const { translation, actions, movies, series, user, search } = this.props;
     const { displaySearch, displayBest } = this.state;
+    const { current } = this.props.translation;
     return (
       <div>
 
@@ -80,7 +81,7 @@ class HomePage extends Component {
           display: displaySearch,
           }}>
         {((this.props.search && this.props.search.length === 0 )|| (this.props.search && this.props.search[0].errors)) &&
-           <p>No movie found</p>
+           <p>{current.noMediaFound}</p>
         }
         </div>
         <div className="searchDiv" style={{

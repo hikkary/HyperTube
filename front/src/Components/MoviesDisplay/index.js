@@ -164,7 +164,7 @@ export default class MoviesDisplay extends Component {
         <div className="list">
           <MenuMovies translation={this.props.translation} onChange={this.handleChange} />
         </div>
-		{!this.state.hasMore && <div className="noMedia"> <p>NO MOVIES FOUND</p></div>}
+		{!this.state.hasMore && <div className="noMedia"> <p>{current.noMoviesFound}</p></div>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadMovies}
