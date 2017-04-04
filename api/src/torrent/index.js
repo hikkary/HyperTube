@@ -176,51 +176,52 @@ export const serieTorrent = (req, res) => {
 			console.log("==========================", videoFile[0].path);
 
 		}
-    res.writeHead(206, {
-      'Content-Range': `bytes ${start}-${end}/${file_size}`,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': chunksize,
-      'Content-Type': `video/${mime}`,
-    });
-		stream = videoFile[0].createReadStream({ start, end });
-		// console.log("SSSSSSS",stream);
 
+		let pathSerie = `./public/Media/${videoFile[0].path}`
+		// let aviStream = fs.createReadStream(pathSerie, {'flags': 'r', start, end})
 
-        //  stream.unpipe(res);
-				console.log("PATH FILE", finalPathFile);
+		console.log("PATH FILE", finalPathFile);
 
-					if (finalPathFile !== '.avi')
-					{
-						console.log("*************************")
-						return stream.pipe(res);
-					}
-					else{
-						console.log("ON TRANSCOOOOODE A PARIS");
-					 return new Transcoder(stream)
-										.videoCodec('h264')
-										.audioCodec('aac')
-										.format('mp4')
-										.on('progress', (progress)=>{
-												console.log("2222222222222222", progress);
-										})
-										.stream()
-										.pipe(res)
+		if (finalPathFile !== '.avi')
+		{
+			res.writeHead(206, {
+				'Content-Range': `bytes ${start}-${end}/${file_size}`,
+				'Accept-Ranges': 'bytes',
+				'Content-Length': chunksize,
+				'Content-Type': `video/${mime}`,
+			});
+			stream = videoFile[0].createReadStream({ start, end});
+			console.log("*************************")
+			return stream.pipe(res);
+		}
+		else{
+			res.writeHead(200, {
+				// 'Content-Range': `bytes ${start}-${end}/${file_size}`,
+				// 'Accept-Ranges': 'bytes',
+				// 'Content-Length': chunksize,
+				'Content-Type': `video/${mime}`,
+			});
+			stream = videoFile[0].createReadStream({ start, end});
+			console.log("ON TRANSCOOOOODE A PARIS");
+			new Transcoder(stream)
+							.videoCodec('h264')
+							.audioCodec('aac')
+							.format('mp4')
+							.on('error', (err) => {
+								console.log("VOICI MON ERREUR",err);
+							})
+							.stream().pipe(res)
+			}
+		}
 
-										// .on('error', (error) =>{
-										// 	console.log("--2------------------------cest lerreur ", error);
-										// })
-
-
-
-
-					}
-  });
+  );
   engine.on('download', async () => {
     let download = engine.swarm.downloaded;
-    console.log(Math.floor((engine.swarm.downloaded * 8) / 10000024), 'M', videoFile[0].path);
+		console.log(Math.floor((engine.swarm.downloaded * 8) / 10000024), 'M');
+    // console.log(Math.floor((engine.swarm.downloaded * 8) / 10000024), 'M', videoFile[0].path);
 
     const checkSize = videoFile[0].length / 3;
-    console.log('checkSize', checkSize);
+    // console.log('checkSize', checkSize);
     // if (download >= checkSize && videoSent === 0){
     //   console.log("STREAM ASTAR");
     //   videoSent = 1;
