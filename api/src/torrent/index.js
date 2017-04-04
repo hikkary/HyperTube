@@ -172,7 +172,7 @@ export const serieTorrent = (req, res) => {
 		if (mime === 'avi') {
 			mime = 'mp4';
 			console.log("==========================", videoFile[0].path);
-			// videoFile[0].path = videoFile[0].path.replace('.avi', '.mp4')
+			videoFile[0].path = videoFile[0].path.replace('.avi', '.mp4')
 			console.log("==========================", videoFile[0].path);
 
 		}
@@ -198,19 +198,26 @@ export const serieTorrent = (req, res) => {
 			res.writeHead(200, {
 				// 'Content-Range': `bytes ${start}-${end}/${file_size}`,
 				// 'Accept-Ranges': 'bytes',
-				// 'Content-Length': chunksize,
+				'Content-Length': videoLength,
 				'Content-Type': `video/${mime}`,
 			});
 			stream = videoFile[0].createReadStream({ start, end});
 			console.log("ON TRANSCOOOOODE A PARIS");
+			// let myMp4 = fs.createWriteStream(`./public/Media/${videoFile[0].path}`)
 			new Transcoder(stream)
 							.videoCodec('h264')
 							.audioCodec('aac')
 							.format('mp4')
-							.on('error', (err) => {
-								console.log("VOICI MON ERREUR",err);
+							.on('finish', () => {
+								console.log("LA CONVERSION EST FINI");
 							})
 							.stream().pipe(res)
+							// .maxSize(640, 480)
+							// .videoBitrate(800 * 1000)
+							// .fps(25)
+							// .sampleRate(44100)
+							// .channels(2)
+							// .audioBitrate(128 * 1000)
 			}
 		}
 
