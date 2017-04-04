@@ -171,6 +171,10 @@ export const serieTorrent = (req, res) => {
 		mime = _.last(mime);
 		if (mime === 'avi') {
 			mime = 'mp4';
+			console.log("==========================", videoFile[0].path);
+			// videoFile[0].path = videoFile[0].path.replace('.avi', '.mp4')
+			console.log("==========================", videoFile[0].path);
+
 		}
     res.writeHead(206, {
       'Content-Range': `bytes ${start}-${end}/${file_size}`,
@@ -178,24 +182,38 @@ export const serieTorrent = (req, res) => {
       'Content-Length': chunksize,
       'Content-Type': `video/${mime}`,
     });
-    stream = videoFile[0].createReadStream({ start, end });
+		stream = videoFile[0].createReadStream({ start, end });
+		// console.log("SSSSSSS",stream);
+
+
         //  stream.unpipe(res);
 				console.log("PATH FILE", finalPathFile);
 
-					if (finalPathFile === '.avi')
+					if (finalPathFile !== '.avi')
 					{
+						console.log("*************************")
+						return stream.pipe(res);
+					}
+					else{
 						console.log("ON TRANSCOOOOODE A PARIS");
-								new Transcoder(stream)
+					 return new Transcoder(stream)
 										.videoCodec('h264')
 										.audioCodec('aac')
 										.format('mp4')
+										.on('progress', (progress)=>{
+												console.log("2222222222222222", progress);
+										})
 										.stream()
-										.pipe(res);
+										.pipe(res)
+
+										// .on('error', (error) =>{
+										// 	console.log("--2------------------------cest lerreur ", error);
+										// })
+
+
 
 
 					}
-					else
-						stream.pipe(res);
   });
   engine.on('download', async () => {
     let download = engine.swarm.downloaded;
