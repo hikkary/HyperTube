@@ -58,6 +58,11 @@ export default class OmniAuth extends Component {
     FB.login(this.checkLoginState)
   }
 
+  gmail = () => {
+    console.log('gmail');
+    // axios authorize gmail
+  }
+
   render() {
     return(
       <div className="omniAuth">
