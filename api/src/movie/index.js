@@ -35,7 +35,7 @@ export const movie = (req, res) => {
 export const addComment = async (req, res) => {
   const { error } = await Joi.validate({ comment: req.body.comment }, Comment, { abortEarly: false });
   if (error) {
-    return res.send({ status: false, errors: error.details });
+    return res.send({ status: false, errors: 'badComments' });
   }
   const { username, id, comment, movie_id } = req.body;
   console.log(username);

@@ -11,6 +11,7 @@ export default {
   bestMovies: 'Best Movies',
   bestSeries: 'Best Series',
   badLogin: 'There is an issue with your username or password',
+  badComments: 'Your password must contain less than 140 characters, only alpha-numerical and ponctuations',
   fillForm: 'Please fill out the form correctly',
   imgIssue: 'There is a problem with your image',
   usernameExists: 'The username already exists',

@@ -12,6 +12,7 @@ export default {
   bestSeries: 'Meilleures Series',
   badLogin: 'Il y a eu un probleme avec votre nom d\'utilisateur ou votre mot de passe',
   fillForm: 'Remplissez le formulaire correctement',
+  badComments: 'Votre commentaire ne doit pas dépasser 140 caracteres, et ne contenir que des caracteres alpha-numerique et de la ponctuation',
   imgIssue: 'Il y a un probleme avec votre photo',
   usernameExists: 'Le nom d\'utilisateur existe deja',
   emailExists: 'L\'email existes deja',

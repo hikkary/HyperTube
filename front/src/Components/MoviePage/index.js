@@ -130,6 +130,11 @@ export default class MoviePage extends Component {
     });
   }
 
+  errorHandler = (error) => {
+		const { translation } = this.props;
+		return translation.current[error];
+	}
+
   render() {
     let comments = [];
     if (this.props.movie.results && this.props.user && this.props.movie.results[0].comments) {
@@ -138,6 +143,7 @@ export default class MoviePage extends Component {
         {comment.username} {comment.comment}</p>
       )
     }
+    const { movie } = this.props;
     const { redraw } = this.state;
     setTimeout(() => {
     }, 3000);
@@ -201,6 +207,7 @@ export default class MoviePage extends Component {
         })
       }
       </div>
+
       <div className="allCommentsMovie">
         <form onSubmit={this.comments} className="formCommentsMovie">
           <div className="commentsMovie">
@@ -209,6 +216,9 @@ export default class MoviePage extends Component {
           <input className="commentInputMovie" type="text" name="comment" placeholder="Write a comment..." />
         </form>
       </div>
+      {movie && movie.errors && <div className="errorMovie">
+        {this.errorHandler(movie.errors)}
+      </div>}
     </div>
       </div>
 </div>
