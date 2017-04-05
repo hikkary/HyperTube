@@ -13,7 +13,6 @@ export default class Login extends Component {
 
   componentDidMount = () => {
     if (localStorage.getItem('token')) {
-      console.log('yo');
       browserHistory.push('/app/homePage');
     }
   }

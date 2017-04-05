@@ -12,7 +12,7 @@ export default class Header extends React.Component {
   state = {
     lang: false,
   }
-  
+
   _mounted = false;
 
   componentWillReceiveProps = (newProps) =>{
@@ -76,6 +76,8 @@ export default class Header extends React.Component {
   };
 
   logout = () => {
+    const { user } = this.props.actions.user;
+    user([]);
     localStorage.removeItem('token');
     browserHistory.push('/login');
   };

@@ -31,15 +31,9 @@ export default class SeriePage extends Component {
 
   seen = (serie) => {
     if (serie && serie.seenBy) {
-      let seen = serie.seenBy.map((user) => {
+      let seen = serie.seenBy.filter((user) => {
         if (user === this.props.user.id) {
           return "Seen";
-        }
-        return false;
-      });
-      seen = seen.filter((see) => {
-        if (see){
-          return see;
         }
         return false;
       });

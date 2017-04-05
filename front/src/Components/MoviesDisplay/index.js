@@ -112,19 +112,13 @@ export default class MoviesDisplay extends Component {
     console.log('MY ID', this.props.user.id);
     console.log('MY PROPS', this.props);
     if (movie) {
-      let seen = movie.seenBy.map((user) =>{
+      let seen = movie.seenBy.filter((user) =>{
         if(user === this.props.user.id) {
           return "movieSeen"
         }
         return false;
       })
-      seen = seen.filter((see) => {
-        if (see){
-          return see;
-        }
-        return false;
-      });
-      console.log("SEEEN" ,seen);
+
       if (seen.length !== 0) return "movieSeen";
       else return "movie";
     }
