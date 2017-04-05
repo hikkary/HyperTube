@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
@@ -10,6 +11,12 @@ class ForgotPassword extends React.Component {
     errors: '',
     status: '',
     err: 'err',
+  }
+
+  componentDidMount = () => {
+    if (localStorage.getItem('token')) {
+      browserHistory.push('/app/homePage');
+    }
   }
 
   forgotPassword = async (e) => {

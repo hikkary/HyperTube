@@ -194,16 +194,16 @@ export const serieTorrent = (req, res) => {
 			console.log("*************************")
 			return stream.pipe(res);
 		}
-		else{
+		else {
 			res.writeHead(200, {
 				// 'Content-Range': `bytes ${start}-${end}/${file_size}`,
 				// 'Accept-Ranges': 'bytes',
-				'Content-Length': videoLength,
+				'Content-Length': chunksize,
 				'Content-Type': `video/${mime}`,
 			});
 			stream = videoFile[0].createReadStream({ start, end});
 			console.log("ON TRANSCOOOOODE A PARIS");
-			// let myMp4 = fs.createWriteStream(`./public/Media/${videoFile[0].path}`)
+			let myMp4 = fs.createWriteStream(`./public/Media/${videoFile[0].path}`)
 			new Transcoder(stream)
 							.videoCodec('h264')
 							.audioCodec('aac')
@@ -211,7 +211,7 @@ export const serieTorrent = (req, res) => {
 							.on('finish', () => {
 								console.log("LA CONVERSION EST FINI");
 							})
-							.stream().pipe(res)
+							.stream().pipe(res).pipe(myMp4)
 							// .maxSize(640, 480)
 							// .videoBitrate(800 * 1000)
 							// .fps(25)

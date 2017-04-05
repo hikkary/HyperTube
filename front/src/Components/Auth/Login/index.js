@@ -11,13 +11,20 @@ export default class Login extends Component {
     message: '',
   }
 
+  componentDidMount = () => {
+    if (localStorage.getItem('token')) {
+      console.log('yo');
+      browserHistory.push('/app/homePage');
+    }
+  }
+
   componentWillReceiveProps = (newProps) => {
-    if(newProps.user){
+    if(newProps && newProps.user && newProps.user.length !== 0){
+      console.log("USER",newProps.user);
       if (newProps.user.results.status === true) // Gerer du cote de joi le retour
         localStorage.setItem('token', newProps.user.headers['x-access-token']);
       }
   };
-
 
   login = (e) => {
     e.preventDefault();

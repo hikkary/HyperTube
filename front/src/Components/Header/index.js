@@ -12,6 +12,8 @@ export default class Header extends React.Component {
   state = {
     lang: false,
   }
+  
+  _mounted = false;
 
   componentWillReceiveProps = (newProps) =>{
     if (newProps.user.language){
@@ -36,7 +38,6 @@ export default class Header extends React.Component {
     getConnectedUser(token);
   };
 
-  _mounted = false;
 
   toMovies = () => {
     browserHistory.push('/app/movies');

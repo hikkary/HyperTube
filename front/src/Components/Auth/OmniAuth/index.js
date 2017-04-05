@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import apiURI from '../../../apiURI';
 import axios from 'axios';
 import './OmniAuth.sass';
@@ -32,7 +33,11 @@ export default class OmniAuth extends Component {
           url: `${apiURI}/users/facebook_auth`,
           data: response,
         }).then((data) => {
-
+          console.log('data', data);
+          if (data.data.status === true) {
+            localStorage.setItem('token', data.headers['x-access-token']);
+            browserHistory.push('/app/homePage');
+          }
         })
       })
     } else if (response.status === 'not_authorized') {

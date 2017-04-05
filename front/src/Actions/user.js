@@ -71,9 +71,9 @@ export const getConnectedUser = (token) => (dispatch) => {
        },
   }).then(({ data: results, headers }) => {
     if (results.status === true) {
-      dispatch(user(results));
+      dispatch(user(results.details, headers));
     } else {
-      dispatch(error(results, headers));
+      dispatch(error(results.details, headers));
     }
   });
 };

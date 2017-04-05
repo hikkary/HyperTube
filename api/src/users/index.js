@@ -7,6 +7,7 @@ import debug from 'debug';
 import Joi from 'joi';
 import path from 'path';
 import axios from 'axios';
+import mongoose from 'mongoose';
 import jwtSecret from '../../jwtSecret';
 import { User } from '../Schema';
 import { Register, Login, Forgot, Update, Profile } from '../Joi';
@@ -15,6 +16,7 @@ import mailCenter from './mailCenter';
 
 
 const log = debug('hypertube:api:user:register');
+const ObjectId = mongoose.Types.ObjectId;
 
 const storage = multer.diskStorage({
   destination: `${__dirname}/../../public`,
@@ -34,17 +36,27 @@ const getToken = (req) => {
   return null;
 };
 
+
 export const connectedUser = (req, res) => {
   const token = getToken(req);
   jwt.verify(token, jwtSecret, (err, decoded) => {
-    User.find({ _id: decoded.id })
+    console.log('decoded', decoded);
+    User.findOne({ _id: ObjectId(decoded.id) })
       .then((result) => {
         if (result) {
-          decoded.lastSeen = result[0].lastSeen;
-          console.log(decoded);
-          res.send(decoded);
+          console.log("=========================================", result);
+          if (!decoded.lastSeen) {
+            decoded.lastSeen = [];
+          }
+          if (result.lastSeen) {
+            console.log('result de if', result.lastSeen);
+            console.log('de if decoded', decoded.lastSeen);
+          decoded.lastSeen = result.lastSeen;
+        }
+          console.log("DECODED", decoded.lastSeen);
+          return res.send({ status: true, details: decoded });
         } else {
-          res.send('errors');
+          return res.send( {status: false, details: 'errors' });
         }
       });
   });
@@ -52,7 +64,7 @@ export const connectedUser = (req, res) => {
 
 export const getUserInfo = (req, res) => {
   const id = req.body.id;
-  User.findOne({ _id: id })
+  User.findOne({ _id: ObjectId(id) })
     .then((result) => {
       if (!result) {
         res.send({ status: false, details: 'Username not found' });
@@ -131,7 +143,6 @@ export const login = async (req, res) => {
         if (!user.picture) {
 
         }
-
         const tokenUserinfo = {
           username: user.username,
           lastname: user.lastname,
@@ -220,22 +231,24 @@ export const forgotPassword = async (req, res) => {
 export const updatePassword = async (req, res) => {
   const { error } = await Joi.validate(req.body, Update, { abortEarly: false });
   if (error) {
-    return res.send({ status: false, errors: error.details });
+    return res.send({ status: false, errors: 'passwordRegex' });
   }
   const { username, key, password, newPass } = req.body;
   if (password.localeCompare(newPass) !== 0) {
-    res.send({ status: false, details: 'passwords dont match' });
+    res.send({ status: false, errors: 'noMatch' });
   }
   User.findOne({ username })
     .then((result) => {
       if (!result) {
-        res.send({ status: false, details: 'Username not found' });
+        res.send({ status: false, errors: 'noUsername' });
       }
       if (result.key.localeCompare(key) !== 0) {
-        res.send({ status: false, details: 'An issue occured' });
+        return res.send({ status: false, errors: 'errorOccured' });
       }
       const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
       result.password = passwordHash;
+      const key = crypto.randomBytes(20).toString('hex');
+      result.key = key;
       result.save()
       .then(() => {
         res.send({ status: true, details: 'Password Updated' });
@@ -252,7 +265,25 @@ export const facebook = async (req, res) => {
     picture: req.body.picture.data.url,
     provider: 'facebook',
   });
-  User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true }).catch((err) => { console.log(err); });
+  User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true })
+  .then((user) => {
+    if (user) {
+      const tokenUserinfo = {
+        id: user.id,
+        username: `${req.body.first_name}${req.body.last_name}`,
+        lastname: req.body.last_name,
+        firstname: req.body.first_name,
+        auth_id: req.body.id,
+        language: 'en',
+        picture: req.body.picture.data.url,
+        provider: 'facebook',
+      };
+      const token = jwt.sign(tokenUserinfo, jwtSecret);
+      res.header('Access-Control-Expose-Headers', 'x-access-token');
+      res.set('x-access-token', token);
+      res.send({ status: true, details: 'user connected' });
+    }
+  });
 };
 
 export const editProfile = (req, res) => {
@@ -267,7 +298,7 @@ export const editProfile = (req, res) => {
       return res.send({ status: false, errors: 'imgIssue' });
     }
     const { id } = req.body;
-    User.findOne({ _id: id })
+    User.findOne({ _id: ObjectId(id) })
       .then((result) => {
         if (!result) {
           res.send({ status: false, errors: 'noUsername' });
@@ -326,7 +357,7 @@ export const editProfile = (req, res) => {
 };
 
 export const deleteAccount = (req, res) => {
-  User.findOne({ _id: req.body.id })
+  User.findOne({ _id: ObjectId(req.body.id) })
     .then((result) => {
       console.log('USER', result);
       if (!result) return res.send({ status: false, error: 'noUsername' });

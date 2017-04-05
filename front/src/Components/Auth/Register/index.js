@@ -13,6 +13,12 @@ export default class Register extends Component {
     currentLanguage: 'en',
   }
 
+  componentDidMount = () => {
+    if (localStorage.getItem('token')) {
+      browserHistory.push('/app/homePage');
+    }
+  }
+
   uploadImage = async(e) => {
     e.persist();
     if (!e.target.files[0]) {

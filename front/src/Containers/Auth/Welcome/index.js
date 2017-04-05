@@ -5,13 +5,9 @@ import bg from '../../../../public/background-hypertube.png';
 import './Welcome.sass';
 
 export default class Welcome extends Component {
-  state = {
-    button: true,
-  }
-  getStarted = (e) => {
-    this.setState({ button: false });
-    // e.target.style.display = 'none';
-    browserHistory.push('login');
+
+  componentDidMount = (e) => {
+      browserHistory.push('login');
   }
 
   render(){

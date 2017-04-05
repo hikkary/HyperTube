@@ -8,7 +8,6 @@ const Login = ({ user, actions, translation }) =>
   <div className="authLogin">
     <LoginForm user={user} actions={actions} translation={translation} />
   </div>
-  
 const mapStateToProps = (state) => ({
   user: state.user,
   translation: state.translation,

@@ -9,7 +9,6 @@ import axios from 'axios';
 export default class SerieStreamingPage extends Component {
   state = {
     redraw: false,
-    quality: '',
     lang: '',
   }
 
@@ -31,31 +30,31 @@ export default class SerieStreamingPage extends Component {
   }
 
   componentWillReceiveProps = async(newProps) => {
+    console.log(newProps);
     if (!this._mounted) return false;
-    if (newProps.serie && newProps.serie.torrents) {
-      if(newProps.user.language === 'en') { this.setState({ lang: 'eng' }) }
-      if(newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+    if (newProps.serie && newProps.serie.torrents && newProps.user.id) {
+      if(newProps.user.language === 'en') { this.setState({ lang: 'eng' }) };
+      if(newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) };
       const hash = newProps.serie.torrents[0].url;
       const splitHash = await hash.split(':', 4);
       const finalSplit = await splitHash[3].split('&', 1);
       this.setState({ quality: finalSplit[0] });
-      this.setState({ filename: true });
-
-    //   if (this.state.quality && this.state.lang) {
-    //   axios({
-    //     method: 'POST',
-    //     url: `${api}/serie/subtitles`,
-    //     data: {
-    //       sublanguageid: this.state.lang,
-    //       imdbid: this.props.serieId,
-    //       season: newProps.serie.season,
-    //       episode: newProps.serie.episode,
-    //     }
-    //   }).then((result) => {
-    //     if (!this._mounted) return false;
-    //     this.setState({ filename: result.data });
-    //   })
-    // }
+      this.onPlay(newProps.serieId, newProps.user.id, newProps.serie.tvdb_id);
+      if (this.state.quality && this.state.lang) {
+      axios({
+        method: 'POST',
+        url: `${api}/serie/subtitles`,
+        data: {
+          sublanguageid: this.state.lang,
+          imdbid: this.props.serieId,
+          season: newProps.serie.season,
+          episode: newProps.serie.episode,
+        }
+      }).then((result) => {
+        if (!this._mounted) return false;
+        this.setState({ filename: result.data });
+      })
+    }
   }
 }
 
@@ -92,6 +91,7 @@ export default class SerieStreamingPage extends Component {
   }
 
   onPlay = (serieId, userId, episodeId) => {
+    console.log("TRIO GAGNANT", serieId, userId, episodeId);
     axios({
       method: 'POST',
       url: `${api}/serie/seenSerie`,
@@ -127,13 +127,13 @@ export default class SerieStreamingPage extends Component {
         <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
 
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
-          <video crossOrigin width="640" height="360" onPlay={this.onPlay(this.props.serieId, this.props.user.id, this.props.serie.tvdb_id)} autoPlay controls style={{
+          <video crossOrigin width="640" height="360" autoPlay controls style={{
           textAlign: 'center',
         }}>
         {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
           (<source src={`http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`} type="video/mp4" />)
         }
-
+        <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
         </video>
         </div>
         }

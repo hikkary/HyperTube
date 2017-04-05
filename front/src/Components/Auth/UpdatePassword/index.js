@@ -7,6 +7,15 @@ import api from '../../../apiURI';
 import './sass/updatePassword.sass';
 
 export default class ChangePassword extends React.Component{
+	state = {
+		error: '',
+	}
+
+	componentDidMount = () => {
+		if (localStorage.getItem('token')) {
+			browserHistory.push('/app/homePage');
+		}
+	}
 
 	submit = (event) => {
 		event.preventDefault();
@@ -23,8 +32,16 @@ export default class ChangePassword extends React.Component{
 		 .then((results) => {
 			 if (results.data.status) {
 				 browserHistory.push('/login');
+			 } else {
+				 this.setState({ error: results.data.errors });
+				 // add message error of password
 			 }
 		 });
+	}
+
+	errorHandler = (error) => {
+		const { translation } = this.props;
+		return translation.current[error];
 	}
 
 	render() {
@@ -55,6 +72,9 @@ export default class ChangePassword extends React.Component{
               width: '70%',
              }}/>
 					</form>
+					{this.state.error && <div className="errorUpdate">
+						{this.errorHandler(this.state.error)}
+					</div>}
 				</div>
 				<div className="buttons"></div>
 			</div>

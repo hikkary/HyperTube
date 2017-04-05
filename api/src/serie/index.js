@@ -1,4 +1,5 @@
 import { Serie, User } from '../Schema';
+import Mongoose from 'mongoose';
 import { Comment } from '../Joi';
 import _ from 'lodash';
 import Joi from 'joi';
@@ -6,6 +7,8 @@ import OS from 'opensubtitles-api';
 import download from 'download-file';
 import srt2vtt from 'srt-to-vtt';
 import fs from 'fs';
+
+const ObjectId = Mongoose.Types.ObjectId;
 
 export const serie = (req, res) => {
   const data = req.params.id;
@@ -15,6 +18,7 @@ export const serie = (req, res) => {
       res.send(results);
     });
 };
+
 
 export const episode = (req, res) => {
   const data = req.params.serie_id;
@@ -70,51 +74,39 @@ export const addComment = async (req, res) => {
       console.log("episode Actuel",results[0].content[index]);
       results[0].content.splice(index, 1, results[0].content[index]);
 
-      console.log("============================================ß");
       // IL NE VEUT PAS SAVE !! mais le console log de filteredEpisode est parfait
       results[0].save().then((err) => { console.log(err);})
       res.send({ status: true, ...results[0].content[index] });
     })
     .catch((err) => console.log(err));
+    console.log("CATVCH VOMMENT ");
 };
 
 export const userSeenSerie= (req, res) => {
-  console.log(req.body);
   const { userId, serieId, episodeId } = req.body;
-  console.log('idssss', userId, serieId);
   Serie.find({ imdb_code: serieId })
   .then((data) => {
-    console.log(data);
-    console.log("================");
-    console.log(data)
-    console.log("================");
     const index = _.indexOf(data[0].content, _.find(data[0].content, { tvdb_id: Number(episodeId) }));
-    console.log("INDDEX", index);
     if(!data[0].content[index].seenBy)
     {
       data[0].content[index].seenBy = [];
     }
-
     data[0].content[index].seenBy.unshift(userId);
     data[0].content.splice(index, 1, data[0].content[index])
     data[0].lastSeenDate = new Date();
-    data[0].save();
-    // data[0].seenBy.push(userId);
-    // data[0].seenBy = _.uniq(data[0].seenBy);
-    // data[0].save();
-    console.log("USER IDD",userId);
-    User.find({ _id: userId })
+    data[0].save().then((err) => { console.log(err);});
+    User.findOne({ _id: ObjectId(userId) })
       .then((user) => {
+        console.log(user);
         if (!user) return res.send({ status: false, errors: 'noUsername'});
-        console.log('title movie', data[0].title);
-        console.log("USER OOO",user);
-
-        user[0].lastSeen.unshift(data[0].title);
-        user[0].lastSeen = _.uniq(user[0].lastSeen);
-        user[0].lastSeen = user[0].lastSeen.slice(0, 10);
-        user[0].save();
-        res.send({ status: true });
-        console.log('user', user[0]);
+        if (!user.lastSeen) {
+          user.lastSeen = [];
+        }
+        user.lastSeen.unshift(data[0].title);
+        user.lastSeen = _.uniq(user.lastSeen);
+        user.lastSeen = user.lastSeen.slice(0, 10);
+        user.save().then((err) => { console.log(err);});
+        return res.send({ status: true });
       });
   });
 };
