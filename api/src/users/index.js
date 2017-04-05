@@ -72,6 +72,7 @@ export const getUserInfo = (req, res) => {
       const user = {
         username: result.username,
         firstname: result.firstname,
+        lastname: result.lastname,
         id: result.id,
         email: result.email,
         picture: result.picture,
@@ -184,6 +185,8 @@ export const handleAuthorize42 = (req, res) => {
     .then((user) => {
       const data = {
         auth_id: user.data.id,
+        id: user.id,
+        username: `${req.body.first_name}${req.body.last_name}`,
         firstname: user.data.first_name,
         lastname: user.data.last_name,
         picture: user.data.image_url,

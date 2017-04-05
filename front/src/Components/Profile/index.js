@@ -36,8 +36,9 @@ export default class Profile extends Component {
   };
 
   render(){
+	  console.log("this.state", this.state);
     let lastSeen = '';
-    if (this.state.user) {
+    if (this.state.user && this.state.user.lastSeen) {
       lastSeen = this.state.user.lastSeen.map((show, key) =>
         <ul key={key} className="seen"><li>{show}</li></ul>
       )
@@ -45,7 +46,8 @@ export default class Profile extends Component {
     // tableau 5 derniers films vues et 5 dernieres series ?
     const { user, myId } = this.state;
     return (
-      <div className="profile">
+		<div>
+      {user && <div className="profile">
       {user.picture && <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
       <div className="profileUsername">{user.username}</div>
         <div className="float">
@@ -54,7 +56,8 @@ export default class Profile extends Component {
           <div className="profileInfos"><i className="fa fa-film icons" aria-hidden="true"></i>Last 10 movies/shows watched:</div>
           <div className="profileInfos">{lastSeen}</div>
         </div>
-      </div>
+	</div>}
+  </div>
     )
   }
 }
