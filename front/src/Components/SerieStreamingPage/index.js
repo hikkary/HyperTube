@@ -107,8 +107,13 @@ export default class SerieStreamingPage extends Component {
     });
   }
 
+  errorHandler = (error) => {
+    const { translation } = this.props;
+    return translation.current[error];
+  }
 
   render() {
+    const { serie } = this.props;
     const { redraw } = this.state;
     let comments = [];
     if (this.props.serie && this.props.user && this.props.serie.comments) {
@@ -164,7 +169,11 @@ export default class SerieStreamingPage extends Component {
               </div>
               <input className="commentInputSerie" type="text" name="comment" placeholder="Write a comment..." />
             </form>
+            {serie && serie.errors && <div className="errorSerie">
+              {this.errorHandler(serie.errors)}
+            </div>}
           </div>
+
         </div>
   )
   }

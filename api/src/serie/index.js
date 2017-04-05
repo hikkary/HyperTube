@@ -41,7 +41,7 @@ export const addComment = async (req, res) => {
   console.log('iddd episode', req.body.episodeId);
   const { error } = await Joi.validate({ comment: req.body.comment }, Comment, { abortEarly: false });
   if (error) {
-    return res.send({ status: false, errors: error.details });
+    return res.send({ status: false, errors: 'badComments' });
   }
   const { username, id, comment, serieId, episodeId } = req.body;
   console.log(req.body.username);
