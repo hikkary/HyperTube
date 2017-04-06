@@ -26,7 +26,7 @@ export default {
   newPassword: 'Enter New Password',
   confirmPassword: 'Confirm New Password',
   submitPassword: 'Update Password',
-  passwordRegex: 'Your password must be at 8 characters, at least one lowercase, one uppercase letter and one number',
+  passwordRegex: 'Your password must be at least 8 characters, at least one lowercase, one uppercase letter and one number',
   noMatch: 'Your passwords don\'t match',
   signIn: 'SIGN IN',
   editProfile: 'Edit Profile',

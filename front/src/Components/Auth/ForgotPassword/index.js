@@ -11,12 +11,17 @@ class ForgotPassword extends React.Component {
     errors: '',
     status: '',
     err: 'err',
+    success: '',
   }
 
   componentDidMount = () => {
     if (localStorage.getItem('token')) {
       browserHistory.push('/app/homePage');
     }
+  }
+
+  goToPreviousPage = () => {
+    browserHistory.push('/login');
   }
 
   forgotPassword = async (e) => {
@@ -33,6 +38,9 @@ class ForgotPassword extends React.Component {
         if(results.data.errors) {
           this.setState({ errors: results.data.errors })
         }
+        else {
+          this.setState({ success: 'An email has been sent to you to reset your password' });
+        }
       });
   }
 
@@ -45,10 +53,11 @@ class ForgotPassword extends React.Component {
     const { current } = this.props.translation;
     return (
       <div className="forgot">
-        <div className="formCss">
           <div className="titleForgot">
             Forgot Your Password ?
           </div>
+          <div className="goToPreviousPage"><i onClick={this.goToPreviousPage} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
+          <div className="formCss">
           <form className="formPass" onSubmit={this.forgotPassword}>
           {this.state.errors && <div className="error" style={{ margin: 'auto' }}>
     				{this.errorHandler(this.state.errors)}
@@ -68,6 +77,7 @@ class ForgotPassword extends React.Component {
               }}
             />
           </form>
+          <div className="success" style={{ margin: 'auto', marginTop: '15px' }}>{this.state.success}</div>
         </div>
       </div>
     )

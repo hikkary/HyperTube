@@ -47,6 +47,7 @@ usersRouter
   .post('/api/users/editProfile', users.editProfile)
   .post('/api/users/register', users.createAccount)
   .post('/api/users/facebook_auth', users.facebook)
+  .post('/api/users/gmail_auth', users.gmail_auth)
   .post('/api/users/forgotPassword', users.forgotPassword)
   .post('/api/users/updatePassword', users.updatePassword)
   .get('/api/users/42_auth', users.handleAuthorize42)

@@ -9,6 +9,7 @@ import path from 'path';
 import axios from 'axios';
 import mongoose from 'mongoose';
 import jwtSecret from '../../jwtSecret';
+import { clientID, gmailSecret } from './secretGmail';
 import { User } from '../Schema';
 import { Register, Login, Forgot, Update, Profile } from '../Joi';
 import { uid, secret } from './secret42';
@@ -195,7 +196,7 @@ export const handleAuthorize42 = (req, res) => {
     const token = response.data.access_token;
     res.header('Access-Control-Expose-Headers', 'x-access-token');
     res.set('x-access-token', token);
-    res.redirect('http://localhost:3000/app');
+    res.redirect('http://localhost:3000/app/homePage');
     // res.send({ status: true, details: 'user connected' });
   })
   .catch((e) => {
@@ -204,6 +205,63 @@ export const handleAuthorize42 = (req, res) => {
     // message d'erreur
   });
 };
+
+export const facebook = async (req, res) => {
+  const data = ({
+    auth_id: req.body.id,
+    firstname: req.body.first_name,
+    lastname: req.body.last_name,
+    language: 'en',
+    picture: req.body.picture.data.url,
+    provider: 'facebook',
+  });
+  User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true })
+  .then((user) => {
+    if (user) {
+      const tokenUserinfo = {
+        id: user.id,
+        username: `${req.body.first_name}${req.body.last_name}`,
+        lastname: req.body.last_name,
+        firstname: req.body.first_name,
+        auth_id: req.body.id,
+        language: 'en',
+        picture: req.body.picture.data.url,
+        provider: 'facebook',
+      };
+      const token = jwt.sign(tokenUserinfo, jwtSecret);
+      res.header('Access-Control-Expose-Headers', 'x-access-token');
+      res.set('x-access-token', token);
+      res.send({ status: true, details: 'user connected' });
+    }
+  });
+};
+
+export const gmail_auth = (req, res) => {
+  const code = req.query.code;
+  console.log('gmail auth back', code);
+  axios({
+    method: 'POST',
+    url: 'https://www.googleapis.com/oauth2/v4/token',
+    data: {
+      client_id: clientID,
+      client_secret: gmailSecret,
+      code,
+      grand_type: 'authorization_code',
+      redirect_uri: 'https://localhost:8080/api/users/gmail_auth',
+    },
+  })
+  .then((response) => {
+    console.log(response.data.access_token);
+    res.redirect('http://localhost:3000/app/homePage');
+  });
+    // axios({
+    //   method: 'GET',
+    //   url: 'https://www.googleapis.com/drive/v2/files',
+    //   headers: {
+    //     Authorization: `Bearer ${response.data.access_token}`,
+    //   },
+// }
+}
 
 export const forgotPassword = async (req, res) => {
   const { error } = await Joi.validate(req.body, Forgot, { abortEarly: false });
@@ -256,35 +314,7 @@ export const updatePassword = async (req, res) => {
     });
 };
 
-export const facebook = async (req, res) => {
-  const data = ({
-    auth_id: req.body.id,
-    firstname: req.body.first_name,
-    lastname: req.body.last_name,
-    language: 'en',
-    picture: req.body.picture.data.url,
-    provider: 'facebook',
-  });
-  User.findOrCreate({ auth_id: req.body.id }, data, { upsert: true })
-  .then((user) => {
-    if (user) {
-      const tokenUserinfo = {
-        id: user.id,
-        username: `${req.body.first_name}${req.body.last_name}`,
-        lastname: req.body.last_name,
-        firstname: req.body.first_name,
-        auth_id: req.body.id,
-        language: 'en',
-        picture: req.body.picture.data.url,
-        provider: 'facebook',
-      };
-      const token = jwt.sign(tokenUserinfo, jwtSecret);
-      res.header('Access-Control-Expose-Headers', 'x-access-token');
-      res.set('x-access-token', token);
-      res.send({ status: true, details: 'user connected' });
-    }
-  });
-};
+
 
 export const editProfile = (req, res) => {
   single(req, res, async (err) => {

@@ -17,6 +17,10 @@ export default class ChangePassword extends React.Component{
 		}
 	}
 
+	goToPreviousPage = () => {
+		browserHistory.push('/forgotPassword');
+	}
+
 	submit = (event) => {
 		event.preventDefault();
 		 axios({
@@ -47,11 +51,11 @@ export default class ChangePassword extends React.Component{
 	render() {
 		const { current } = this.props.translation;
 		return(
-			<div className="updatePassword">
 				<div className="updateFormCss">
           <div className="titleUpdate">
             {current.updatePassword}
           </div>
+					<div className="goToPreviousPage"><i onClick={this.goToPreviousPage} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
 					<form className="updateForm" onSubmit={this.submit}>
             <TextField
               floatingLabelText={current.newPassword}
@@ -71,12 +75,10 @@ export default class ChangePassword extends React.Component{
               margin: '40px 0',
               width: '70%',
              }}/>
-					</form>
 					{this.state.error && <div className="errorUpdate">
 						{this.errorHandler(this.state.error)}
 					</div>}
-				</div>
-				<div className="buttons"></div>
+					</form>
 			</div>
 		)
 	}

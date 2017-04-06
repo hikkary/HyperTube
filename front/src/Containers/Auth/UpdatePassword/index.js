@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ChangePassword from '../../../Components/Auth/UpdatePassword';
 
 const Update = ({ translation, user, id, username }) =>
-	<div>
+	<div className="authForgotPassword">
 		<ChangePassword translation={translation} user={user} id={id} username={username} />
 		</div>
 

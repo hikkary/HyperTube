@@ -7,7 +7,7 @@ import './Welcome.sass';
 export default class Welcome extends Component {
 
   componentDidMount = (e) => {
-      browserHistory.push('login');
+      // browserHistory.push('/login');
   }
 
   render(){

@@ -25,6 +25,7 @@
     "ffmpeg": "0.0.4",
     "findorcreate-promise": "^1.0.4",
     "fs": "0.0.1-security",
+    "googleapi": "^1.0.2",
     "i18n-2": "^0.6.3",
     "joi": "^10.2.2",
     "jsonwebtoken": "^7.3.0",
