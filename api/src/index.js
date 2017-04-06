@@ -27,9 +27,6 @@ moviesRouter
   .put('/api/movie/comment', movie.addComment)
   .post('/api/movie/seenMovie', movie.userSeenMovie)
   .post('/api/movie/subtitles', movie.getSubtitles);
-  // .post('/api/movies/getGenre', movies.getGenre)
-  // .post('/api/movies', movies.post)
-  // .put('/api/movies', movies.modify);
 
 seriesRouter
   .get('/api/series', series.get)
@@ -38,7 +35,6 @@ seriesRouter
   .get('/api/series/scrap', series.scrap)
   .get('/api/series/tenBest', series.tenBest)
   .put('/api/serie/comment', serie.addComment)
-  .post('/api/series/getInfo', series.getInfo)
   .post('/api/serie/seenSerie', serie.userSeenSerie)
   .post('/api/serie/subtitles', serie.getSubtitles);
 
@@ -60,7 +56,7 @@ stream
   .get('/api/stream/serie/:hash/:serie_id/:id', torrent.serieTorrent);
 
 app
-  .use(cors()) // connexion front back
+  .use(cors())
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
   .use('/public', express.static(`${__dirname}/../public`))

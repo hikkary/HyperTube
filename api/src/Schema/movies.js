@@ -1,5 +1,5 @@
-import mongoose from '../mongoose';
 import findOrCreate from 'findorcreate-promise';
+import mongoose from '../mongoose';
 
 const movie = mongoose.Schema({
   id: Number,

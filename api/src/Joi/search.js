@@ -6,7 +6,6 @@ export const getMovies = Joi.object().keys({
   rateMin: Joi.number().min(0).max(9),
   rateMax: Joi.number().min(1).max(10),
   genre: Joi.string().regex(/^[a-zA-Z-]+/).allow(''),
-  // genre: Joi.string().alphanum().allow(''), Cette ligne foutait la merde
   title: Joi.string().alphanum().allow(''),
   asc: Joi.number().allow(''),
   page: Joi.number().min(0),
@@ -21,7 +20,6 @@ export const getSeries = Joi.object().keys({
   rateMin: Joi.number().min(0).max(9),
   rateMax: Joi.number().min(1).max(10),
   genre: Joi.string().allow(''),
-  // genre: Joi.string().alphanum().allow(''), Cette ligne foutait la merde
   title: Joi.string().alphanum().allow(''),
   asc: Joi.number().allow(''),
   page: Joi.number().min(0),

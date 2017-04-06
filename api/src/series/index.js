@@ -2,10 +2,8 @@ import axios from 'axios';
 import debug from 'debug';
 import _ from 'lodash';
 import Joi from 'joi';
-import apiKey from '../../apiKey';
 import { Serie } from '../Schema';
 import { getSeries } from '../Joi/search';
-import mongoose from '../mongoose';
 
 const log = debug('hypertube:api:series');
 
@@ -14,43 +12,31 @@ const writeJson = (allSeries) => {
   allSeries.forEach(serie =>
     axios.get(`http://eztvapi.ml/show/${serie.imdb_id}`)
       .then((content) => {
-        // if(content) {
-        // console.log('dataaaaaaaaaaaaaa', content.data);
-        // }
         axios.get(`http://www.omdbapi.com/?i=${content.data.imdb_id}`)
           .then((response) => {
-            console.log('response serie omdb dscsdcdsc', response.data.Genre);
             const genres = response.data.Genre.split(',');
-            console.log(genres);
-              const newSerie = {
-                images: serie.images,
-                description: response.data.Plot,
-                duration: response.data.Runtime,
-                rating: Number(response.data.imdbRating),
-                released: response.data.Released,
-                cast: response.data.Actors,
-                genres,
-                directors: response.data.Director,
-                writers: response.data.Writer,
-                // review: response.data.review,
-                imdb_code: serie.imdb_id,
-                num_seasons: serie.num_seasons,
-                title: serie.title,
-                title_search: serie.title.toLowerCase(),
-                year: serie.year,
-                provider: 'EZTV',
-                content : content.data.episodes,
-              };
-              Serie.findOrCreate({ imdb_code: serie.imdb_id }, newSerie, { upsert: true }).catch((err) => { console.log(err); });
-              // newSerie.save()
-                // .then(() => {
-                  // log(`${serie.title} added !`);
-                // });
+                const newSerie = {
+                  images: serie.images,
+                  description: response.data.Plot,
+                  duration: response.data.Runtime,
+                  rating: Number(response.data.imdbRating),
+                  released: response.data.Released,
+                  cast: response.data.Actors,
+                  genres,
+                  directors: response.data.Director,
+                  writers: response.data.Writer,
+                  imdb_code: serie.imdb_id,
+                  num_seasons: serie.num_seasons,
+                  title: serie.title,
+                  title_search: serie.title.toLowerCase(),
+                  year: serie.year,
+                  provider: 'EZTV',
+                  content: content.data.episodes,
+                };
+            Serie.findOrCreate({ imdb_code: serie.imdb_id }, newSerie, { upsert: true }).catch((err) => { console.log(err); });
           });
       })
-      .catch(() => {
-        console.log('ok')
-      })
+      .catch(),
   );
 };
 
@@ -67,17 +53,11 @@ const recursiveEztv = (page, allSeries) => {
 
 export const scrap = (req, res) => {
   const allSeries = [];
-  setInterval(() => { recursiveEztv(1, allSeries) }, 3600000);
+  setInterval(() => { recursiveEztv(1, allSeries); }, 3600000);
   recursiveEztv(1, allSeries);
   res.send(true);
 };
 
-export const getInfo = (req, res) => {
-  // axios.get(`http://imdb.wemakesites.net/api/${req.body.imdb}?api_key=87ffd3ef-264f-43b0-8ce6-aae18034a202`)
-  // .then((data) => {
-  //   res.send(data.data);
-  // });
-};
 
 export const tenBest = (req, res) => {
   Serie.find().sort({ year: -1 })
@@ -104,7 +84,6 @@ export const get = async (req, res) => {
   if (title) {
     searchObj.title = new RegExp(`${title}`, 'gi');
   }
-  console.log('search', searchObj);
   Serie.find(searchObj)
     .skip(page * RES_PER_PAGE)
     .limit(RES_PER_PAGE)

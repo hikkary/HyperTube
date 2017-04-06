@@ -3,6 +3,7 @@ import api from '../apiURI';
 
 export const GET = "GET_SERIE";
 export const PENDING = "PENDING";
+export const ERROR = "GET_ERROR_SERIE";
 
 export const pending = () => ({
   type: PENDING,
@@ -12,6 +13,12 @@ export const fetched = serie => ({
   type: GET,
   payload: serie,
 });
+
+export const error = error => ({
+  type: ERROR,
+  payload: error,
+});
+
 
 export const getSeriePage = ({
   id,
@@ -58,6 +65,7 @@ export const addCommentSerie = (
     }
   })
     .then((results) => {
+      if(results.data.errors) return dispatch(error(results.data))
       dispatch(fetched(results.data));
     })
     .catch(console.error);
