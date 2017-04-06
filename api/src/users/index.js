@@ -164,6 +164,7 @@ export const login = async (req, res) => {
 
 export const handleAuthorize42 = (req, res) => {
   const code = req.query.code;
+  let finalToken = '';
   axios({
     method: 'POST',
     url: 'https://api.intra.42.fr/oauth/token',
@@ -171,22 +172,20 @@ export const handleAuthorize42 = (req, res) => {
       grant_type: 'authorization_code',
       client_id: uid,
       client_secret: secret,
+      state: 'qwerefowjfoeiewjrojrjwriworjwerjwejrwoirjwoeijorworijtyuiop',
       code,
       redirect_uri: 'http://localhost:8080/api/users/42_auth',
     },
   })
-  .then((response) => {
+  .then(async (response) => {
+
     axios({
       method: 'GET',
       url: 'https://api.intra.42.fr/v2/me',
-      headers: {
-        Authorization: `Bearer ${response.data.access_token}`,
-      },
     })
-    .then((user) => {
+    .then(async (user) => {
       const data = {
         auth_id: user.data.id,
-        id: user.id,
         username: `${req.body.first_name}${req.body.last_name}`,
         firstname: user.data.first_name,
         lastname: user.data.last_name,
@@ -194,12 +193,27 @@ export const handleAuthorize42 = (req, res) => {
         language: 'en',
         provider: '42',
       };
-      User.findOrCreate({ auth_id: user.data.id }, data, { upsert: true }).catch((err) => { console.log(err); });
+      // console.log("RESPONSE", response.data.access_token);
+      User.findOrCreate({ auth_id: user.data.id }, data, { upsert: true })
+      // .then((user42) => {
+      //   const tokenUserinfo = {
+      //     username: user42.username,
+      //     lastname: user42.lastname,
+      //     firstname: user42.firstname,
+      //     id: user42.id,
+      //     email: user42.email,
+      //     language: user42.language,
+      //     picture: user42.picture,
+      //   };
+      //   finalToken = jwt.sign(tokenUserinfo, jwtSecret);
+      // })
+      // .catch((err) => { console.log(err); });
     });
     const token = response.data.access_token;
     res.header('Access-Control-Expose-Headers', 'x-access-token');
     res.set('x-access-token', token);
-    res.redirect('http://localhost:3000/app/homePage');
+
+    res.redirect(`http://localhost:3000/login?token=${token}`);
     // res.send({ status: true, details: 'user connected' });
   })
   .catch((e) => {
@@ -210,6 +224,7 @@ export const handleAuthorize42 = (req, res) => {
 };
 
 export const facebook = async (req, res) => {
+  console.log('yoyoyo');
   const data = ({
     auth_id: req.body.id,
     firstname: req.body.first_name,
@@ -232,6 +247,7 @@ export const facebook = async (req, res) => {
         provider: 'facebook',
       };
       const token = jwt.sign(tokenUserinfo, jwtSecret);
+      console.log('token facebook', token);
       res.header('Access-Control-Expose-Headers', 'x-access-token');
       res.set('x-access-token', token);
       res.send({ status: true, details: 'user connected' });
@@ -243,14 +259,17 @@ export const gmail_auth = (req, res) => {
   const code = req.query.code;
   console.log('gmail auth back', code);
   axios({
-    method: 'POST',
+    method: 'GET',
     url: 'https://www.googleapis.com/oauth2/v4/token',
+    headers:{
+      Authorization: `Bearer ${code}`,
+    },
     data: {
+      code,
       client_id: clientID,
       client_secret: gmailSecret,
-      code,
-      grand_type: 'authorization_code',
       redirect_uri: 'https://localhost:8080/api/users/gmail_auth',
+      grant_type: 'authorization_code',
     },
   })
   .then((response) => {

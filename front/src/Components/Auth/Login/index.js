@@ -12,6 +12,10 @@ export default class Login extends Component {
   }
 
   componentDidMount = () => {
+    if (this.props && this.props.token) {
+      localStorage.setItem('token', this.props.token);
+      browserHistory.push('/app/homePage');
+    }
     if (localStorage.getItem('token')) {
       browserHistory.push('/app/homePage');
     }

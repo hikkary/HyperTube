@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './Containers/App';
-import Welcome from './Containers/Auth/Welcome';
 import HomePage from './Containers/HomePage';
 import Series from './Containers/Series';
 import Movies from './Containers/Movies';
@@ -52,12 +51,10 @@ ReactDOM.render(
   <Provider store={store} >
     <MuiThemeProvider>
     	<Router history={browserHistory}>
-        <Route path="/" component={Welcome}>
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/forgotPassword" component={ForgotPassword} />
         	<Route path="/updatePassword" component={UpdatePassword} />
-        </Route>
         <Route path="/app" component={App}>
           <Route path="homePage" component={HomePage}/>
           <Route path="user/profile/:id" component={Profile} />
