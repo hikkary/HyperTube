@@ -1,5 +1,6 @@
 $break-small: 1020px
 $break: 736px
+$break-large: 2000px
 
 .infoContainer
   display: flex
@@ -23,6 +24,8 @@ $break: 736px
   background-color: rgba(0, 0, 0, 0.4)
   @media screen and (max-width: $break-small)
     overflow-y: scroll
+  @media screen and (max-width: $break-large)
+    overflow-y: scroll
   @media screen and (max-width: $break)
   	overflow-y: scroll
 
@@ -35,15 +38,13 @@ $break: 736px
 
 .movieInfo, .movieGenre, .movieCast, .movieDirectors
   color: white
-  p
+  & p
     margin: 0px 0px 5px 5px
 
 .movieSummary
-  // color: #363637
   color: white
   width: 40%
-  // font-weight: bold
-  p
+  & p
     margin: 15px 0px 15px 5px
 
 .movieCast
@@ -83,9 +84,6 @@ $break: 736px
       color: white
       font-weight: bold
 
-
-.SubMenu
-  // display: none
 .media
   width: 100%
   height: auto
@@ -104,7 +102,6 @@ $break: 736px
     right: 0
     bottom: 0
     display: block
-    // margin: 0 auto
 
 .buttons
   height: 80px

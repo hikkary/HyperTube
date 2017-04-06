@@ -53,15 +53,15 @@ class ForgotPassword extends React.Component {
     const { current } = this.props.translation;
     return (
       <div className="forgot">
-          <div className="titleForgot">
-            Forgot Your Password ?
-          </div>
-          <div className="goToPreviousPage"><i onClick={this.goToPreviousPage} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
-          <div className="formCss">
+        <div className="titleForgot">
+          Forgot Your Password ?
+        </div>
+        <div className="goToPreviousPage"><i onClick={this.goToPreviousPage} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
+        <div className="formCss">
           <form className="formPass" onSubmit={this.forgotPassword}>
-          {this.state.errors && <div className="error" style={{ margin: 'auto' }}>
-    				{this.errorHandler(this.state.errors)}
-    			</div>}
+            {this.state.errors && <div className="error" style={{ margin: 'auto' }}>
+    				      {this.errorHandler(this.state.errors)}
+    			  </div>}
             <TextField
               floatingLabelText={current.enterUsername}
               type="text"
@@ -77,7 +77,7 @@ class ForgotPassword extends React.Component {
               }}
             />
           </form>
-          <div className="success" style={{ margin: 'auto', marginTop: '15px' }}>{this.state.success}</div>
+          <div className="success" style={{ margin: 'auto', marginTop: '20px' }}>{this.state.success}</div>
         </div>
       </div>
     )

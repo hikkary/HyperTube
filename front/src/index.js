@@ -10,6 +10,7 @@ import Login from './Containers/Auth/Login';
 import ForgotPassword from './Containers/Auth/ForgotPassword';
 import Register from './Containers/Auth/Register';
 import Profile from './Containers/Profile';
+import AuthProfile from './Containers/ChangeLanguage';
 import EditProfile from './Containers/EditProfile';
 import SerieStreamingPage from './Containers/SerieStreamingPage';
 import './index.css';
@@ -59,6 +60,7 @@ ReactDOM.render(
           <Route path="homePage" component={HomePage}/>
           <Route path="user/profile/:id" component={Profile} />
           <Route path="user/editProfile" component={EditProfile} />
+          <Route path="user/changeLanguage" component={AuthProfile} />
           <Route path="movies" component={Movies} />
           <Route path="movies/:id" component={MoviePage} />
           <Route path="series" component={Series} />

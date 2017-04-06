@@ -51,7 +51,7 @@ export const addCommentMovie = (
     }
   })
     .then((results) => {
-      if(results.data.errors) return dispatch(error(results.data))
+      if (results.data.errors) return dispatch(error(results.data));
       dispatch(fetched(results.data));
     })
     .catch(console.error);

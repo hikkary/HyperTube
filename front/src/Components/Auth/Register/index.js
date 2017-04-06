@@ -79,7 +79,7 @@ export default class Register extends Component {
     const { current } = this.props.translation;
 
 	return(
-      <div>
+    <div>
       <div className="registerTitle">Sign up
         <div className="translation">
           <button className="langButton" onClick={this.toFrench}>
@@ -89,8 +89,8 @@ export default class Register extends Component {
             <img src={FR} role="presentation" className="language"/>
           </button>
         </div>
-        </div>
-        <div>
+      </div>
+      <div>
         <FloatingActionButton
           backgroundColor="#e0001b" style={{
             marginTop: '-30px',
@@ -98,55 +98,55 @@ export default class Register extends Component {
             marginRight: '10px',
           }}
         >
-        <i className="fa fa-sign-in fa-2x signInIcon" aria-hidden="true" onClick={this.loginForm}></i>
+          <i className="fa fa-sign-in fa-2x signInIcon" aria-hidden="true" onClick={this.loginForm}></i>
         </FloatingActionButton>
-        </div>
-        <form onSubmit={this.register} className="registerForm">
+      </div>
+      <form onSubmit={this.register} className="registerForm">
         {user && user.errors && <div className="errorRegister">
     			{this.errorHandler(user.errors)}
     		</div>}
-          <TextField
-            floatingLabelText={current.username}
-            name="username"
-            type="text"
-          />
-          <TextField
-            floatingLabelText={current.firstname}
-            name="firstname"
-            type="text"
-          />
-          <TextField
-            floatingLabelText={current.lastname}
-            name="lastname"
-            type="text"
-          />
-          <TextField
-            floatingLabelText={current.email}
-            name="email"
-            type="text"
-          />
-          <TextField
-            floatingLabelText={current.password}
-            name="password"
-            type="password"
-          />
-          <TextField
-            floatingLabelText={current.confirm}
-            type="password"
-            name="confirm"
-          />
-          <RaisedButton
-            label="Choose an Image"
-            labelPosition="before"
-            className="imageUpload"
-            containerElement="label"
-            >
-            <input type="file" name="imageUpload" className="uploadInput" onChange={this.uploadImage} />
-          </RaisedButton>
-          <RaisedButton type="submit" label={current.register} className="registerSubmit" name="register"/>
-        </form>
-        <div>{this.state.message}</div>
-      </div>
+        <TextField
+          floatingLabelText={current.username}
+          name="username"
+          type="text"
+        />
+        <TextField
+          floatingLabelText={current.firstname}
+          name="firstname"
+          type="text"
+        />
+        <TextField
+          floatingLabelText={current.lastname}
+          name="lastname"
+          type="text"
+        />
+        <TextField
+          floatingLabelText={current.email}
+          name="email"
+          type="text"
+        />
+        <TextField
+          floatingLabelText={current.password}
+          name="password"
+          type="password"
+        />
+        <TextField
+          floatingLabelText={current.confirm}
+          type="password"
+          name="confirm"
+        />
+        <RaisedButton
+          label="Choose an Image"
+          labelPosition="before"
+          className="imageUpload"
+          containerElement="label"
+          >
+          <input type="file" name="imageUpload" className="uploadInput" onChange={this.uploadImage} />
+        </RaisedButton>
+        <RaisedButton type="submit" label={current.register} className="registerSubmit" name="register"/>
+      </form>
+      <div>{this.state.message}</div>
+    </div>
     )
   }
 }

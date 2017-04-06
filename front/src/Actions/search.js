@@ -36,8 +36,8 @@ Promise.all([
   )])
   .then((result) => {
     let data = [];
-    data.push(result[0].data,result[1].data) // 2 params in promise all func sent
+    data.push(result[0].data,result[1].data); // 2 params in promise all func sent
     data = _.flattenDepth(data, 1);
-    dispatch(fetched(data))
+    dispatch(fetched(data));
   });
 };

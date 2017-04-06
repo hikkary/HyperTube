@@ -38,7 +38,6 @@ export default class Header extends React.Component {
     getConnectedUser(token);
   };
 
-
   toMovies = () => {
     browserHistory.push('/app/movies');
   };
@@ -59,6 +58,10 @@ export default class Header extends React.Component {
     browserHistory.push('/app/user/editProfile');
   };
 
+  toChangeLanguage = () => {
+    browserHistory.push('/app/user/changeLanguage');
+  }
+
   deleteAccount = () => {
     axios({
       method: 'POST',
@@ -67,7 +70,6 @@ export default class Header extends React.Component {
         id: this.props.user.id,
       }
     }).then((result) => {
-      // console.log('res', result);
       if (result.data.status === true) {
         localStorage.removeItem('token');
         browserHistory.push('/login');
@@ -87,38 +89,45 @@ export default class Header extends React.Component {
     const { current } = this.props.translation;
 		return(
       <div>
-      <div className="Header">
-        <img onClick={this.toHome} className="logo" role="presentation" src={logo} height="40px" width="250px"/>
-        <div className="HeaderButton">
-          {user.length !== 0 && this.props.user.picture && <div
-            onClick={this.toProfile}
-            style={{
-              backgroundImage: `url('http://localhost:8080/public/${this.props.user.picture}')`,
+        <div className="Header">
+          <img onClick={this.toHome} className="logo" role="presentation" src={logo} height="40px" width="250px"/>
+          <div className="HeaderButton">
+            {user.length !== 0 && user.picture && user.provider && <div
+              onClick={this.toProfile}
+              style={{
+                backgroundImage: `url('http://localhost:8080/public/${this.props.user.picture}')`,
+                }}
+              className="profilePicture" ></div>}
+            {user.length !== 0 && user.picture && user.provider && <div
+              onClick={this.toProfile}
+              style={{
+                backgroundImage: `url(${user.picture})`,
               }}
-            className="profilePicture" ></div>}
-        <IconMenu
-          iconButtonElement={
-            <IconButton
-              iconStyle={{ color: 'white' }}
+              className="profilePicture" ></div>}
+              <IconMenu
+                iconButtonElement={
+                  <IconButton
+                    iconStyle={{ color: 'white' }}
+                  >
+                    <i className="material-icons">menu</i>
+                  </IconButton>
+                }
+                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
               >
-              <i className="material-icons">menu</i>
-            </IconButton>
-          }
-          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-        >
-          <MenuItem primaryText={current.editProfile} onClick={this.toEditProfile} />
-          <MenuItem primaryText={current.movies} onClick={this.toMovies} />
-          <MenuItem primaryText={current.series} onClick={this.toSeries} />
-          <MenuItem primaryText={current.deleteAccount} onClick={() => {
-            if (confirm('Delete Your Account?') === true) {
-            this.deleteAccount(); } } }/>
-          <MenuItem primaryText={current.logout} onClick={this.logout}/>
-        </IconMenu>
-        </div>
-			</div>
-      <div className="SubMenu" />
-    </div>
+                {!user.provider && <MenuItem primaryText={current.editProfile} onClick={this.toEditProfile} />}
+                {user.provider && <MenuItem primaryText={current.changeLanguage} onClick={this.toChangeLanguage} />}
+                <MenuItem primaryText={current.movies} onClick={this.toMovies} />
+                <MenuItem primaryText={current.series} onClick={this.toSeries} />
+                <MenuItem primaryText={current.deleteAccount} onClick={() => {
+                  if (confirm('Delete Your Account?') === true) {
+                    this.deleteAccount(); } } }/>
+                <MenuItem primaryText={current.logout} onClick={this.logout}/>
+              </IconMenu>
+          </div>
+  			</div>
+        <div className="SubMenu" />
+      </div>
 		);
 	}
 }

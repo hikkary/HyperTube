@@ -38,7 +38,7 @@ export default class EditProfile extends Component {
 
   editProfile = (e) => {
     e.preventDefault();
-    if(!this.state.currentLanguage) this.setState({currentLanguage: this.props.currentLanguage})
+    if (!this.state.currentLanguage) this.setState({currentLanguage: this.props.currentLanguage})
     const { user } = this.props.actions;
     const { username, firstname, lastname, email, } = e.target;
     const { image } = this.state;
@@ -60,7 +60,6 @@ export default class EditProfile extends Component {
     })
     .then((results) => {
       if (results.data.errors) {
-        console.log(results.data.errors);
         return this.setState({ error: results.data.errors });
       }
       localStorage.setItem('token', results.headers['x-access-token']);
@@ -94,7 +93,6 @@ export default class EditProfile extends Component {
       <div className="editContainer">
         {user.length !== 0  &&
         <form onSubmit={this.editProfile} className="editProfileForm">
-
           <TextField
             floatingLabelText={current.username}
             name="username"
@@ -135,7 +133,7 @@ export default class EditProfile extends Component {
               color: 'white'
             }}
           />
-		  {user && user.picture && !user.provider && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
+		      {user && user.picture && !user.provider && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
           {user && user.picture && user.provider && <img src={user.picture} className="photo" role="presentation" />}
           <RaisedButton
             label={current.editImage}
@@ -154,12 +152,11 @@ export default class EditProfile extends Component {
             <img src={FR} role="presentation" className="language"/>
           </button>
           <RaisedButton type="submit" label={current.editProfile} className="editProfileSubmit" name="editProfile"/>
-        </form>
-      }
-      {error && <div className="errorEditProfile" style={{ margin: 'auto' }}>
+        </form>}
+        {error && <div className="errorEditProfile" style={{ margin: 'auto' }}>
 				{this.errorHandler(error)}
-			</div>}
-    </div>
+			   </div>}
+      </div>
     )
   }
 }

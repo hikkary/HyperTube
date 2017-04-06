@@ -51,34 +51,34 @@ export default class ChangePassword extends React.Component{
 	render() {
 		const { current } = this.props.translation;
 		return(
-				<div className="updateFormCss">
-          <div className="titleUpdate">
-            {current.updatePassword}
-          </div>
-					<div className="goToPreviousPage"><i onClick={this.goToPreviousPage} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
-					<form className="updateForm" onSubmit={this.submit}>
-            <TextField
-              floatingLabelText={current.newPassword}
-              type="password"
-              name="password"
-              style={{
-                width: '70%',
-               }}/>
-            <TextField
-              floatingLabelText={current.confirmPassword}
-              type="password"
-              name="newPass"
-              style={{
-                width: '70%',
-               }}/>
-            <RaisedButton type="submit" label={current.submitPassword} style={{
-              margin: '40px 0',
+			<div className="updateFormCss">
+        <div className="titleUpdate">
+          {current.updatePassword}
+        </div>
+				<div className="goToPreviousPage"><i onClick={this.goToPreviousPage} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
+				<form className="updateForm" onSubmit={this.submit}>
+          <TextField
+            floatingLabelText={current.newPassword}
+            type="password"
+            name="password"
+            style={{
               width: '70%',
              }}/>
-					{this.state.error && <div className="errorUpdate">
-						{this.errorHandler(this.state.error)}
-					</div>}
-					</form>
+          <TextField
+            floatingLabelText={current.confirmPassword}
+            type="password"
+            name="newPass"
+            style={{
+              width: '70%',
+             }}/>
+          <RaisedButton type="submit" label={current.submitPassword} style={{
+            margin: '40px 0',
+            width: '70%',
+           }}/>
+					 {this.state.error && <div className="errorUpdate" style={{ margin: 'auto' }}>
+						 {this.errorHandler(this.state.error)}
+					 </div>}
+				</form>
 			</div>
 		)
 	}

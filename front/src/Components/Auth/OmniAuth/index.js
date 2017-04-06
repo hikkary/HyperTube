@@ -41,8 +41,8 @@ export default class OmniAuth extends Component {
             localStorage.setItem('token', data.headers['x-access-token']);
             browserHistory.push('/app/homePage');
           }
-        })
-      })
+        });
+      });
     } else if (response.status === 'not_authorized') {
       console.error('ERROR FB');
     } else {
@@ -78,9 +78,9 @@ export default class OmniAuth extends Component {
     return(
       <div className="omniAuth">
         <a href="#" onClick={this.handleClick}><img src={FBlogo} role="presentation" className="fblogo" ></img></a>
-          <a href='https://api.intra.42.fr/oauth/authorize?client_id=adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2F42_auth&response_type=code'>
+        <a href='https://api.intra.42.fr/oauth/authorize?client_id=adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2F42_auth&response_type=code'>
           <img src={fortyTwoLogo} role="presentation" className="fortyTwoLogo" ></img></a>
-          <a href="https://accounts.google.com/o/oauth2/auth?client_id=222912618974-s46u30prev1k9b88bflpo849thhqpfbv.apps.googleusercontent.com&response_type=code&scope=openid%20email&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2Fgmail_auth&state=qwerefowjfoeiewjrojrjwriworjwerjwejrwoirjwoeijorworijtyuiop" onClick={this.gmail}><img src={Glogo} role="presentation" className="Glogo"></img></a>
+        <a href="https://accounts.google.com/o/oauth2/auth?client_id=222912618974-s46u30prev1k9b88bflpo849thhqpfbv.apps.googleusercontent.com&response_type=code&scope=openid%20email&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2Fgmail_auth&state=qwerefowjfoeiewjrojrjwriworjwerjwejrwoirjwoeijorworijtyuiop" onClick={this.gmail}><img src={Glogo} role="presentation" className="Glogo"></img></a>
       </div>
     )
   }

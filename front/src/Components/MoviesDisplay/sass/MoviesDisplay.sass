@@ -4,9 +4,7 @@ $break: 736px
 body
   margin: 0
 
-
 .allMovies,
-  // background-color: #444953
   padding-top: 15px
   background-color: #363637
   display: flex
@@ -90,7 +88,7 @@ body
   display: none
 
 .list
-  margin-left: 15px
+  margin-left: 4px
   width: 15vw
   height: 65vh
   position: absolute
@@ -107,35 +105,31 @@ body
       border: none
 
 
-@media screen and (max-width: $break){
-// .onGenre
-// 	height: 25px
-// 	width: 100%
-.genreTitle
-	width: 100%
-	margin: 5px
-.onList
-	display: flex
-	width: 95vw
-	flex-direction: row
-	flex-wrap: wrap
-	justify-content: center
-.list
-	width: 95vw
-	height: 5vh
-	// margin-bottom: 12vh
-	position: relative
-	color: white
-	transition: 1s
-	& .genreButton
-		height: 25px
-		font-size: 15px
-		width: 100%
-		outline: none
-		color: white
-		cursor: pointer
-		background-color: rgba(0, 0, 0, 0.1)
-		border: none}
+@media screen and (max-width: $break)
+  .genreTitle
+  	width: 100%
+  	margin: 5px
+  .onList
+  	display: flex
+  	width: 95vw
+  	flex-direction: row
+  	flex-wrap: wrap
+  	justify-content: center
+  .list
+  	width: 95vw
+  	height: 5vh
+  	position: relative
+  	color: white
+  	transition: 1s
+  	& .genreButton
+  		height: 25px
+  		font-size: 15px
+  		width: 100%
+  		outline: none
+  		color: white
+  		cursor: pointer
+  		background-color: rgba(0, 0, 0, 0.1)
+  		border: none
 
 .title
   width: inherit
@@ -145,7 +139,6 @@ body
   text-align: center
   font-weight: bold
   background: #363637
-  // background: #444953
   position: absolute
 
 .title p
@@ -162,7 +155,6 @@ body
 .ranges
   margin: 0 auto
   width: 26vw
-  // padding: 100px 30px 0
   z-index: 3
   @media screen and (max-width: $break){
 	 width: 80vw
@@ -181,5 +173,4 @@ body
 
 .sorted
   margin: 10px 0 15px 0
-  // margin-left: 15vw
   text-align: center

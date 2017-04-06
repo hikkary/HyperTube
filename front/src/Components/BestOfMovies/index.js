@@ -17,8 +17,7 @@ export default class BestOfMovies extends Component {
   seen = (movie) => {
     if (movie && movie.seenBy) {
       let seen = movie.seenBy.map((user) => {
-        if(user === this.props.user.id)
-        {
+        if(user === this.props.user.id) {
           return "Seen";
         }
         return false;
@@ -29,17 +28,14 @@ export default class BestOfMovies extends Component {
         }
         return false;
       });
-      console.log("SEEEN" ,seen);
       if (seen.length !== 0) return "movieSeen";
       else return "movie";
     }
   }
 
-
   render(){
     let allMovies = [];
     const {current} = this.props.translation;
-
     let { movies } = this.props;
     if (movies && movies.length > 0) {
       movies = _.uniqBy(movies, 'id');
@@ -47,31 +43,31 @@ export default class BestOfMovies extends Component {
       allMovies = movies.map((movie, key) => {
         return (
         <div className="allInfo" key={key}>
-            <div onClick={() => this.goMoviePage(movie.id)}
-              className={this.seen(movie)}
-              style={{ backgroundImage: `url('${movie.largeImage}')` }}
-            >
-              <div className="textContainer">
-                <p>{current.rate}: {movie.rating} </p>
-                <p>{movie.year} </p>
-              </div>
+          <div onClick={() => this.goMoviePage(movie.id)}
+            className={this.seen(movie)}
+            style={{ backgroundImage: `url('${movie.largeImage}')` }}
+          >
+            <div className="textContainer">
+              <p>{current.rate}: {movie.rating} </p>
+              <p>{movie.year} </p>
             </div>
-        <div className="title">
-          <p>{movie.title} </p>
+          </div>
+          <div className="title">
+            <p>{movie.title} </p>
+          </div>
         </div>
-      </div>
       )
     });
     }
     return(
       <div>
-      <div className="BestMovies">
-        <p>{current.bestMovies}</p>
+        <div className="BestMovies">
+          <p>{current.bestMovies}</p>
+        </div>
+        <div className="TenBestMovies">
+          {allMovies}
+        </div>
       </div>
-      <div className="TenBestMovies">
-        {allMovies}
-      </div>
-    </div>
     )
   }
 }

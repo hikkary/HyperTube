@@ -1,5 +1,3 @@
-// import axios from 'axios';
-// import api from '../apiURI';
 import translation from '../translation';
 
 export const GET = 'TRANSLATION_GET';
@@ -25,13 +23,3 @@ export const toEnglish = () => ({
   type: ENGLISH,
   payload: translation,
 });
-// export const getTranslation = () => (dispatch) => {
-//   dispatch(pending());
-//   axios.get(
-//     `${api}/movie/display`,
-//   )
-//   .then(({ data: movies}) => {
-//     dispatch(display(movies));
-//   })
-//   .catch(console.error)
-// }

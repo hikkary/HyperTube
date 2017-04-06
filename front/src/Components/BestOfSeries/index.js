@@ -41,7 +41,7 @@ export default class BestOfSeries extends Component {
               )
             })}
         </div>
-    </div>
+      </div>
     )
   }
 }

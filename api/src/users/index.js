@@ -413,6 +413,20 @@ export const editProfile = (req, res) => {
   });
 };
 
+export const authEditProfile = (req, res) => {
+  const { id } = req.body;
+  User.findOne({ _id: ObjectId(id) })
+    .then((user) => {
+      console.log(req.body.currentLanguage);
+      // add joi of course
+      if (user) {
+        user.language = req.body.currentLanguage;
+        console.log(user);
+        user.save();
+      }
+    });
+};
+
 export const deleteAccount = (req, res) => {
   User.findOne({ _id: ObjectId(req.body.id) })
     .then((result) => {

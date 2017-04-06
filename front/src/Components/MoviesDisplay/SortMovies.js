@@ -11,17 +11,17 @@ export default class SortMovies extends Component {
 
   sortTitle = () => {
     this.state.title === 1 ? this.setState({ title: -1 }) : this.setState({ title: 1 }) ;
-    this.props.onChange('sort', {name:'title', value: this.state.title});
+    this.props.onChange('sort', { name:'title', value: this.state.title });
   }
 
   sortYear = () => {
     this.state.year === 1 ? this.setState({ year: -1 }) : this.setState({ year: 1 }) ;
-    this.props.onChange('sort', {name:'year', value: this.state.year});
+    this.props.onChange('sort', { name:'year', value: this.state.year });
   }
 
   sortRate = () => {
     this.state.rate === 1 ? this.setState({ rate: -1 }) : this.setState({ rate: 1 }) ;
-    this.props.onChange('sort', {name:'rating', value: this.state.rate});
+    this.props.onChange('sort', { name:'rating', value: this.state.rate });
   }
 
   render(){
@@ -30,8 +30,8 @@ export default class SortMovies extends Component {
       <div className="sorted">
         <FlatButton label={current.sortTitle} onClick={this.sortTitle}/>
         <FlatButton label={current.sortYear} onClick={this.sortYear}/>
-      <FlatButton label={current.sortRate} onClick={this.sortRate} />
-    </div>
+        <FlatButton label={current.sortRate} onClick={this.sortRate} />
+      </div>
     )
   }
 }

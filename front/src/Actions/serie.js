@@ -19,7 +19,6 @@ export const error = error => ({
   payload: error,
 });
 
-
 export const getSeriePage = ({
   id,
 } = {}) => (dispatch) => {
@@ -30,7 +29,7 @@ export const getSeriePage = ({
   .then(({ data: serie }) => {
     dispatch(fetched(...serie));
   })
-  .catch(console.error)
+  .catch(console.error);
 };
 
 export const getEpisode = ({
@@ -43,7 +42,7 @@ export const getEpisode = ({
   .then(({ data: serie }) => {
     dispatch(fetched(...serie.details));
   })
-  .catch(console.error)
+  .catch(console.error);
 };
 
 export const addCommentSerie = (
@@ -65,7 +64,7 @@ export const addCommentSerie = (
     }
   })
     .then((results) => {
-      if(results.data.errors) return dispatch(error(results.data))
+      if (results.data.errors) return dispatch(error(results.data));
       dispatch(fetched(results.data));
     })
     .catch(console.error);

@@ -11,7 +11,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 export default class MoviesDisplay extends Component {
   state = {
-	hasMore:true,
+	hasMore: true,
     ready : false,
     genres: '',
     year: {
@@ -109,16 +109,13 @@ export default class MoviesDisplay extends Component {
   }
 
   seen = (movie) => {
-    console.log('MY ID', this.props.user.id);
-    console.log('MY PROPS', this.props);
     if (movie) {
       let seen = movie.seenBy.filter((user) =>{
-        if(user === this.props.user.id) {
+        if (user === this.props.user.id) {
           return "movieSeen"
         }
         return false;
-      })
-
+      });
       if (seen.length !== 0) return "movieSeen";
       else return "movie";
     }
@@ -132,7 +129,7 @@ export default class MoviesDisplay extends Component {
       movies = _.uniqBy(movies, 'id');
       allMovies = movies.map((movie, key) => {
         return (
-        <div className="allInfo" key={key}>
+          <div className="allInfo" key={key}>
             <div onClick={() => this.goMoviePage(movie.id)}
               className={this.seen(movie)}
               style={{ backgroundImage: `url('${movie.largeImage}')` }}
@@ -142,13 +139,12 @@ export default class MoviesDisplay extends Component {
                 <p>{movie.year} </p>
               </div>
             </div>
-        <div className="title">
-          <p>{movie.title} </p>
-        </div>
-      </div>
-      )
-    });
-
+            <div className="title">
+              <p>{movie.title} </p>
+            </div>
+          </div>
+        )
+      });
     }
     return(
       <div className="moviesContainer">
@@ -158,24 +154,22 @@ export default class MoviesDisplay extends Component {
         <div className="list">
           <MenuMovies translation={this.props.translation} onChange={this.handleChange} />
         </div>
-		{!this.state.hasMore && <div className="noMedia"> <p>{current.noMoviesFound}</p></div>}
+	      {!this.state.hasMore && <div className="noMedia"> <p>{current.noMoviesFound}</p></div>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadMovies}
           initialLoad={false}
           hasMore={this.state.hasMore}
           loader={<div className="spinner">
-			  <div className="bounce1"></div>
-			  <div className="bounce2"></div>
-			  <div className="bounce3"></div>
-			</div>}>
-          {
-            <div className="allMovies">
-                {allMovies}
-            </div>
-          }
+            <div className="bounce1"></div>
+		        <div className="bounce2"></div>
+		        <div className="bounce3"></div>
+		      </div>}>
+          {<div className="allMovies">
+            {allMovies}
+          </div>}
         </InfiniteScroll>
-    </div>
+      </div>
     )
   }
 }

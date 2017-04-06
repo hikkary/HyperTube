@@ -4,7 +4,6 @@ import Genres from '../Genres';
 import './sass/MoviesDisplay.sass';
 
 export default class MenuMovies extends Component {
-
   state = {
     bcolor: '#363637',
     genreButton: 'buttonList',
@@ -12,15 +11,14 @@ export default class MenuMovies extends Component {
   }
 
   colorGenre = (e) => {
-   let bColor = '#'+Math.floor(Math.random()*16777215).toString(16);
-   this.setState({bcolor: bColor})
+   let bColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+   this.setState({ bcolor: bColor })
     e.target.style.backgroundColor = bColor;
   }
 
   resetDiv = (e) =>{
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.6)";
   }
-
 
   resetColor = (e) =>{
     e.target.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
@@ -34,43 +32,42 @@ export default class MenuMovies extends Component {
 
   all = () => (
 	  <div className="onGenre">
-    <button
-      className={this.state.genreButton}
-      onClick={() => this.props.onChange('genre', '')}
-      onMouseOut={this.resetColor}
-      onMouseOver={this.colorGenre}
-      style={{
-        margin : '2px',
-      }}>
-      All
+      <button
+        className={this.state.genreButton}
+        onClick={() => this.props.onChange('genre', '')}
+        onMouseOut={this.resetColor}
+        onMouseOver={this.colorGenre}
+        style={{
+          margin : '2px',
+        }}>
+        All
       </button>
-  </div>
+    </div>
   )
 
   render(){
-    // const {current} = this.props.translation;
     const { genreButton } = this.state;
     return(
-        <div className='onList'>
+      <div className='onList'>
         <p className="genreTitle" onClick={this.displayMenu}>
-        {this.state.operatorGenre} GENRES</p>
-          {this.all()}
-          {Genres.map((genre, key) => {
-            return(
-              <div className="onGenre" key={key}>
-                <button
-                  className={genreButton}
-                  onClick={() => this.props.onChange('genre', genre)}
-                  onMouseOut={this.resetColor}
-                  onMouseOver={this.colorGenre}
-                  style={{
-                    margin : '2px',
-                  }}>
-                    {genre}
-                  </button>
-              </div>
-            )
-          })}
+          {this.state.operatorGenre} GENRES</p>
+        {this.all()}
+        {Genres.map((genre, key) => {
+          return(
+            <div className="onGenre" key={key}>
+              <button
+                className={genreButton}
+                onClick={() => this.props.onChange('genre', genre)}
+                onMouseOut={this.resetColor}
+                onMouseOver={this.colorGenre}
+                style={{
+                  margin : '2px',
+                }}>
+                  {genre}
+                </button>
+            </div>
+          )
+        })}
       </div>
     )
   }

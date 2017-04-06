@@ -19,14 +19,14 @@ export default class Login extends Component {
     if (localStorage.getItem('token')) {
       browserHistory.push('/app/homePage');
     }
-  }
+  };
 
   componentWillReceiveProps = (newProps) => {
     if(newProps && newProps.user && newProps.user.length !== 0){
-      console.log("USER",newProps.user);
-      if (newProps.user.results.status === true) // Gerer du cote de joi le retour
+      if (newProps.user.results.status === true) { // Gerer du cote de joi le retour
         localStorage.setItem('token', newProps.user.headers['x-access-token']);
       }
+    }
   };
 
   login = (e) => {
@@ -70,26 +70,25 @@ export default class Login extends Component {
           onClick={this.registerForm}
         >
         <i className="material-icons">person_add</i>
-		</FloatingActionButton>
-        <div className="updateForm"/>
-          <form onSubmit={this.login} className="loginForm">
-            <ExtLogin />
-			{user.results && user.results.errors && <div className="errorLogin">
-				{this.errorHandler(user.results.errors)}
-			</div>}
-            <TextField
-              floatingLabelText={current.username}
-              name="username"
-  					  type="text"
-            />
-            <TextField
-              floatingLabelText={current.password}
-              type="password"
-              name="password"
-            />
-            <RaisedButton type="submit" label={current.signIn} style={{ margin: '20px 0' }}/>
-            <RaisedButton onClick={this.forgotPassword} label={current.forgotPassword}/>
-          </form>
+		    </FloatingActionButton>
+        <form onSubmit={this.login} className="loginForm">
+          <ExtLogin />
+			    {user.results && user.results.errors && <div className="errorLogin">
+				    {this.errorHandler(user.results.errors)}
+			    </div>}
+          <TextField
+            floatingLabelText={current.username}
+            name="username"
+  					type="text"
+          />
+          <TextField
+            floatingLabelText={current.password}
+            type="password"
+            name="password"
+          />
+          <RaisedButton type="submit" label={current.signIn} style={{ margin: '20px 0' }}/>
+          <RaisedButton onClick={this.forgotPassword} label={current.forgotPassword}/>
+        </form>
         <div>{this.state.message}</div>
       </div>
     )

@@ -41,6 +41,7 @@ seriesRouter
 usersRouter
   .put('/api/users/login', users.login)
   .post('/api/users/editProfile', users.editProfile)
+  .post('/api/users/authEditProfile', users.authEditProfile)
   .post('/api/users/register', users.createAccount)
   .post('/api/users/facebook_auth', users.facebook)
   .get('/api/users/gmail_auth', users.gmail_auth)

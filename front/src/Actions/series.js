@@ -49,29 +49,8 @@ export const getSeries = ({
       dispatch(fetched(series));
     }
   })
-  .catch(console.error)
+  .catch(console.error);
 };
-
-//
-// export const getSeries = ({
-//   title_search = '',
-//   genres = '',
-//   yearMin = 1900,
-//   yearMax = 2017,
-//   rateMin = 0,
-//   rateMax = 10,
-//   sorted = 1,
-//   filter = 'title',
-// } = {}) => (dispatch) => {
-//   dispatch(pending());
-//   axios.get(
-//     `${api}/series/?title_search=${title_search}&genres=${genres}&yearMin=${yearMin}&yearMax=${yearMax}&rateMin=${rateMin}&rateMax=${rateMax}&sorted=${sorted}&filter=${filter}`,
-//   )
-//   .then(({ data: data }) =>{
-//     dispatch(display(data));
-//     // console.log(data.data);
-//   });
-// };
 
 export const TenBestSeries = () => (dispatch) => {
   dispatch(pending());
@@ -81,5 +60,5 @@ export const TenBestSeries = () => (dispatch) => {
   .then(({ data: series }) => {
     dispatch(fetched(series));
   })
-  .catch(console.error)
+  .catch(console.error);
 };
