@@ -6,19 +6,19 @@ import rimraf from 'rimraf';
 
 export const deleteOldMedia = () => {
   cron.schedule('00 30 11 * * 1-5', () => {
-    console.log('cron goooooo');
+    // console.log('cron goooooo');
     Movie.find({})
       .then((results) => {
         results.map((movie) => {
-          console.log('res', movie.lastSeenDate);
+          // console.log('res', movie.lastSeenDate);
           if (movie.lastSeenDate && movie.path) {
             const todaysDate = new Date();
-            console.log('today date', todaysDate);
+            // console.log('today date', todaysDate);
             const checkDate = todaysDate - movie.lastSeenDate;
             if (checkDate >= 2592000000) {
-              console.log('path', movie.path);
+              // console.log('path', movie.path);
               _.map(movie.path, (data) => {
-                console.log('data', data);
+                // console.log('data', data);
                 rimraf(`./public/Media/${data}`, () => {
                   console.log('done');
                 });
@@ -38,13 +38,12 @@ export const deleteOldMedia = () => {
               const checkDate = todaysDate - serie.lastSeenDate;
               if (checkDate >= 2592000000) {
                 _.map(serie.path, (data) => {
-                  console.log('data', data.path);
+                  // console.log('data', data.path);
                   fs.unlink(`./public/Media/${data.path}`, () => {
                     console.log('done');
                   });
                 });
                 const index = _.indexOf(series.content, _.find(series.content, { tvdb_id: Number(serie.tvdb_id) }));
-
                 series.content[index].path = {};
                 series.content.splice(index, 1, series.content[index]);
               }

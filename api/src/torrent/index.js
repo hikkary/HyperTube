@@ -127,7 +127,7 @@ export const serieTorrent = (req, res) => {
     mime = _.last(mime);
     if (mime === 'avi') {
       mime = 'mp4';
-      videoFile[0].path = videoFile[0].path.replace('.avi', '.mp4');
+      // videoFile[0].path = videoFile[0].path.replace('.avi', '.mp4');
     }
     // const pathSerie = `./public/Media/${videoFile[0].path}`;
     if (finalPathFile !== '.avi') {
@@ -191,4 +191,28 @@ export const serieTorrent = (req, res) => {
         }
       });
   });
+};
+
+export const serieLocalStream = (req, res) => {
+  const { path, path2 } = req.params;
+  let completePath = '';
+  if (path && path2) {
+    completePath = `./public/Media/${path}/${path2}`;
+  } else if (path && !path2) {
+    completePath = `./public/Media/${path}`;
+  } else {
+    return res.send({ status: false, errors: 'badPath' });
+  }
+  res.writeHead(200, {
+    'Content-Type': 'video/mp4',
+  });
+  const stream = fs.createReadStream(completePath, {});
+  new Transcoder(stream)
+      .videoCodec('h264')
+      .audioCodec('aac')
+      .format('mp4')
+      .on('finish', () => {
+        console.log('LA CONVERSION EST FINI');
+      })
+      .stream().pipe(res);
 };

@@ -6,7 +6,7 @@ import './OmniAuth.sass';
 import FBlogo from '../../../../public/fb-black.png';
 import fortyTwoLogo from '../../../../public/42_logo.png';
 import Glogo from '../../../../public/google_logo.png';
-import { uid, secret } from './secret42';
+// import { uid, secret } from './secret42';
 
 /* global FB */
 

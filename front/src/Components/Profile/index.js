@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import axios from 'axios';
 import api from '../../apiURI';
 import './sass/Profile.sass';
@@ -29,7 +30,11 @@ export default class Profile extends Component {
           }
         })
         .then((results) =>{
-          this.setState({ user: results.data.user });
+          if (results.data.user) {
+            this.setState({ user: results.data.user });
+          } else {
+            browserHistory.push('/app/homePage');
+          }
         });
       };
     });

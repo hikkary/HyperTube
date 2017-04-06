@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 import jwtSecret from '../../jwtSecret';
 import { clientID, gmailSecret } from './secretGmail';
 import { User } from '../Schema';
-import { Register, Login, Forgot, Update, Profile } from '../Joi';
+import { Register, Login, Forgot, Update, Profile, AuthProfile } from '../Joi';
 import { uid, secret } from './secret42';
 import mailCenter from './mailCenter';
 
@@ -41,23 +41,23 @@ const getToken = (req) => {
 export const connectedUser = (req, res) => {
   const token = getToken(req);
   jwt.verify(token, jwtSecret, (err, decoded) => {
-    console.log('decoded', decoded);
+    // console.log('decoded', decoded);
     User.findOne({ _id: ObjectId(decoded.id) })
       .then((result) => {
         if (result) {
-          console.log("=========================================", result);
+          // console.log("=========================================", result);
           if (!decoded.lastSeen) {
             decoded.lastSeen = [];
           }
           if (result.lastSeen) {
-            console.log('result de if', result.lastSeen);
-            console.log('de if decoded', decoded.lastSeen);
+            // console.log('result de if', result.lastSeen);
+            // console.log('de if decoded', decoded.lastSeen);
           decoded.lastSeen = result.lastSeen;
         }
-          console.log("DECODED", decoded.lastSeen);
+          // console.log("DECODED", decoded.lastSeen);
           return res.send({ status: true, details: decoded });
         } else {
-          return res.send( {status: false, details: 'errors' });
+          return res.send({ status: false, details: 'errors' });
         }
       });
   });
@@ -67,8 +67,9 @@ export const getUserInfo = (req, res) => {
   const id = req.body.id;
   User.findOne({ _id: ObjectId(id) })
     .then((result) => {
+      console.log(result);
       if (!result) {
-        res.send({ status: false, details: 'Username not found' });
+        return res.send({ status: false, details: 'Username not found' });
       }
       const user = {
         username: result.username,
@@ -415,13 +416,26 @@ export const editProfile = (req, res) => {
 
 export const authEditProfile = (req, res) => {
   const { id } = req.body;
+  const { error } = Joi.validate(req.body, AuthProfile, { abortEarly: false });
+  if (error) {
+    console.log('joi', error);
+    return res.send({ status: false, errors: 'fillForm' });
+  }
   User.findOne({ _id: ObjectId(id) })
     .then((user) => {
-      console.log(req.body.currentLanguage);
-      // add joi of course
+      if (!user) return res.send({ status: false, errors: 'noUsername' });
       if (user) {
-        user.language = req.body.currentLanguage;
-        console.log(user);
+        if (!req.body.currentLanguage) {
+          console.log('pas de body');
+          if (!user.language) {
+            user.language = 'en';
+          } else {
+            user.language = user.language;
+          }
+        } else {
+          user.language = req.body.currentLanguage;
+          console.log('yo', user);
+        }
         user.save();
       }
     });

@@ -64,6 +64,7 @@ export const userSeenSerie = (req, res) => {
       data[0].content[index].seenBy = [];
     }
     data[0].content[index].seenBy.unshift(userId);
+    data[0].content[index].seenBy = _.uniq(data[0].content[index].seenBy);
     data[0].content.splice(index, 1, data[0].content[index]);
     data[0].lastSeenDate = new Date();
     data[0].save().then((err) => { console.log(err); });
@@ -76,7 +77,7 @@ export const userSeenSerie = (req, res) => {
         user.lastSeen.unshift(data[0].title);
         user.lastSeen = _.uniq(user.lastSeen);
         user.lastSeen = user.lastSeen.slice(0, 10);
-        user.save().then((err) => { console.log(err);});
+        user.save().then((err) => { console.log(err); });
         return res.send({ status: true });
       });
   });

@@ -92,7 +92,7 @@ export default class Header extends React.Component {
         <div className="Header">
           <img onClick={this.toHome} className="logo" role="presentation" src={logo} height="40px" width="250px"/>
           <div className="HeaderButton">
-            {user.length !== 0 && user.picture && user.provider && <div
+            {user.length !== 0 && user.picture && !user.provider && <div
               onClick={this.toProfile}
               style={{
                 backgroundImage: `url('http://localhost:8080/public/${this.props.user.picture}')`,

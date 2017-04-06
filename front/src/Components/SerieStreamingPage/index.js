@@ -71,6 +71,17 @@ export default class SerieStreamingPage extends Component {
     setTimeout(() => this.setState({ redraw: false }), 0)
   }
 
+  handleMedia = () => {
+    let mimeType = this.props.serie.path[this.state.quality].path.split('.');
+    mimeType = _.last(mimeType);
+    if (mimeType === 'mkv' || mimeType === 'mp4') {
+      return `http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`;
+    } else {
+      console.log('ON RENTRE DANS AVI');
+      return `${api}/stream/localStreamSerie/${this.props.serie.path[this.state.quality].path}`;
+    }
+  }
+
   comments = (e) => {
     if (!this._mounted) return false;
     e.preventDefault();
@@ -136,7 +147,7 @@ export default class SerieStreamingPage extends Component {
           textAlign: 'center',
         }}>
         {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
-          (<source src={`http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`} type="video/mp4" />)
+          (<source src={this.handleMedia()} type="video/mp4" />)
         }
         <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
         </video>

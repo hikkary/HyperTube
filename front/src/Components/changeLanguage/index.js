@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import api from '../../apiURI';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import './sass/changeLanguage.sass';
 import FR from '../../../public/am-flag.png';
 import EN from '../../../public/fr-flag.png';
