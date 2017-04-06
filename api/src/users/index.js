@@ -78,6 +78,7 @@ export const getUserInfo = (req, res) => {
         email: result.email,
         picture: result.picture,
         lastSeen: result.lastSeen,
+        provider: result.provider,
       };
       res.send({ status: false, details: 'Username found', user });
     });
@@ -162,58 +163,63 @@ export const login = async (req, res) => {
     });
 };
 
-export const handleAuthorize42 = (req, res) => {
+export const handleAuthorize42 = async (req, res) => {
   const code = req.query.code;
   let finalToken = '';
-  axios({
+  await axios({
     method: 'POST',
     url: 'https://api.intra.42.fr/oauth/token',
     data: {
       grant_type: 'authorization_code',
       client_id: uid,
       client_secret: secret,
-      state: 'qwerefowjfoeiewjrojrjwriworjwerjwejrwoirjwoeijorworijtyuiop',
       code,
       redirect_uri: 'http://localhost:8080/api/users/42_auth',
     },
   })
   .then(async (response) => {
-
-    axios({
+	const token = await response.data.access_token;
+    await axios({
       method: 'GET',
+	  headers:{
+       Authorization: `Bearer ${token}`,
+      },
       url: 'https://api.intra.42.fr/v2/me',
     })
     .then(async (user) => {
       const data = {
         auth_id: user.data.id,
-        username: `${req.body.first_name}${req.body.last_name}`,
+        username: `${user.data.first_name}${user.data.last_name}`,
         firstname: user.data.first_name,
         lastname: user.data.last_name,
         picture: user.data.image_url,
-        language: 'en',
         provider: '42',
       };
       // console.log("RESPONSE", response.data.access_token);
       User.findOrCreate({ auth_id: user.data.id }, data, { upsert: true })
-      // .then((user42) => {
-      //   const tokenUserinfo = {
-      //     username: user42.username,
-      //     lastname: user42.lastname,
-      //     firstname: user42.firstname,
-      //     id: user42.id,
-      //     email: user42.email,
-      //     language: user42.language,
-      //     picture: user42.picture,
-      //   };
-      //   finalToken = jwt.sign(tokenUserinfo, jwtSecret);
-      // })
-      // .catch((err) => { console.log(err); });
+      .then(async (user42) => {
+		  console.log(user42);
+        const tokenUserinfo = {
+          username: user42.result.username,
+          lastname: user42.result.lastname,
+          firstname: user42.result.firstname,
+          id: user42.result.id,
+          email: user42.result.email,
+          language: user42.result.language,
+          picture: user42.result.picture,
+		  provider: user42.result.provider,
+        };
+        finalToken = await jwt.sign(tokenUserinfo, jwtSecret);
+		res.header('Access-Control-Expose-Headers', 'x-access-token');
+		res.set('x-access-token', token);
+		res.redirect(`http://localhost:3000/login?token=${finalToken}`);
+      })
+      .catch((err) => { console.log(err); });
     });
-    const token = response.data.access_token;
-    res.header('Access-Control-Expose-Headers', 'x-access-token');
-    res.set('x-access-token', token);
 
-    res.redirect(`http://localhost:3000/login?token=${token}`);
+
+
+
     // res.send({ status: true, details: 'user connected' });
   })
   .catch((e) => {
@@ -229,7 +235,6 @@ export const facebook = async (req, res) => {
     auth_id: req.body.id,
     firstname: req.body.first_name,
     lastname: req.body.last_name,
-    language: 'en',
     picture: req.body.picture.data.url,
     provider: 'facebook',
   });
@@ -237,12 +242,12 @@ export const facebook = async (req, res) => {
   .then((user) => {
     if (user) {
       const tokenUserinfo = {
-        id: user.id,
+        id: user.result.id,
         username: `${req.body.first_name}${req.body.last_name}`,
         lastname: req.body.last_name,
         firstname: req.body.first_name,
         auth_id: req.body.id,
-        language: 'en',
+        language: user.result.language,
         picture: req.body.picture.data.url,
         provider: 'facebook',
       };

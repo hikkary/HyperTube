@@ -135,7 +135,8 @@ export default class EditProfile extends Component {
               color: 'white'
             }}
           />
-          {user && user.picture && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
+		  {user && user.picture && !user.provider && <img src={`http://localhost:8080/public/${user.picture}`} className="photo" role="presentation" />}
+          {user && user.picture && user.provider && <img src={user.picture} className="photo" role="presentation" />}
           <RaisedButton
             label={current.editImage}
             labelPosition="before"

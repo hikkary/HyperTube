@@ -48,7 +48,8 @@ export default class Profile extends Component {
     return (
 		<div>
       {user && <div className="profile">
-      {user.picture && <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
+	  {user.picture && !user.provider && <img className="image" src={`http://localhost:8080/public/${user.picture}`} role="presentation" />}
+      {user.picture && user.provider && <img className="image" src={user.picture} role="presentation" />}
       <div className="profileUsername">{user.username}</div>
         <div className="float">
           <div className="profileInfos"><i className="fa fa-user icons" aria-hidden="true"></i>{user.firstname} {user.lastname}</div>
