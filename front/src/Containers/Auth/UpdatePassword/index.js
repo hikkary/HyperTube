@@ -8,12 +8,12 @@ import '../Welcome.sass';
 const Update = ({ translation, user, id, username }) =>
 	<div className="authContainer">
 		<img src={title} role="presentation" className="logoTitle" />
-			<div className="authBackground"
-				style={{ backgroundImage: `url(${bg})` }}
-			/>
+		<div className="authBackground"
+			style={{ backgroundImage: `url(${bg})` }}
+		/>
 		<div className="authForgotPassword">
 			<ChangePassword translation={translation} user={user} id={id} username={username} />
-			</div>
+		</div>
 	</div>
 
 const mapStateToProps = (state, ownProps) => ({

@@ -4,7 +4,6 @@ import GenreSerie from '../GenreSerie';
 import './sass/SeriesDisplay.sass';
 
 export default class MenuSeries extends Component {
-
   state = {
     bcolor: '#363637',
     genreButton: 'buttonList',
@@ -12,7 +11,7 @@ export default class MenuSeries extends Component {
   }
 
   colorGenre = (e) => {
-   let bColor = '#'+ Math.floor(Math.random()*16777215).toString(16);
+   let bColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
    this.setState({ bcolor: bColor });
     e.target.style.backgroundColor = bColor;
   }
@@ -33,26 +32,25 @@ export default class MenuSeries extends Component {
 
   all = () => (
 	  <div className="onGenre">
-    <button
-      className={this.state.genreButton}
-      onClick={() => this.props.onChange('genre', '')}
-      onMouseOut={this.resetColor}
-      onMouseOver={this.colorGenre}
-      style={{
-        margin : '2px',
-      }}>
-      All
+      <button
+        className={this.state.genreButton}
+        onClick={() => this.props.onChange('genre', '')}
+        onMouseOut={this.resetColor}
+        onMouseOver={this.colorGenre}
+        style={{
+          margin : '2px',
+        }}>
+        All
       </button>
-  </div>
+    </div>
   )
 
   render(){
-    // const {current} = this.props.translation;
     const { genreButton } = this.state;
     return(
-        <div className="onList">
+      <div className="onList">
         <p className="genreTitle" onClick={this.displayMenu}>
-        {this.state.operatorGenre} GENRES</p>
+          {this.state.operatorGenre} GENRES</p>
           {this.all()}
           {GenreSerie.map((genre, key) => {
             return(
@@ -65,8 +63,8 @@ export default class MenuSeries extends Component {
                   style={{
                     margin : '2px',
                   }}>
-                    {genre}
-                  </button>
+                  {genre}
+                </button>
               </div>
             )
           })}

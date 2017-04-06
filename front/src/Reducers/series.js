@@ -2,8 +2,6 @@ import { GET, SCROLL, ERROR } from '../Actions/series';
 import _ from 'lodash';
 
 export default (state = [], action) => {
-  // console.log(state);
-  // console.log('action', action.payload);
   switch (action.type) {
     case GET:
       return action.payload;

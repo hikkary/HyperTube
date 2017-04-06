@@ -9,7 +9,7 @@ import Search from '../../Components/SearchMenuHomePage';
 import './sass/HomePage.sass'
 
 class HomePage extends Component {
-  state= {
+  state = {
     displaySearch: 'none',
     displayBest: '',
     genres: '',
@@ -44,8 +44,6 @@ class HomePage extends Component {
 
   handleChange = (key, value) => {
     this.resetValues(key);
-    console.log("KEY SEARCH", key);
-    console.log("VALUE SEARCH", value);
     this.setState({ [key]: value,  displaySearch: "", displayBest: 'none'  }, () => {
       const { year, rate, genre , sort = { name : 'title', value: 1 }, title, id, page } = this.state;
       this.props.actions.search.getAll({
@@ -65,7 +63,6 @@ class HomePage extends Component {
   }
 
   displayNone = () => {
-
     this.setState({displayBest: '', displaySearch: 'none' });
   }
 
@@ -75,14 +72,12 @@ class HomePage extends Component {
     const { current } = this.props.translation;
     return (
       <div>
-
         <Search translation={translation} onKeyDown={this.handleChange} onChange={this.displayNone}/>
         <div className="noMedia" style={{
           display: displaySearch,
           }}>
         {((this.props.search && this.props.search.length === 0 )|| (this.props.search && this.props.search[0].errors)) &&
-           <p>{current.noMediaFound}</p>
-        }
+           <p>{current.noMediaFound}</p>}
         </div>
         <div className="searchDiv" style={{
           display: displaySearch,

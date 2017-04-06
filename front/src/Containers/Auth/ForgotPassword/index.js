@@ -8,9 +8,9 @@ import '../Welcome.sass';
 const Password = ({ translation, user }) =>
   <div className="authContainer">
     <img src={title} role="presentation" className="logoTitle" />
-      <div className="authBackground"
-        style={{ backgroundImage: `url(${bg})` }}
-      />
+    <div className="authBackground"
+      style={{ backgroundImage: `url(${bg})` }}
+    />
     <div className="authForgotPassword">
       <ForgotPassword translation={translation} user={user} />
     </div>

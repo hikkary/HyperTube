@@ -10,9 +10,9 @@ import '../Welcome.sass';
 const Login = ({ user, actions, translation, token }) =>
   <div className="authContainer">
     <img src={title} role="presentation" className="logoTitle" />
-      <div className="authBackground"
-        style={{ backgroundImage: `url(${bg})` }}
-      />
+    <div className="authBackground"
+      style={{ backgroundImage: `url(${bg})` }}
+    />
     <div className="authLogin">
       <LoginForm user={user} actions={actions} token={token} translation={translation} />
     </div>

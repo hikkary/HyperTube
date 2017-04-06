@@ -14,7 +14,7 @@ export default class SearchMenu extends Component {
     if (event.keyCode === 13) {
       this.props.onKeyDown('title', this.state.search);
     }
-    if(event.target.value === '') {
+    if (event.target.value === '') {
       this.props.onKeyDown('title', '');
     }
   };

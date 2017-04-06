@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import img from '../../../public/series_default.png';
 
 export default class SeriesDisplay extends Component {
-  state={
+  state = {
 	hasMore: true,
     ready: false,
     genre: '',
@@ -39,12 +39,12 @@ export default class SeriesDisplay extends Component {
   }
 
   componentWillReceiveProps (newProps){
-	  if(newProps.series && newProps.series.length === 0){
+	  if (newProps.series && newProps.series.length === 0) {
 		  this.setState({ hasMore: false });
 	  } else {
 		  this.setState({ hasMore: true });
 	  }
-	  if(newProps.series[0] && newProps.series[0].errors){
+	  if (newProps.series[0] && newProps.series[0].errors) {
 		  this.setState({ hasMore: false });
 	  }
   }
@@ -98,15 +98,6 @@ export default class SeriesDisplay extends Component {
   render() {
     const { series } = this.props;
     const { current } = this.props.translation;
-    // if (series) {
-    //   let genre = '';
-    //   genre = series.map((ser) => {
-    //     return ser.genres;
-    //   });
-    //   genre = _.flattenDepth(genre, 1);
-    //   genre = _.uniq(genre);
-    //   console.log(genre);
-    // }
     return(
       <div className="seriesContainer">
         <SearchMenu translation={this.props.translation} onKeyDown={this.handleChange}/>
@@ -115,16 +106,16 @@ export default class SeriesDisplay extends Component {
         <div className="list">
           <MenuSeries onChange={this.handleChange} />
         </div>
-		{!this.state.hasMore && <div className="noMedia"> <p>{current.noSeriesFound}</p></div>}
+		    {!this.state.hasMore && <div className="noMedia"> <p>{current.noSeriesFound}</p></div>}
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadSeries}
           hasMore={this.state.hasMore}
           loader={<div className="spinner">
-			  <div className="bounce1"></div>
-			  <div className="bounce2"></div>
-			  <div className="bounce3"></div>
-			</div>}
+            <div className="bounce1"></div>
+            <div className="bounce2"></div>
+            <div className="bounce3"></div>
+          </div>}
           initialLoad={false}
         >
         {

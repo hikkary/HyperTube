@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import allTheActions from '../../Actions';
 import Header from '../../Components/Header';
+import Footer from '../../Components/Footer';
 
-// ADD FOOTER TO Component
 class App extends Component {
-
   render() {
     const {actions, user, translation } = this.props;
     return (
@@ -15,6 +14,7 @@ class App extends Component {
         <div>
           {this.props.children}
         </div>
+        <Footer />
       </div>
     )
   }

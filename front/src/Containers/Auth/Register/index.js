@@ -10,9 +10,9 @@ import '../Welcome.sass';
 const RegisterContainer = ({ user, actions, translation }) =>
   <div className="authContainer">
     <img src={title} role="presentation" className="logoTitle" />
-      <div className="authBackground"
-        style={{ backgroundImage: `url(${bg})` }}
-      />
+    <div className="authBackground"
+      style={{ backgroundImage: `url(${bg})` }}
+    />
     <div className="authRegister">
       <Register user={user} actions={actions} translation={translation} />
     </div>

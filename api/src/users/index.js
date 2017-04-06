@@ -69,7 +69,7 @@ export const getUserInfo = (req, res) => {
     .then((result) => {
       console.log(result);
       if (!result) {
-        return res.send({ status: false, details: 'Username not found' });
+        return res.send({ status: false, errors: 'Username not found' });
       }
       const user = {
         username: result.username,
@@ -113,18 +113,18 @@ export const createAccount = (req, res) => {
       return res.send({ status: false, errors: 'fillForm' });
     }
     if (err) {
-      return res.send({ status: false, details: 'imgIssue' });
+      return res.send({ status: false, errors: 'imgIssue' });
     }
     const { username, email } = req.body;
     User.findOne({ username })
       .then((user) => {
-        if (user) res.send({ status: false, details: 'usernameExists' });
+        if (user) res.send({ status: false, errors: 'usernameExists' });
         else return User.findOne({ email });
       })
       .then((usermail) => {
-        if (usermail) res.send({ status: false, details: 'emailExists' });
+        if (usermail) res.send({ status: false, errors: 'emailExists' });
         else userToDatabase(req);
-        return res.send({ status: true, details: 'userCreated' });
+        return res.send({ status: true, success: 'userCreated' });
       });
   });
 };
@@ -300,7 +300,7 @@ export const forgotPassword = async (req, res) => {
   User.findOne({ username })
     .then(async (result) => {
       if (!result) {
-        res.send({ status: false, details: 'noUsername' });
+        res.send({ status: false, errors: 'noUsername' });
       }
       const key = crypto.randomBytes(20).toString('hex');
       result.key = key;
@@ -308,9 +308,9 @@ export const forgotPassword = async (req, res) => {
         .then((savedUser) => {
           log(savedUser);
           mailCenter(result, req.headers.origin);
-          res.send({ status: true });
+          res.send({ status: true, success: 'emailSent' });
         })
-        .catch(() => res.send({ status: false, details: 'An error occurred' }));
+        .catch(() => res.send({ status: false, errors: 'An error occurred' }));
     });
 };
 

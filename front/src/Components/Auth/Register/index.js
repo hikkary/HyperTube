@@ -77,7 +77,9 @@ export default class Register extends Component {
   render(){
 	const { user } = this.props;
     const { current } = this.props.translation;
-
+  if (user.success) {
+    setTimeout(()=>{ browserHistory.push('/login') }, 2000);
+  }
 	return(
     <div>
       <div className="registerTitle">Sign up
@@ -105,6 +107,9 @@ export default class Register extends Component {
         {user && user.errors && <div className="errorRegister">
     			{this.errorHandler(user.errors)}
     		</div>}
+        {user && user.success && <div className="successRegister" style={{ textAlign: 'center' }}>
+          {this.errorHandler(user.success)}
+        </div>}
         <TextField
           floatingLabelText={current.username}
           name="username"

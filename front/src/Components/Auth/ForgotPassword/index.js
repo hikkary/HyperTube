@@ -30,16 +30,16 @@ class ForgotPassword extends React.Component {
         method: 'POST',
         url: `${api}/users/forgotPassword`,
         data : {
-          username: e.target.username.value
+          username: e.target.username.value,
         }
       })
       .then((results) => {
-        //add message
         if(results.data.errors) {
           this.setState({ errors: results.data.errors })
         }
         else {
-          this.setState({ success: 'An email has been sent to you to reset your password' });
+          const { translation } = this.props;
+          this.setState({ success: translation.current[results.data.success] });
         }
       });
   }
