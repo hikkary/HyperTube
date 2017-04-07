@@ -46,7 +46,6 @@ export default class ChangePassword extends React.Component{
 			 } else {
 				 if (!this._mounted) return false;
 				 this.setState({ error: results.data.errors });
-				 // add message error of password
 			 }
 		 });
 	}

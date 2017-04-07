@@ -355,7 +355,7 @@ export const forgotPassword = async (req, res) => {
   User.findOne({ username })
     .then(async (result) => {
       if (!result) {
-        res.send({ status: false, errors: 'noUsername' });
+        return res.send({ status: false, errors: 'noUsername' });
       }
       const key = crypto.randomBytes(20).toString('hex');
       result.key = key;
@@ -376,24 +376,25 @@ export const updatePassword = async (req, res) => {
   }
   const { username, key, password, newPass } = req.body;
   if (password.localeCompare(newPass) !== 0) {
-    res.send({ status: false, errors: 'noMatch' });
+    return res.send({ status: false, errors: 'noMatch' });
   }
   User.findOne({ username })
     .then((result) => {
       if (!result) {
-        res.send({ status: false, errors: 'noUsername' });
+        return res.send({ status: false, errors: 'noUsername' });
       }
       if (result.key.localeCompare(key) !== 0) {
         return res.send({ status: false, errors: 'errorOccured' });
+      } else {
+        const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
+        result.password = passwordHash;
+        const key = crypto.randomBytes(20).toString('hex');
+        result.key = key;
+        result.save()
+        .then(() => {
+          return res.send({ status: true, details: 'Password Updated' });
+        });
       }
-      const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
-      result.password = passwordHash;
-      const key = crypto.randomBytes(20).toString('hex');
-      result.key = key;
-      result.save()
-      .then(() => {
-        res.send({ status: true, details: 'Password Updated' });
-      });
     });
 };
 
