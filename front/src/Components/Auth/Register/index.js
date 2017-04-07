@@ -26,6 +26,12 @@ export default class Register extends Component {
 
   _mounted = false;
 
+  componentWillReceiveProps = (newProps) => {
+    if (newProps.user && newProps.user.success) {
+      setTimeout(()=>{ browserHistory.push('/login') }, 2000);
+    }
+  }
+  
   uploadImage = async(e) => {
     e.persist();
     if (!e.target.files[0]) {
@@ -87,9 +93,7 @@ export default class Register extends Component {
   render(){
 	const { user } = this.props;
     const { current } = this.props.translation;
-  if (user.success) {
-    setTimeout(()=>{ browserHistory.push('/login') }, 2000);
-  }
+
 	return(
     <div>
       <div className="registerTitle">Sign up

@@ -259,35 +259,92 @@ export const facebook = async (req, res) => {
   });
 };
 
-export const gmail_auth = (req, res) => {
+export const gmailAuth = (req, res) => {
   const code = req.query.code;
   console.log('gmail auth back', code);
   axios({
-    method: 'GET',
-    url: 'https://www.googleapis.com/oauth2/v4/token',
-    headers:{
-      Authorization: `Bearer ${code}`,
-    },
+    method: 'POST',
+    url: 'https://accounts.google.com/oauth2/v4/token',
     data: {
-      code,
+      code: req.query.code,
       client_id: clientID,
       client_secret: gmailSecret,
       redirect_uri: 'https://localhost:8080/api/users/gmail_auth',
       grant_type: 'authorization_code',
+      access_type: 'offline',
     },
   })
   .then((response) => {
-    console.log(response.data.access_token);
-    res.redirect('http://localhost:3000/app/homePage');
+    console.log(response.data);
+    // res.redirect('http://localhost:3000/app/homePage');
   });
-    // axios({
-    //   method: 'GET',
-    //   url: 'https://www.googleapis.com/drive/v2/files',
-    //   headers: {
-    //     Authorization: `Bearer ${response.data.access_token}`,
-    //   },
-// }
+//     axios({
+//       method: 'GET',
+//       url: 'https://www.googleapis.com/drive/v2/files',
+//       headers: {
+//         Authorization: `Bearer ${response.data.access_token}`,
+//       },
+// })
 }
+
+export const githubAuth  = (req, res) => {
+  const code = req.query.code;
+  console.log('entered github', code);
+  axios({
+    method: 'POST',
+    url: 'https://github.com/login/oauth/access_token',
+    data: {
+      client_id: '3fa2a5a1929e273f97c5',
+      client_secret: '22bf4ae262fa4df0100a696c19c6b53bbf9c63e2',
+      code: req.query.code,
+      redirecr_uri: 'http://localhost:8080/api/users/github_auth',
+      state: 'qwertyu456',
+    }
+  })
+  .then((response) => {
+    const token = response.data.split('&')[0];
+    const final = token.split('=')[1];
+    axios({
+      method: 'GET',
+      url: 'https://api.github.com/user',
+      headers: {
+        Authorization: `token ${final}`,
+      }
+    })
+    .then((response) => {
+      console.log(response.data);
+      const firstname = response.data.name.split(' ')[0];
+      const lastname = response.data.name.split(' ')[1];
+      const userInfoGit = {
+        auth_id: response.data.id,
+        firstname,
+        lastname,
+        username: response.data.login,
+        picture: response.data.avatar_url,
+        provider: 'github',
+      }
+      User.findOrCreate({ id: response.data.id }, userInfoGit, { upsert: true })
+        .then((user) => {
+          if (user) {
+            console.log('user', user);
+            const tokenUserinfo = {
+              id: user.result.id,
+              username: response.data.login ,
+              firstname,
+              lastname,
+              auth_id: response.data.id,
+              language: user.result.language,
+              picture: response.data.avatar_url,
+              provider: 'github',
+            };
+            const token = jwt.sign(tokenUserinfo, jwtSecret);
+            console.log('token github', token);
+            res.redirect(`http://localhost:3000/login?token=${token}`);
+          }
+        });
+      });
+    });
+  }
 
 export const forgotPassword = async (req, res) => {
   const { error } = await Joi.validate(req.body, Forgot, { abortEarly: false });

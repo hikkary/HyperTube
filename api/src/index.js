@@ -44,10 +44,11 @@ usersRouter
   .post('/api/users/authEditProfile', users.authEditProfile)
   .post('/api/users/register', users.createAccount)
   .post('/api/users/facebook_auth', users.facebook)
-  .get('/api/users/gmail_auth', users.gmail_auth)
+  .get('/api/users/gmail_auth', users.gmailAuth)
   .post('/api/users/forgotPassword', users.forgotPassword)
   .post('/api/users/updatePassword', users.updatePassword)
   .get('/api/users/42_auth', users.handleAuthorize42)
+  .get('/api/users/github_auth', users.githubAuth)
   .get('/api/users/connectedUser', users.connectedUser)
   .post('/api/users/getUserInfo', users.getUserInfo)
   .post('/api/users/deleteAccount', users.deleteAccount);
