@@ -8,6 +8,8 @@ import MenuItem from 'material-ui/MenuItem';
 import axios from 'axios';
 import api from '../../apiURI';
 
+/* global FB */
+
 export default class Header extends React.Component {
   state = {
     lang: false,
@@ -31,6 +33,14 @@ export default class Header extends React.Component {
 
   componentDidMount() {
     this._mounted = true;
+    window.fbAsyncInit = () => {
+      FB.init({
+        appId      : '1058421674304180',
+        cookie     : true,  // enable cookies to allow the server to access
+        xfbml      : true,  // parse social plugins on this page
+        version    : 'v2.7' // use graph api version 2.8
+      });
+    }
     const token = localStorage.getItem("token");
     const { getConnectedUser } = this.props.actions.user;
     if (!token) {
@@ -83,6 +93,13 @@ export default class Header extends React.Component {
   };
 
   logout = () => {
+    if (this.props.user.provider === 'facebook') {
+      FB.getLoginStatus((response) => {
+        if (response.status === 'connected') {
+          FB.logout();
+        }
+      });
+    }
     const { user } = this.props.actions.user;
     user([]);
     localStorage.removeItem('token');
