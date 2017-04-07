@@ -32,11 +32,12 @@ export const movieTorrent = async (req, res) => {
   const engine = await torrentStream(req.params.hash, options);
   let videoFile = '';
   let stream = '';
-
+  let finalPathFile = '';
   engine.on('ready', () => {
     videoFile = engine.files.filter((file) => {
       const pathFile = path.extname(file.name);
       if (pathFile === '.mp4' || pathFile === '.mkv' || pathFile === '.avi') {
+		finalPathFile = pathFile;
         return (file);
       }
     });
@@ -50,14 +51,38 @@ export const movieTorrent = async (req, res) => {
     const chunksize = (end - start) + 1;
     let mime = videoFile[0].name.split('.');
     mime = _.last(mime);
-    res.writeHead(206, {
-      'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-      'Accept-Ranges': 'bytes',
+
+	if (finalPathFile !== '.avi') {
+      res.writeHead(206, {
+        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Type': `video/${mime}`,
+      });
+	  stream = videoFile[0].createReadStream({ start, end });
+      return stream.pipe(res);
+    } else {
+    res.writeHead(200, {
       'Content-Length': chunksize,
       'Content-Type': `video/${mime}`,
     });
     stream = videoFile[0].createReadStream({ start, end });
-    return stream.pipe(res);
+
+    new Transcoder(stream)
+        .videoCodec('h264')
+        .audioCodec('aac')
+        .format('mp4')
+        .on('finish', () => {
+          console.log('LA CONVERSION EST FINI');
+        })
+        .stream().pipe(res);
+		// .maxSize(640, 480)
+		// .videoBitrate(800 * 1000)
+		// .fps(25)
+		// .sampleRate(44100)
+		// .channels(2)
+		// .audioBitrate(128 * 1000)
+	}
   });
   engine.on('download', () => {
     const download = engine.swarm.downloaded;
@@ -139,13 +164,13 @@ export const serieTorrent = (req, res) => {
       });
       stream = videoFile[0].createReadStream({ start, end });
       return stream.pipe(res);
-    }
+    } else {
     res.writeHead(200, {
       'Content-Length': chunksize,
       'Content-Type': `video/${mime}`,
     });
     stream = videoFile[0].createReadStream({ start, end });
-    const myMp4 = fs.createWriteStream(`./public/Media/${videoFile[0].path}`);
+
     new Transcoder(stream)
         .videoCodec('h264')
         .audioCodec('aac')
@@ -153,13 +178,14 @@ export const serieTorrent = (req, res) => {
         .on('finish', () => {
           console.log('LA CONVERSION EST FINI');
         })
-        .stream().pipe(res).pipe(myMp4);
-							// .maxSize(640, 480)
-							// .videoBitrate(800 * 1000)
-							// .fps(25)
-							// .sampleRate(44100)
-							// .channels(2)
-							// .audioBitrate(128 * 1000)
+        .stream().pipe(res);
+		// .maxSize(640, 480)
+		// .videoBitrate(800 * 1000)
+		// .fps(25)
+		// .sampleRate(44100)
+		// .channels(2)
+		// .audioBitrate(128 * 1000)
+	}
   },
 
   );

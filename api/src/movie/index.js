@@ -104,7 +104,23 @@ export const getSubtitles = (req, res) => {
       });
     });
   } catch (e) {
-    sleep(100);
-    getSubtitles(req, res);
+	  console.log("ERROR", e);
+
+	//   FAIRE UN RETRY CORRECT
+    // getSubtitles(req, res);
   }
 };
+
+//EXEMPLE DE RETRY CORRECT
+
+// int count = 0;
+// int maxTries = 3;
+// while(true) {
+//     try {
+//         // Some Code
+//         // break out of loop, or return, on success
+//     } catch (SomeException e) {
+//         // handle exception
+//         if (++count == maxTries) throw e;
+//     }
+// }

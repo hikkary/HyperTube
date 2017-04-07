@@ -115,11 +115,11 @@ export const createAccount = (req, res) => {
     const { username, email } = req.body;
     User.findOne({ username })
       .then((user) => {
-        if (user) res.send({ status: false, errors: 'usernameExists' });
+        if (user) return res.send({ status: false, errors: 'usernameExists' });
         else return User.findOne({ email });
       })
       .then((usermail) => {
-        if (usermail) res.send({ status: false, errors: 'emailExists' });
+        if (usermail) return res.send({ status: false, errors: 'emailExists' });
         else userToDatabase(req);
         return res.send({ status: true, success: 'userCreated' });
       });

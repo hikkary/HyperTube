@@ -50,7 +50,12 @@ export default class SerieStreamingPage extends Component {
             episode: newProps.serie.episode,
           }
         }).then((result) => {
+			console.log("RESULT SUBTITLES SERIE", result);
           if (!this._mounted) return false;
+		  if (result.data.status === false ){
+			  this.setState({ filename: "error" });
+			  return;
+		  }
           this.setState({ filename: result.data });
         })
       }
@@ -144,7 +149,7 @@ export default class SerieStreamingPage extends Component {
           }}>
             {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
               (<source src={this.handleMedia()} type="video/mp4" />)}
-            <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>
+            {this.state.filename !== "error" && <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>}
           </video>
         </div>}
         <div className="buttonsSerie">
