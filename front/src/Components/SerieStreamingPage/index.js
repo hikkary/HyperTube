@@ -81,7 +81,7 @@ export default class SerieStreamingPage extends Component {
     if (mimeType === 'mkv' || mimeType === 'mp4') {
       return `http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`;
     } else {
-      return `${api}/stream/localStreamSerie/${this.props.serie.path[this.state.quality].path}`;
+      return `${api}/stream/localStream/${this.props.serie.path[this.state.quality].path}`;
     }
   }
 
@@ -120,6 +120,10 @@ export default class SerieStreamingPage extends Component {
     });
   }
 
+  goProfile = (id) =>{
+    browserHistory.push(`/app/user/profile/${id}`)
+  }
+  
   errorHandler = (error) => {
     const { translation } = this.props;
     return translation.current[error];

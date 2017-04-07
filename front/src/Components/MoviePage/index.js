@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import _ from 'lodash';
 import './sass/moviePage.sass';
 import api from '../../apiURI';
 import axios from 'axios';
@@ -103,6 +104,16 @@ export default class MoviePage extends Component {
     }
   }
 
+  handleMedia = () => {
+    let mimeType = this.props.serie.path[this.state.quality].path.split('.');
+    mimeType = _.last(mimeType);
+    if (mimeType === 'mkv' || mimeType === 'mp4') {
+  	return `http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`;
+    } else {
+  	return `${api}/stream/localStream/${this.props.movie.results[0].path[this.state.quality].path}`;
+    }
+  }
+
   goProfile = (id) =>{
     browserHistory.push(`/app/user/profile/${id}`)
   }
@@ -174,7 +185,7 @@ export default class MoviePage extends Component {
                 textAlign: 'center',
               }}>
                 {(((!this.props.movie.results[0].path) || (this.props.movie.results[0].path && !this.props.movie.results[0].path[this.state.quality])) && <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||
-                (<source src={`http://localhost:8080/public/Media/${this.props.movie.results[0].path[this.state.quality].path}`} type="video/mp4" />)}
+                (<source src={this.handleMedia()} type="video/mp4" />)}
             {this.state.filename !== "error" &&  <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>}
               </video>
             </div>}

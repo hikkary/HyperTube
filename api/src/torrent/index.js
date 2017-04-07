@@ -219,7 +219,7 @@ export const serieTorrent = (req, res) => {
   });
 };
 
-export const serieLocalStream = (req, res) => {
+export const mediaLocalStream = (req, res) => {
   const { path, path2 } = req.params;
   let completePath = '';
   if (path && path2) {

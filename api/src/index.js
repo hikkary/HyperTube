@@ -54,7 +54,7 @@ usersRouter
   .post('/api/users/deleteAccount', users.deleteAccount);
 
 stream
-  .get('/api/stream/localStreamSerie/:path/:path2', torrent.serieLocalStream)
+  .get('/api/stream/localStream/:path/:path2', torrent.mediaLocalStream)
   .get('/api/stream/movie/:hash/:id/:user_id', torrent.movieTorrent)
   .get('/api/stream/serie/:hash/:serie_id/:id', torrent.serieTorrent);
 
