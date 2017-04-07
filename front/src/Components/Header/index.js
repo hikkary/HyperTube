@@ -16,12 +16,13 @@ export default class Header extends React.Component {
   _mounted = false;
 
   componentWillReceiveProps = (newProps) =>{
-    if (newProps.user.language){
+    if (!this._mounted) return false;
+    if (newProps.user.language) {
       if(newProps.user.language === 'fr' && !this.state.lang){
         this.props.actions.translation.toFrench();
         this.setState({ lang: true });
       }
-      if(newProps.user.language === 'en' && !this.state.lang){
+      if (newProps.user.language === 'en' && !this.state.lang) {
         this.props.actions.translation.toEnglish();
         this.setState({ lang: true });
       }
@@ -32,11 +33,15 @@ export default class Header extends React.Component {
     this._mounted = true;
     const token = localStorage.getItem("token");
     const { getConnectedUser } = this.props.actions.user;
-    if(!token) {
+    if (!token) {
       browserHistory.push('/login');
     }
     getConnectedUser(token);
   };
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
 
   toMovies = () => {
     browserHistory.push('/app/movies');

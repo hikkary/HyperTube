@@ -6,7 +6,18 @@ export default class SearchMenu extends Component {
     search: '',
   }
 
+  _mounted = false;
+
+  componentDidMount() {
+    this._mounted = true;
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
   handleChangeSearch = (e) => {
+    if (!this._mounted) return false;
     this.setState({ search: e.target.value });
   };
 

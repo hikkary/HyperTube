@@ -19,7 +19,6 @@ export const serie = (req, res) => {
     });
 };
 
-
 export const episode = (req, res) => {
   const data = req.params.serie_id;
   Serie.find({ imdb_code: data })
@@ -94,10 +93,10 @@ export const getSubtitles = (req, res) => {
     req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';
     let getSubtitlesSerie = await _.filter(subtitles, (sub) => {
       if (sub.lang === language) {
-        return sub
+        return sub;
       }
     });
-    if (getSubtitlesSerie.length === 0){
+    if (getSubtitlesSerie.length === 0) {
       getSubtitlesSerie = await _.filter(subtitles, (sub) => {
         if (sub.lang === 'English') {
           return sub;

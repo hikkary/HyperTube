@@ -15,9 +15,9 @@ import { Register, Login, Forgot, Update, Profile, AuthProfile } from '../Joi';
 import { uid, secret } from './secret42';
 import mailCenter from './mailCenter';
 
-
 const log = debug('hypertube:api:user:register');
 const ObjectId = mongoose.Types.ObjectId;
+const single = multer({ storage }).single('image');
 
 const storage = multer.diskStorage({
   destination: `${__dirname}/../../public`,
@@ -25,8 +25,6 @@ const storage = multer.diskStorage({
     cb(null, Math.random(100000, 9999999) + path.extname(file.originalname));
   },
 });
-
-const single = multer({ storage }).single('image');
 
 const getToken = (req) => {
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
@@ -36,7 +34,6 @@ const getToken = (req) => {
   }
   return null;
 };
-
 
 export const connectedUser = (req, res) => {
   const token = getToken(req);
@@ -145,6 +142,7 @@ export const login = async (req, res) => {
           return res.send({ status: false, errors: 'badLogin' });
         }
         if (!user.picture) {
+
 
         }
         const tokenUserinfo = {
@@ -341,8 +339,6 @@ export const updatePassword = async (req, res) => {
       });
     });
 };
-
-
 
 export const editProfile = (req, res) => {
   single(req, res, async (err) => {

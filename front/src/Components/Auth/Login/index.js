@@ -12,6 +12,7 @@ export default class Login extends Component {
   }
 
   componentDidMount = () => {
+    this._mounted = true;
     if (this.props && this.props.token) {
       localStorage.setItem('token', this.props.token);
       browserHistory.push('/app/homePage');
@@ -20,6 +21,12 @@ export default class Login extends Component {
       browserHistory.push('/app/homePage');
     }
   };
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
   componentWillReceiveProps = (newProps) => {
     if(newProps && newProps.user && newProps.user.length !== 0){

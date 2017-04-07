@@ -10,7 +10,10 @@ export default class Profile extends Component {
     myId: '',
   }
 
+  _mounted = false;
+
   componentDidMount() {
+    this._mounted = true;
     const token = localStorage.getItem("token");
     axios({
       method: 'GET',
@@ -39,6 +42,10 @@ export default class Profile extends Component {
       };
     });
   };
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
 
   render(){
     let lastSeen = '';

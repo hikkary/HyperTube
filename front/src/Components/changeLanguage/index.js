@@ -13,15 +13,26 @@ export default class changeLanguage extends Component {
     currentLanguage: '',
   }
 
-  onChange = (e) => {
-    const text = e.target.value;
-    this.setState({ [e.target.name]: text });
+  componentDidMount() {
+    this._mounted = true;
   }
 
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
+
+  onChange = (e) => {
+    const text = e.target.value;
+    if (!this._mounted) return false;
+    this.setState({ [e.target.name]: text });
+  }
 
   editProfile = (e) => {
     if (this.props.user && this.props.user.id) {
     e.preventDefault();
+    if (!this._mounted) return false;
     if (!this.state.currentLanguage) this.setState({ currentLanguage: this.props.currentLanguage });
     const { user } = this.props.actions;
     const { currentLanguage } = this.state;
@@ -45,13 +56,15 @@ export default class changeLanguage extends Component {
 }
 
   toFrench = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (!this._mounted) return false;
     this.setState({ currentLanguage: 'fr' })
     this.props.actions.translation.toFrench();
   }
 
   toEnglish = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (!this._mounted) return false;
     this.setState({ currentLanguage: 'en' })
     this.props.actions.translation.toEnglish();
   }

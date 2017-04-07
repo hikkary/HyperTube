@@ -9,10 +9,17 @@ export default class SeriePage extends Component {
     currentSeason: null,
   }
 
+  _mounted = false;
+
   componentDidMount() {
+    this._mounted = true;
     this.props.actions.serie.getSeriePage({
       id: this.props.id,
     })
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
   }
 
   serieStreaming = (episode) => {
@@ -25,6 +32,7 @@ export default class SeriePage extends Component {
     if (this.state.divDisplay === "seasonDisplay") {
       browserHistory.push('/app/series')
     } else {
+      if (!this._mounted) return false;
       this.setState({divDisplay: 'seasonDisplay', currentSeason: null})
     }
   }
@@ -58,7 +66,8 @@ export default class SeriePage extends Component {
     }
   }
 
-  changeSeason = (season) =>{
+  changeSeason = (season) => {
+    if (!this._mounted) return false;
     this.setState({ currentSeason: season, divDisplay: 'seasonNone' });
   }
 

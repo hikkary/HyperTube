@@ -15,10 +15,17 @@ class ForgotPassword extends React.Component {
   }
 
   componentDidMount = () => {
+    this._mounted = true;
     if (localStorage.getItem('token')) {
       browserHistory.push('/app/homePage');
     }
   }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
   goToPreviousPage = () => {
     browserHistory.push('/login');
@@ -35,10 +42,12 @@ class ForgotPassword extends React.Component {
       })
       .then((results) => {
         if(results.data.errors) {
+          if (!this._mounted) return false;
           this.setState({ errors: results.data.errors })
         }
         else {
           const { translation } = this.props;
+          if (!this._mounted) return false;
           this.setState({ success: translation.current[results.data.success] });
         }
       });

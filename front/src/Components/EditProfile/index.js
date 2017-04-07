@@ -14,7 +14,18 @@ export default class EditProfile extends Component {
     currentLanguage: '',
   }
 
+  componentDidMount() {
+    this._mounted = true;
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
+
   onChange = (e) => {
+    if (!this._mounted) return false;
     const text = e.target.value;
     this.setState({ [e.target.name]: text });
   }
@@ -25,10 +36,12 @@ export default class EditProfile extends Component {
     const file = e.target.files[0];
     const img = new Image();
     img.onload = () => {
+      if (!this._mounted) return false;
       this.setState({ message: 'Picture Uploaded' });
       this.setState({ image: file });
     };
     img.onerror = () => {
+      if (!this._mounted) return false;
       this.setState({ message: 'The picture is not valid' });
       e.target.value = "";
     }
@@ -38,6 +51,7 @@ export default class EditProfile extends Component {
 
   editProfile = (e) => {
     e.preventDefault();
+    if (!this._mounted) return false;
     if (!this.state.currentLanguage) this.setState({currentLanguage: this.props.currentLanguage})
     const { user } = this.props.actions;
     const { username, firstname, lastname, email, } = e.target;
@@ -60,6 +74,7 @@ export default class EditProfile extends Component {
     })
     .then((results) => {
       if (results.data.errors) {
+        if (!this._mounted) return false;
         return this.setState({ error: results.data.errors });
       }
       localStorage.setItem('token', results.headers['x-access-token']);
@@ -69,13 +84,15 @@ export default class EditProfile extends Component {
   }
 
   toFrench = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (!this._mounted) return false;
     this.setState({ currentLanguage: 'fr' })
     this.props.actions.translation.toFrench();
   }
 
   toEnglish = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if (!this._mounted) return false;
     this.setState({ currentLanguage: 'en' })
     this.props.actions.translation.toEnglish();
   }

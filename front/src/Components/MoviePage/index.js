@@ -21,8 +21,8 @@ export default class MoviePage extends Component {
     this.props.actions.movie.getMoviePage({
       id: Number(this.props.id),
     });
-    if(this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
-    if(this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+    if (this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
+    if (this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
   }
 
   componentWillUnmount() {
@@ -34,6 +34,7 @@ export default class MoviePage extends Component {
   }
 
   componentWillReceiveProps = (newProps) => {
+    if (!this._mounted) return false;
     if (newProps.movie.results) {
   	  if (newProps.movie.results[0].torrents[0].quality === '3D') {
   		  const hash = newProps.movie.results[0].torrents[1].hash;
@@ -74,6 +75,7 @@ export default class MoviePage extends Component {
   }
 
   quality = (hash) => {
+    if (!this._mounted) return false;
     this.setState({ quality: hash, redraw: true });
     setTimeout(() => {
       if (!this._mounted) return false;
@@ -111,6 +113,7 @@ export default class MoviePage extends Component {
       }
     }).then((result) => {
       if (result.data.errors) {
+        if (!this._mounted) return false;
         this.setState({ error: result.data.errors });
       }
     });

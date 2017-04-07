@@ -33,12 +33,20 @@ export default class SeriesDisplay extends Component {
     },
   }
 
+  _mounted = false;
+
   componentDidMount = () => {
+    this._mounted = true;
     this.loadSeries = _.debounce(this.loadSeries, 1000);
     this.handleChange();
   }
 
-  componentWillReceiveProps (newProps){
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  componentWillReceiveProps (newProps) {
+    if (!this._mounted) return false;
 	  if (newProps.series && newProps.series.length === 0) {
 		  this.setState({ hasMore: false });
 	  } else {
@@ -51,13 +59,18 @@ export default class SeriesDisplay extends Component {
 
   resetValues = (key) => {
     if (key !== 'page') {
+      if (!this._mounted) return false;
       this.setState({ page: { valuePage: 0, valueScroll: 0 } });
     }
-    if (key === 'title') { this.setState({ genre: '' }); };
+    if (key === 'title') {
+      if (!this._mounted) return false;
+      this.setState({ genre: '' });
+    }
   }
 
   handleChange = (key, value) => {
     this.resetValues(key);
+    if (!this._mounted) return false;
     this.setState({ [key]: value }, () => {
       const {
         genre,
@@ -89,6 +102,7 @@ export default class SeriesDisplay extends Component {
   }
 
   loadSeries = () => {
+    if (!this._mounted) return false;
     const { page = { valuePage: 1, valueScroll: 1 } } = this.state;
     this.handleChange('page', page);
     const nextPage = page.valuePage + 1;

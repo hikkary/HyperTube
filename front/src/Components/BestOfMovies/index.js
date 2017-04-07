@@ -6,9 +6,16 @@ import './sass/BestOfMovies.sass';
 export default class BestOfMovies extends Component {
 
   componentDidMount = () => {
+    this._mounted = true;
     const { actions } = this.props;
     actions.movies.TenBestMovies();
   }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
   goMoviePage = (id) => {
     browserHistory.push(`/app/movies/${id}`);

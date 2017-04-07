@@ -5,9 +5,16 @@ import './sass/BestOfSeries.sass';
 export default class BestOfSeries extends Component {
 
   componentDidMount = () => {
+    this._mounted = true;
     const { actions } = this.props;
     actions.series.TenBestSeries();
   }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
   goSeriePage = (id) => {
     browserHistory.push(`/app/series/${id}`);

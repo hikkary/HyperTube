@@ -12,10 +12,17 @@ export default class ChangePassword extends React.Component{
 	}
 
 	componentDidMount = () => {
+		this._mounted = true;
 		if (localStorage.getItem('token')) {
 			browserHistory.push('/app/homePage');
 		}
 	}
+
+	componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
 	goToPreviousPage = () => {
 		browserHistory.push('/forgotPassword');
@@ -37,6 +44,7 @@ export default class ChangePassword extends React.Component{
 			 if (results.data.status) {
 				 browserHistory.push('/login');
 			 } else {
+				 if (!this._mounted) return false;
 				 this.setState({ error: results.data.errors });
 				 // add message error of password
 			 }

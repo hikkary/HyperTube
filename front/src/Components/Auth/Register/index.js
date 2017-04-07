@@ -14,10 +14,17 @@ export default class Register extends Component {
   }
 
   componentDidMount = () => {
+    this._mounted = true;
     if (localStorage.getItem('token')) {
       browserHistory.push('/app/homePage');
     }
   }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
+  _mounted = false;
 
   uploadImage = async(e) => {
     e.persist();
@@ -27,6 +34,7 @@ export default class Register extends Component {
 		const file = e.target.files[0];
 		const img = new Image();
 		img.onload = () => {
+      if (!this._mounted) return false;
       this.setState({ message: 'Picture Uploaded' });
       this.setState({ image: file })
 		};
@@ -60,11 +68,13 @@ export default class Register extends Component {
   };
 
   toFrench = (e) => {
+    if (!this._mounted) return false;
     this.setState({ currentLanguage: 'fr' })
     this.props.actions.translation.toFrench();
   }
 
   toEnglish = (e) => {
+    if (!this._mounted) return false;
     this.setState({ currentLanguage: 'en' })
     this.props.actions.translation.toEnglish();
   }
