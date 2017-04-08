@@ -63,6 +63,7 @@ export default class MoviePage extends Component {
 			return;
 		}
         this.setState({ filename: result.data });
+		console.log("NOM DE NOM",this.state.filename);
       });
       if (newProps.movie && newProps.movie.results.path) {
         const hash = newProps.movie.results[0].torrents[0].hash;
@@ -105,10 +106,10 @@ export default class MoviePage extends Component {
   }
 
   handleMedia = () => {
-    let mimeType = this.props.serie.path[this.state.quality].path.split('.');
+    let mimeType = this.props.movie.results[0].path[this.state.quality].path.split('.');
     mimeType = _.last(mimeType);
     if (mimeType === 'mkv' || mimeType === 'mp4') {
-  	return `http://localhost:8080/public/Media/${this.props.serie.path[this.state.quality].path}`;
+  	return `http://localhost:8080/public/Media/${this.props.movie.results[0].path[this.state.quality].path}`;
     } else {
   	return `${api}/stream/localStream/${this.props.movie.results[0].path[this.state.quality].path}`;
     }

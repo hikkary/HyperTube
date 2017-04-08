@@ -36,6 +36,7 @@ const movieToDatabase = (allMovies) => {
       torrents: movie.torrents,
       seeds: sum,
     };
+	log(movie.title);
     Movie.findOrCreate({ id: movie.id }, newMovie, { upsert: true }).catch((err) => { console.log(err); });
   });
 };

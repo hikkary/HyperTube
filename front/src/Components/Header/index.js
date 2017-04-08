@@ -45,6 +45,7 @@ export default class Header extends React.Component {
     const { getConnectedUser } = this.props.actions.user;
     if (!token) {
       browserHistory.push('/login');
+	  return;
     }
     getConnectedUser(token);
   };

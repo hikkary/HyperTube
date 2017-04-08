@@ -14,25 +14,27 @@ const writeJson = (allSeries) => {
       .then((content) => {
         axios.get(`http://www.omdbapi.com/?i=${content.data.imdb_id}`)
           .then((response) => {
-            const genres = response.data.Genre.split(',');
-                const newSerie = {
-                  images: serie.images,
-                  description: response.data.Plot,
-                  duration: response.data.Runtime,
-                  rating: Number(response.data.imdbRating),
-                  released: response.data.Released,
-                  cast: response.data.Actors,
-                  genres,
-                  directors: response.data.Director,
-                  writers: response.data.Writer,
-                  imdb_code: serie.imdb_id,
-                  num_seasons: serie.num_seasons,
-                  title: serie.title,
-                  title_search: serie.title.toLowerCase(),
-                  year: serie.year,
-                  provider: 'EZTV',
-                  content: content.data.episodes,
-                };
+            let genres = [];
+            if (response.data && response.data.Genre) { genres = response.data.Genre.split(','); }
+            const newSerie = {
+              images: serie.images,
+              description: response.data.Plot,
+              duration: response.data.Runtime,
+              rating: Number(response.data.imdbRating),
+              released: response.data.Released,
+              cast: response.data.Actors,
+              genres,
+              directors: response.data.Director,
+              writers: response.data.Writer,
+              imdb_code: serie.imdb_id,
+              num_seasons: serie.num_seasons,
+              title: serie.title,
+              title_search: serie.title.toLowerCase(),
+              year: serie.year,
+              provider: 'EZTV',
+              content: content.data.episodes,
+            };
+            log(serie.title);
             Serie.findOrCreate({ imdb_code: serie.imdb_id }, newSerie, { upsert: true }).catch((err) => { console.log(err); });
           });
       })
