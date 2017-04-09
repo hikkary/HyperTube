@@ -299,6 +299,7 @@ export const githubAuth = (req, res) => {
     },
   })
   .then((response) => {
+    if (response.data) {
     const token = response.data.split('&')[0];
     const final = token.split('=')[1];
     axios({
@@ -309,7 +310,8 @@ export const githubAuth = (req, res) => {
       },
     })
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
+      if (response.data) {
       const firstname = response.data.name.split(' ')[0];
       const lastname = response.data.name.split(' ')[1];
       const userInfoGit = {
@@ -339,7 +341,9 @@ export const githubAuth = (req, res) => {
             res.redirect(`http://localhost:3000/login?token=${token}`);
           }
         });
+      }
     });
+  }
   });
 };
 
