@@ -59,6 +59,7 @@ export default class MoviePage extends Component {
       }).then((result) => {
         if (!this._mounted) return false;
 		if (result.data.status === false ){
+			console.log("NOM DE NOM",this.state.filename);
 			this.setState({ filename: "error" });
 			return;
 		}

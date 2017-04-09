@@ -49,13 +49,12 @@ export const connectedUser = (req, res) => {
           if (result.lastSeen) {
             // console.log('result de if', result.lastSeen);
             // console.log('de if decoded', decoded.lastSeen);
-          decoded.lastSeen = result.lastSeen;
-        }
+            decoded.lastSeen = result.lastSeen;
+          }
           // console.log("DECODED", decoded.lastSeen);
           return res.send({ status: true, details: decoded });
-        } else {
-          return res.send({ status: false, details: 'errors' });
         }
+        return res.send({ status: false, details: 'errors' });
       });
   });
 };
@@ -116,11 +115,11 @@ export const createAccount = (req, res) => {
     User.findOne({ username })
       .then((user) => {
         if (user) return res.send({ status: false, errors: 'usernameExists' });
-        else return User.findOne({ email });
+        return User.findOne({ email });
       })
       .then((usermail) => {
         if (usermail) return res.send({ status: false, errors: 'emailExists' });
-        else userToDatabase(req);
+        userToDatabase(req);
         return res.send({ status: true, success: 'userCreated' });
       });
   });
@@ -131,7 +130,7 @@ export const login = async (req, res) => {
   const { error } = await Joi.validate(req.body, Login, { abortEarly: false });
   if (error) {
 	//   return res.send({ status: false, errors: error.details });
-    return res.send({ status: false, errors: "badLogin" });
+    return res.send({ status: false, errors: 'badLogin' });
   }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   User.findOne({ username })
@@ -177,12 +176,12 @@ export const handleAuthorize42 = async (req, res) => {
     },
   })
   .then(async (response) => {
-	const token = await response.data.access_token;
+    const token = await response.data.access_token;
     await axios({
       method: 'GET',
-	  headers:{
-       Authorization: `Bearer ${token}`,
-      },
+	  headers: {
+    Authorization: `Bearer ${token}`,
+  },
       url: 'https://api.intra.42.fr/v2/me',
     })
     .then(async (user) => {
@@ -209,14 +208,12 @@ export const handleAuthorize42 = async (req, res) => {
 		  provider: user42.result.provider,
         };
         finalToken = await jwt.sign(tokenUserinfo, jwtSecret);
-		res.header('Access-Control-Expose-Headers', 'x-access-token');
-		res.set('x-access-token', token);
-		res.redirect(`http://localhost:3000/login?token=${finalToken}`);
+        res.header('Access-Control-Expose-Headers', 'x-access-token');
+        res.set('x-access-token', token);
+        res.redirect(`http://localhost:3000/login?token=${finalToken}`);
       })
       .catch((err) => { console.log(err); });
     });
-
-
 
 
     // res.send({ status: true, details: 'user connected' });
@@ -285,9 +282,9 @@ export const gmailAuth = (req, res) => {
 //         Authorization: `Bearer ${response.data.access_token}`,
 //       },
 // })
-}
+};
 
-export const githubAuth  = (req, res) => {
+export const githubAuth = (req, res) => {
   const code = req.query.code;
   console.log('entered github', code);
   axios({
@@ -299,7 +296,7 @@ export const githubAuth  = (req, res) => {
       code: req.query.code,
       redirecr_uri: 'http://localhost:8080/api/users/github_auth',
       state: 'qwertyu456',
-    }
+    },
   })
   .then((response) => {
     const token = response.data.split('&')[0];
@@ -309,7 +306,7 @@ export const githubAuth  = (req, res) => {
       url: 'https://api.github.com/user',
       headers: {
         Authorization: `token ${final}`,
-      }
+      },
     })
     .then((response) => {
       console.log(response.data);
@@ -322,14 +319,14 @@ export const githubAuth  = (req, res) => {
         username: response.data.login,
         picture: response.data.avatar_url,
         provider: 'github',
-      }
+      };
       User.findOrCreate({ id: response.data.id }, userInfoGit, { upsert: true })
         .then((user) => {
           if (user) {
             console.log('user', user);
             const tokenUserinfo = {
               id: user.result.id,
-              username: response.data.login ,
+              username: response.data.login,
               firstname,
               lastname,
               auth_id: response.data.id,
@@ -342,9 +339,9 @@ export const githubAuth  = (req, res) => {
             res.redirect(`http://localhost:3000/login?token=${token}`);
           }
         });
-      });
     });
-  }
+  });
+};
 
 export const forgotPassword = async (req, res) => {
   const { error } = await Joi.validate(req.body, Forgot, { abortEarly: false });
@@ -385,16 +382,13 @@ export const updatePassword = async (req, res) => {
       }
       if (result.key.localeCompare(key) !== 0) {
         return res.send({ status: false, errors: 'errorOccured' });
-      } else {
-        const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
-        result.password = passwordHash;
-        const key = crypto.randomBytes(20).toString('hex');
-        result.key = key;
-        result.save()
-        .then(() => {
-          return res.send({ status: true, details: 'Password Updated' });
-        });
       }
+      const passwordHash = crypto.createHash('sha512').update(password).digest('base64');
+      result.password = passwordHash;
+      const key = crypto.randomBytes(20).toString('hex');
+      result.key = key;
+      result.save()
+        .then(() => res.send({ status: true, details: 'Password Updated' }));
     });
 };
 
@@ -425,7 +419,7 @@ export const editProfile = (req, res) => {
             filename: '',
           };
         }
-        if (result.picture && result.picture !== 'poule.jpg' && req.file ) {
+        if (result.picture && result.picture !== 'poule.jpg' && req.file) {
           fs.unlink(`./public/${result.picture}`, (err) => {
             if (err) throw err;
           });
@@ -441,7 +435,7 @@ export const editProfile = (req, res) => {
         } else {
           result.language = req.body.language;
         }
-        console.log('result language' , result.language);
+        console.log('result language', result.language);
         result.username = req.body.username;
         result.firstname = req.body.firstname;
         result.lastname = req.body.lastname;
@@ -458,7 +452,7 @@ export const editProfile = (req, res) => {
             email: result.email,
             language: result.language,
             picture: result.picture,
-          }
+          };
           const token = jwt.sign(updatedUser, jwtSecret);
           res.header('Access-Control-Expose-Headers', 'x-access-token');
           res.set('x-access-token', token);
@@ -477,6 +471,7 @@ export const authEditProfile = (req, res) => {
   }
   User.findOne({ _id: ObjectId(id) })
     .then((user) => {
+      console.log('Dans auth edit profil');
       if (!user) return res.send({ status: false, errors: 'noUsername' });
       if (user) {
         if (!req.body.currentLanguage) {
@@ -490,7 +485,24 @@ export const authEditProfile = (req, res) => {
           user.language = req.body.currentLanguage;
           console.log('yo', user);
         }
-        user.save();
+        console.log('Changement de langue', user);
+        user.save()
+		.then(() => {
+  const updatedUser = {
+			  username: user.username,
+			  lastname: user.lastname,
+			  firstname: user.firstname,
+			  id: user.id,
+			  email: user.email,
+			  language: user.language,
+			  picture: user.picture,
+			  provider: user.provider,
+  };
+  const token = jwt.sign(updatedUser, jwtSecret);
+	        res.header('Access-Control-Expose-Headers', 'x-access-token');
+	        res.set('x-access-token', token);
+	        res.send({ status: true, details: 'user updated' });
+});
       }
     });
 };

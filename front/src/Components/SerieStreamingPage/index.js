@@ -20,8 +20,8 @@ export default class SerieStreamingPage extends Component {
       id: this.props.id,
       serieId: this.props.serieId,
     });
-    if(this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
-    if(this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+    // if(this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
+    // if(this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
     // Mettre le hash a cote du path dans l'objet
   }
 
@@ -31,15 +31,21 @@ export default class SerieStreamingPage extends Component {
 
   componentWillReceiveProps = async(newProps) => {
     if (!this._mounted) return false;
+	console.log("USER", newProps);
+
     if (newProps.serie && newProps.serie.torrents && newProps.user.id) {
-      if (newProps.user.language === 'en') { this.setState({ lang: 'eng' }) };
-      if (newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) };
+      if (newProps.user.language === 'en') { this.setState({ lang: 'eng' }) }
+	  else if (newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+      else { this.setState({ lang: 'eng' }) };
       const hash = newProps.serie.torrents[0].url;
       const splitHash = await hash.split(':', 4);
       const finalSplit = await splitHash[3].split('&', 1);
       this.setState({ quality: finalSplit[0] });
       this.onPlay(newProps.serieId, newProps.user.id, newProps.serie.tvdb_id);
+	  console.log("AANT A", this.state.quality, this.state.lang);
+
       if (this.state.quality && this.state.lang) {
+		  console.log("AANT AXIOS SERIE");
         axios({
           method: 'POST',
           url: `${api}/serie/subtitles`,
@@ -123,7 +129,7 @@ export default class SerieStreamingPage extends Component {
   goProfile = (id) =>{
     browserHistory.push(`/app/user/profile/${id}`)
   }
-  
+
   errorHandler = (error) => {
     const { translation } = this.props;
     return translation.current[error];

@@ -45,9 +45,9 @@ export default class OmniAuth extends Component {
         });
       });
     } else if (response.status === 'not_authorized') {
-      console.error('ERROR FB');
+    //   console.error('ERROR FB');
     } else {
-      console.error('ERROR FB UNKNOWN');
+    //   console.error('ERROR FB UNKNOWN');
     }
   }
 

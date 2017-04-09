@@ -67,6 +67,7 @@ export const userSeenMovie = (req, res) => {
 export const getSubtitles = (req, res) => {
   try {
     const OpenSubtitles = new OS('42hypertube');
+	console.log("REQU REQU",req.body);
     OpenSubtitles.search({
       hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
       imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
@@ -100,7 +101,7 @@ export const getSubtitles = (req, res) => {
         fs.createReadStream(`./public/subtitles/${formerFilename}`)
         .pipe(srt2vtt())
         .pipe(fs.createWriteStream(`./public/subtitles/${filename}`));
-        res.send(filename);
+        return res.send(filename);
       });
     });
   } catch (e) {

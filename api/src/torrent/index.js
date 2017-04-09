@@ -102,6 +102,7 @@ export const movieTorrent = async (req, res) => {
 };
 
 export const serieTorrent = (req, res) => {
+	console.log("DANS SERIE TORRENT");
   const options = {
     connections: 5000,     // Max amount of peers to be connected to.
     uploads: 10,          // Number of upload slots.
@@ -198,28 +199,30 @@ export const serieTorrent = (req, res) => {
     Serie.findOne({ imdb_code: req.params.serie_id })
       .then((serie) => {
         if (serie) {
+			console.log("DANS DILE SERIE TORRENT");
           let episodeInfo = serie.content.filter((episode) => {
-            console.log('tvdb', episode.tvdb_id);
-            console.log('id', req.params.id);
+            // console.log('tvdb', episode.tvdb_id);
+            // console.log('id', req.params.id);
             if (episode.tvdb_id === Number(req.params.id)) {
               console.log('je rentre dans le if jai trouve le match');
               return episode;
             }
           });
           const hash = req.params.hash;
-          console.log('espisode info', episodeInfo);
+        //   console.log('espisode info', episodeInfo);
           const path = { ...episodeInfo[0].path, [hash]: { path: videoFile[0].path } };
           episodeInfo = { ...episodeInfo[0], path };
           console.log('apre perers', episodeInfo);
           const index = _.indexOf(serie.content, _.find(serie.content, { tvdb_id: episodeInfo.tvdb_id }));
           serie.content.splice(index, 1, episodeInfo);
-          serie.save((err) => { console.log(err); });
+          serie.save();
         }
       });
   });
 };
 
 export const mediaLocalStream = (req, res) => {
+console.log("MEDIA LOCAL STREAM");
   const { path, path2 } = req.params;
   let completePath = '';
   if (path && path2) {
@@ -229,16 +232,73 @@ export const mediaLocalStream = (req, res) => {
   } else {
     return res.send({ status: false, errors: 'badPath' });
   }
-  res.writeHead(200, {
-    'Content-Type': 'video/mp4',
-  });
+
+
+  // res.writeHead(206, {
+  //  "Content-Range": "bytes " + start + "-" + end + "/" + total,
+  //   "Content-Length": chunksize,
+  //   "Content-Type": "video/mp4"
+  // });
+  // const range = req.headers.range;
+  // console.log(range ,"RANGE" );
+  // if (!range) {
+  //  console.log("RANGE ERROR");
+  // eturn res.sendStatus(416);
+  // }
+  const stat = fs.statSync(completePath)
+  console.log("length", stat.size);
+  // console.log("RANGE ",range);
+  // const positions = range.replace(/bytes=/, '').split('-');
+  // const start = parseInt(positions[0], 10);
+  // const fileSize = stat.size;
+  // const end = positions[1] ? parseInt(positions[1], 10) : fileSize - 1;
+  // const chunksize = (end - start) + 1;
+
+
   const stream = fs.createReadStream(completePath, {});
+  // Object.defineProperty(stream, "end", {
+  // value: end,
+  //    writable: true,
+  //    enumerable: true,
+  //    configurable: true})
+  // Object.defineProperty(stream, "start", {
+  // alue: start,
+  // ritable: true,
+  // numerable: true,
+  // onfigurable: true})
+  // let d = Object.getOwnPropertyDescriptors(stream)
+  // console.log("STREA", d);
+  // stream
+  // .on('data', (chunk) => {
+  //  dataLength += chunk.length;
+  // /   console.log(dataLength);
+  // })
+
+  // let dataLength = 0;
+  // stream.on('data', (chunk) => {
+  // ataLength += chunk.length;
+  //
+  // })
+  res.writeHead(200, {
+  // 'Content-Range': `bytes 0-${stat.size}`,
+  // "Accept-Ranges": "bytes",
+  'Content-Length': stat.size,
+  'Content-Type': 'video/mp4',
+  });
   new Transcoder(stream)
-      .videoCodec('h264')
-      .audioCodec('aac')
-      .format('mp4')
-      .on('finish', () => {
-        console.log('LA CONVERSION EST FINI');
-      })
-      .stream().pipe(res);
+	.on('metadata', (input) => {
+	// input.output.length = stat.size;
+	console.log("input",input.input.streams);
+	  console.log("output",input.output.streams);
+
+  } )
+	  .videoCodec('h264')
+	  .audioCodec('aac')
+	  .format('mp4')
+	  .on('finish', () => {
+		console.log('LA CONVERSION EST FINI');
+	  })
+	  .stream().pipe(res);
+
+
 };
