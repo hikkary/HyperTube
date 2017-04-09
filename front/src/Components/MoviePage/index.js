@@ -141,6 +141,11 @@ export default class MoviePage extends Component {
 		return translation.current[error];
 	}
 
+  playThrough = (e) =>{
+	  console.log(e.target);
+	  e.target.play();
+  }
+
   render() {
     let comments = [];
     if (this.props.movie.results && this.props.user && this.props.movie.results[0].comments) {
@@ -183,7 +188,7 @@ export default class MoviePage extends Component {
           <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
           <div className="media">
             {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
-              <video crossOrigin width="640" height="360" controls autoPlay style={{
+              <video crossOrigin width="640" height="360" onCanPlayThrough={this.playThrough} controls  style={{
                 textAlign: 'center',
               }}>
                 {(((!this.props.movie.results[0].path) || (this.props.movie.results[0].path && !this.props.movie.results[0].path[this.state.quality])) && <source src={`${api}/stream/movie/${this.state.quality}/${this.props.id}/${this.props.user.id}`} type="video/mp4" />) ||

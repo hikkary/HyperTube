@@ -73,6 +73,11 @@ export default class SerieStreamingPage extends Component {
     browserHistory.push(`/app/series/${serieId}`)
   }
 
+  playThrough = (e) =>{
+	console.log(e.target);
+	e.target.play();
+  }
+
   changeQuality = (hash) => {
     if (!this._mounted) return false;
     const splitHash = hash.split(':', 4);
@@ -154,7 +159,7 @@ export default class SerieStreamingPage extends Component {
         </div>}
         <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
         {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
-          <video crossOrigin width="640" height="360" autoPlay controls style={{
+          <video crossOrigin width="640" height="360" onCanPlayThrough={this.playThrough} controls style={{
             textAlign: 'center',
           }}>
             {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
