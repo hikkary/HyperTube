@@ -3,3 +3,12 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.parentOfEverything {
+  display: flex;
+  flex-direction: column;
+}
+
+.middleOfEverything {
+  flex-grow: 1;
+}

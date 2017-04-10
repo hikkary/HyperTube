@@ -30,9 +30,9 @@ export default {
   noMatch: 'Vos mots de passe ne correspondent pas',
   emailSent: 'Un email vous a ete envoye pour re initialiser votre mot de passe',
   signIn: 'SE CONNECTER',
-  editProfile: 'Editer Profile',
+  editProfile: 'Editer Profil',
   changeLanguage: 'Changer de Langage',
-  editImage: 'Changer votre image de profile',
+  editImage: 'Changer votre image de profil',
   movies: 'Films',
   series: 'Series',
   logout: 'Deconnexion',
@@ -44,4 +44,5 @@ export default {
   noMoviesFound: 'PAS DE FILMS TROUVES',
   noSeriesFound: 'PAS DE SERIES TROUVES',
   noMediaFound: 'PAS DE MEDIA TROUVES',
+  lastTenMedia: '10 derniers films/series vu:',
 }

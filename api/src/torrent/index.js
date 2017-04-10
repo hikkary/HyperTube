@@ -229,7 +229,7 @@ export const serieTorrent = (req, res) => {
             }
           });
           const hash = req.params.hash;
-        //   console.log('espisode info', episodeInfo);
+          // console.log('espisode info', episodeInfo);
           const path = { ...episodeInfo[0].path, [hash]: { path: videoFile[0].path } };
           episodeInfo = { ...episodeInfo[0], path };
         //   console.log('apre perers', episodeInfo);

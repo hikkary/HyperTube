@@ -15,7 +15,8 @@ export const serie = (req, res) => {
   Serie.find({ imdb_code: data })
   .exec()
     .then((results) => {
-      res.send(results);
+      if (results && results[0]) return res.send({ status: true, results: results[0] });
+      return res.send({ status: false, errors: 'serieNotFound' });
     });
 };
 
@@ -29,7 +30,12 @@ export const episode = (req, res) => {
           return ep;
         }
       });
-      res.send({ status: true, details: episodeInfo });
+      console.log('EP INFO', episodeInfo);
+      if (episodeInfo.length === 0) {
+        console.log('entered ok --------------------');
+         return res.send({ status: false, errors: 'epNotFound' });
+       }
+      return res.send({ status: true, details: episodeInfo });
     });
 };
 
@@ -59,7 +65,18 @@ export const userSeenSerie = (req, res) => {
   const { userId, serieId, episodeId } = req.body;
   Serie.find({ imdb_code: serieId })
   .then((data) => {
+    console.log("DATA",data);
+    console.log("iddd", episodeId);
+    // const index = _.find(data[0].content, { tvdb_id: Number(episodeId) })
+    // console.log( "INDEX NEW" , index);
     const index = _.indexOf(data[0].content, _.find(data[0].content, { tvdb_id: Number(episodeId) }));
+
+    data[0].content.map((serie) => {
+      console.log("Id", serie.tvdb_id);
+    })
+    console.log("INDEX ",index);
+    console.log("CONTENT ",data[0].content[0].tvdb_id);
+    console.log("SEEEEEEEEN BY ", data[0].content[index]);
     if (!data[0].content[index].seenBy) {
       data[0].content[index].seenBy = [];
     }

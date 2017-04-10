@@ -31,7 +31,7 @@ export default class Register extends Component {
       setTimeout(()=>{ browserHistory.push('/login') }, 2000);
     }
   }
-  
+
   uploadImage = async(e) => {
     e.persist();
     if (!e.target.files[0]) {
@@ -162,7 +162,7 @@ export default class Register extends Component {
           >
           <input type="file" name="imageUpload" className="uploadInput" onChange={this.uploadImage} />
         </RaisedButton>
-        <RaisedButton type="submit" label={current.register} className="registerSubmit" name="register"/>
+        <RaisedButton type="submit" label={current.register} className="registerSubmit" name="register" style={{ marginBottom: '20px' }}/>
       </form>
       <div>{this.state.message}</div>
     </div>

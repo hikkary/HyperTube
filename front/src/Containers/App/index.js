@@ -9,9 +9,9 @@ class App extends Component {
   render() {
     const {actions, user, translation } = this.props;
     return (
-      <div>
+      <div className="parentOfEverything">
         <Header translation={translation} user={user} actions={actions} />
-        <div>
+        <div className="middleOfEverything">
           {this.props.children}
         </div>
         <Footer />

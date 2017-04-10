@@ -22,6 +22,13 @@ export default class SeriePage extends Component {
     this._mounted = false;
   }
 
+  componentWillReceiveProps = (newProps) => {
+    if (newProps.serie.errors) {
+      browserHistory.push('/app/series');
+      return;
+    }
+  }
+
   serieStreaming = (episode) => {
     const id = episode.tvdb_id;
     const serieId = this.props.id;

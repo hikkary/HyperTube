@@ -48,6 +48,7 @@ export default class Profile extends Component {
   }
 
   render(){
+    const { current } = this.props.translation;
     let lastSeen = '';
     if (this.state.user && this.state.user.lastSeen) {
       lastSeen = this.state.user.lastSeen.map((show, key) =>
@@ -64,7 +65,7 @@ export default class Profile extends Component {
           <div className="float">
             <div className="profileInfos"><i className="fa fa-user icons" aria-hidden="true"></i>{user.firstname} {user.lastname}</div>
             {this.props.id === myId && <div className="profileInfos"> <i className="fa fa-envelope icons" aria-hidden="true"></i> {user.email}</div>}
-            <div className="profileInfos"><i className="fa fa-film icons" aria-hidden="true"></i>Last 10 movies/shows watched:</div>
+            <div className="profileInfos"><i className="fa fa-film icons" aria-hidden="true"></i>{current.lastTenMedia}</div>
             <div className="profileInfos">{lastSeen}</div>
           </div>
   	    </div>}

@@ -19,7 +19,8 @@ const writeJson = (allSeries) => {
 			if(response.status !== 200) {return req.end()}
             let genres = [];
             if (response.data && response.data.Genre) { genres = response.data.Genre.split(','); }
-			if (response.data && typeof(response.data.imdbRating) !== Number ) { response.data.imdbRating = -1 }
+            console.log("type number", typeof(response.data.imdbRating));
+			if (response.data && typeof(response.data.imdbRating) !== String ) { response.data.imdbRating = -1 }
             const newSerie = {
               images: serie.images,
               description: response.data.Plot,
@@ -38,7 +39,7 @@ const writeJson = (allSeries) => {
               provider: 'EZTV',
               content: content.data.episodes,
             };
-            // log(serie.title);
+            log(serie.title);
             Serie.findOrCreate({ imdb_code: serie.imdb_id }, newSerie, { upsert: true }).catch();
 		}).catch((err) =>{});
       })

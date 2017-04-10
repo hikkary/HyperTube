@@ -44,4 +44,5 @@ export default {
   noMoviesFound: 'NO MOVIES FOUND',
   noSeriesFound: 'NO SERIES FOUND',
   noMediaFound: 'NO MEDIA FOUND',
+  lastTenMedia: 'Last 10 movies/shows watched:',
 }

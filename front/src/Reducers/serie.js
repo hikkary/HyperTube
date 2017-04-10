@@ -1,4 +1,4 @@
-import { GET, ERROR } from '../Actions/serie';
+import { GET, ERROR, NOTFOUND } from '../Actions/serie';
 
 export default (state = {}, action) => {
   switch(action.type) {
@@ -6,6 +6,8 @@ export default (state = {}, action) => {
     return action.payload;
   case ERROR:
     return { ...state , ...action.payload };
+  case NOTFOUND:
+    return { ...action.payload };
   default: return state;
   }
 }

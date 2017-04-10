@@ -4,6 +4,7 @@ import api from '../apiURI';
 export const GET = "GET_SERIE";
 export const PENDING = "PENDING";
 export const ERROR = "GET_ERROR_SERIE";
+export const NOTFOUND = "NOTFOUND_SERIE";
 
 export const pending = () => ({
   type: PENDING,
@@ -19,6 +20,11 @@ export const error = error => ({
   payload: error,
 });
 
+export const notFound = error => ({
+  type: NOTFOUND,
+  payload: error,
+});
+
 export const getSeriePage = ({
   id,
 } = {}) => (dispatch) => {
@@ -27,7 +33,9 @@ export const getSeriePage = ({
     `${api}/serie/${id}`,
   )
   .then(({ data: serie }) => {
-    dispatch(fetched(...serie));
+    console.log('serie', serie);
+    if (serie.errors) return dispatch(notFound(serie));
+    dispatch(fetched(serie.results));
   })
   .catch(console.error);
 };
@@ -39,8 +47,10 @@ export const getEpisode = ({
   axios.get(
     `${api}/serie/${serieId}/${id}`,
   )
-  .then(({ data: serie }) => {
-    dispatch(fetched(...serie.details));
+  .then((response) => {
+    console.log('ACTION RETURN', response.data);
+    if (response.data.errors) return dispatch(notFound(response.data));
+    dispatch(fetched(response.data.details));
   })
   .catch(console.error);
 };

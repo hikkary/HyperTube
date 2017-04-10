@@ -17,19 +17,9 @@ import mailCenter from './mailCenter';
 
 const log = debug('hypertube:api:user:register');
 const ObjectId = mongoose.Types.ObjectId;
-const single = multer({ storage }).single('image');
-// const upload = multer({ storage: storage });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, `${__dirname}/../../public`)
-  },
-  // destination: `${__dirname}/../../public`,
-  filename: ((req, file, cb) => {
-    console.log('???????????????------------', file);
-    cb(null, Math.random(100000, 9999999) + path.extname(file.originalname));
-  }),
-});
+const single = multer({ dest: 'public' }).single('image');
+// const upload = multer({ storage: storage });
 
 const getToken = (req) => {
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
@@ -86,15 +76,24 @@ export const getUserInfo = (req, res) => {
     });
 };
 
-const userToDatabase = (req) => {
+const addExtensionFilename = async (filename, mimetype) => {
+  const publicFolder = path.resolve('public');
+  const newName = mimetype === 'image/jpeg' ? `${filename}.jpg` : `${filename}.png`;
+  fs.renameSync(`${publicFolder}/${filename}`, `${publicFolder}/${newName}`);
+  return (newName);
+};
+
+const userToDatabase = async (req) => {
   console.log('FILE', req.file); // undefined
   console.log('IMG', req.body.image);
+  let filename = null;
   if (!req.file) {
     req.file = {};
-    req.file.originalname = 'poule.jpg';
+    filename = 'poule.jpg';
   } else {
-    req.file.originalname = Math.random(100000, 9999999) + path.extname(req.file.originalname);
-  };
+    filename = await addExtensionFilename(req.file.filename, req.file.mimetype);
+    console.log(filename);
+  }
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
     username: req.body.username,
@@ -103,7 +102,7 @@ const userToDatabase = (req) => {
     email: req.body.email,
     language: req.body.language,
     password: passwordHash,
-    picture: req.file.originalname,
+    picture: filename,
     key: 0,
     lastSeen: [],
   });
@@ -114,11 +113,9 @@ export const createAccount = (req, res) => {
   single(req, res, async (err) => {
     const { error } = await Joi.validate(req.body, Register, { abortEarly: false });
     if (error) {
-		// return res.send({ status: false, errors: error.details });
       return res.send({ status: false, errors: 'fillForm' });
     }
     if (err) {
-      console.log('ERROR SINGLE');
       return res.send({ status: false, errors: 'imgIssue' });
     }
     const { username, email } = req.body;
@@ -239,6 +236,7 @@ export const facebook = async (req, res) => {
   console.log('yoyoyo');
   const data = ({
     auth_id: req.body.id,
+    username: `${req.body.first_name}${req.body.last_name}`,
     firstname: req.body.first_name,
     lastname: req.body.last_name,
     picture: req.body.picture.data.url,
