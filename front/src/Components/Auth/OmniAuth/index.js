@@ -5,9 +5,7 @@ import axios from 'axios';
 import './OmniAuth.sass';
 import FBlogo from '../../../../public/fb-black.png';
 import fortyTwoLogo from '../../../../public/42_logo.png';
-import Glogo from '../../../../public/google_logo.png';
 import GitLogo from '../../../../public/github_logo.png';
-// import { uid, secret } from './secret42';
 
 /* global FB */
 
@@ -25,9 +23,6 @@ export default class OmniAuth extends Component {
     }
   }
 
-  // componentWillReceiveProps = (newProps) => {
-  //   console.log('new props', newProps);
-  // }
 
   statusChangeCallback = (response) => {
     if (response.status === 'connected') {
@@ -45,9 +40,7 @@ export default class OmniAuth extends Component {
         });
       });
     } else if (response.status === 'not_authorized') {
-    //   console.error('ERROR FB');
     } else {
-    //   console.error('ERROR FB UNKNOWN');
     }
   }
 
@@ -60,29 +53,7 @@ export default class OmniAuth extends Component {
   handleClick = (e) => {
     FB.login(this.checkLoginState)
   }
-  //
-  // authorize42 = () => {
-  //
-  //   axios ({
-  //     method: 'GET',
-  //     url: ' https://api.intra.42.fr/oauth/authorize',
-  //     data: {
-  //       client_id: uid,
-  //       response_type: 'code',
-  //     },
-  //   }).then((data) => {
-  //     console.log('data', data);
-  //   })
-  // }
 
-
-  // git = (e) => {
-  //   e.preventDefault();
-  //   axios.get('')
-  //     .then((data) => {
-  //       console.log('data', data);
-  //     })
-  // }
 
   render() {
     return(
@@ -90,7 +61,6 @@ export default class OmniAuth extends Component {
         <a href="#" onClick={this.handleClick}><img src={FBlogo} role="presentation" className="fblogo" ></img></a>
         <a href='https://api.intra.42.fr/oauth/authorize?client_id=adb6d681ec4e26aa98abc4e9c5e8b809e721f88de9b6f6ed3dd7c3ee2f18dafa&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2F42_auth&response_type=code'>
           <img src={fortyTwoLogo} role="presentation" className="fortyTwoLogo" ></img></a>
-        <a href="https://accounts.google.com/o/oauth2/auth?client_id=222912618974-s46u30prev1k9b88bflpo849thhqpfbv.apps.googleusercontent.com&response_type=code&scope=openid%20email&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2Fgmail_auth&state=qwerefowjfoeiewjrojrjwriworjwerjwejrwoirjwoeijorworijtyuiop&access_type=offline" onClick={this.gmail}><img src={Glogo} role="presentation" className="Glogo"></img></a>
         <a href="https://github.com/login/oauth/authorize?client_id=3fa2a5a1929e273f97c5&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2Fgithub_auth&state=qwertyu456&access_token=OAUTH-TOKEN" onClick={this.git}><img src={GitLogo} role="presentation" className="gitLogo" ></img></a>
       </div>
     )

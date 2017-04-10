@@ -12,7 +12,6 @@ const writeJson = (allSeries) => {
   allSeries.forEach(serie =>
     axios.get(`http://eztvapi.ml/show/${serie.imdb_id}`)
       .then((content) => {
-		  console.log("content", content.status);
 		  if(content.status !== 200) {return req.end()}
         axios.get(`http://www.omdbapi.com/?i=${content.data.imdb_id}`)
           .then((response) => {
@@ -20,7 +19,7 @@ const writeJson = (allSeries) => {
             let genres = [];
             if (response.data && response.data.Genre) { genres = response.data.Genre.split(','); }
             console.log("type number", typeof(response.data.imdbRating));
-			if (response.data && typeof(response.data.imdbRating) !== String ) { response.data.imdbRating = -1 }
+			if (response.data && typeof(response.data.imdbRating) !== "string" ) { response.data.imdbRating = -1 }
             const newSerie = {
               images: serie.images,
               description: response.data.Plot,

@@ -70,11 +70,11 @@ export const getSubtitles = (req, res) => {
     const OpenSubtitles = new OS('42hypertube');
 	console.log("REQU REQU",req.body);
     OpenSubtitles.search({
-      hash: req.body.hash,        // Size + 64bit checksum of the first and last 64k
-      imdbid: req.body.imdbid,        // Size + 64bit checksum of the first and last 64k
+      hash: req.body.hash,
+      imdbid: req.body.imdbid,
     }).then((subtitles) => {
       let language = '';
-	  req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';
+      req.body.sublanguageid === 'eng' ? language = 'English' : language = 'French';
       let getSubtitlesMovie = _.filter(subtitles, (sub) => {
         if (sub.lang === language) {
           return sub;
@@ -106,23 +106,6 @@ export const getSubtitles = (req, res) => {
       });
     });
   } catch (e) {
-	  console.log("ERROR", e);
-
-	//   FAIRE UN RETRY CORRECT
-    // getSubtitles(req, res);
+	  // console.log("ERROR", e);
   }
 };
-
-//EXEMPLE DE RETRY CORRECT
-
-// int count = 0;
-// int maxTries = 3;
-// while(true) {
-//     try {
-//         // Some Code
-//         // break out of loop, or return, on success
-//     } catch (SomeException e) {
-//         // handle exception
-//         if (++count == maxTries) throw e;
-//     }
-// }

@@ -61,22 +61,10 @@ export const addComment = async (req, res) => {
 };
 
 export const userSeenSerie = (req, res) => {
-	console.log("============================================", req.body);
   const { userId, serieId, episodeId } = req.body;
   Serie.find({ imdb_code: serieId })
   .then((data) => {
-    console.log("DATA",data);
-    console.log("iddd", episodeId);
-    // const index = _.find(data[0].content, { tvdb_id: Number(episodeId) })
-    // console.log( "INDEX NEW" , index);
     const index = _.indexOf(data[0].content, _.find(data[0].content, { tvdb_id: Number(episodeId) }));
-
-    data[0].content.map((serie) => {
-      console.log("Id", serie.tvdb_id);
-    })
-    console.log("INDEX ",index);
-    console.log("CONTENT ",data[0].content[0].tvdb_id);
-    console.log("SEEEEEEEEN BY ", data[0].content[index]);
     if (!data[0].content[index].seenBy) {
       data[0].content[index].seenBy = [];
     }
@@ -85,8 +73,6 @@ export const userSeenSerie = (req, res) => {
     data[0].content.splice(index, 1, data[0].content[index]);
     data[0].lastSeenDate = new Date();
     data[0].save()
-	// .then((err) => { console.log(err); });
-	console.log("||||||||||||||||||||||||||||||||||||||");
     User.findOne({ _id: ObjectId(userId) })
       .then((user) => {
         if (!user) return res.send({ status: false, errors: 'noUsername' });
@@ -96,16 +82,7 @@ export const userSeenSerie = (req, res) => {
         user.lastSeen.unshift(data[0].title);
         user.lastSeen = _.uniq(user.lastSeen);
         user.lastSeen = user.lastSeen.slice(0, 10);
-		console.log("//////////////////////////////////////");
         user.save()
-		.then(() => {
-			console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			console.log("APRES USER SAVE");
-			console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-		})
-		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-		// 0.then((err) => { console.log(err); });
         return res.send({ status: true });
       });
   });

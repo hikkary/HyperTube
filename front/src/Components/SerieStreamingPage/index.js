@@ -34,7 +34,7 @@ export default class SerieStreamingPage extends Component {
   componentWillReceiveProps = async(newProps) => {
     if (!this._mounted) return false;
 	console.log("USER", newProps);
-    if (newProps.serie[0].status === false) { browserHistory.push('/app/series') };
+    if (newProps.serie && newProps.serie[0] && newProps.serie[0].status === false) { browserHistory.push('/app/series') };
     if (newProps.serie && newProps.serie[0] && newProps.serie[0].torrents && newProps.user.id) {
       if (newProps.user.language === 'en') { this.setState({ lang: 'eng' }) }
 	  else if (newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) }
