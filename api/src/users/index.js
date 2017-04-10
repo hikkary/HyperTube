@@ -18,12 +18,17 @@ import mailCenter from './mailCenter';
 const log = debug('hypertube:api:user:register');
 const ObjectId = mongoose.Types.ObjectId;
 const single = multer({ storage }).single('image');
+// const upload = multer({ storage: storage });
 
 const storage = multer.diskStorage({
-  destination: `${__dirname}/../../public`,
-  filename: (req, file, cb) => {
-    cb(null, Math.random(100000, 9999999) + path.extname(file.originalname));
+  destination: function (req, file, cb) {
+    cb(null, `${__dirname}/../../public`)
   },
+  // destination: `${__dirname}/../../public`,
+  filename: ((req, file, cb) => {
+    console.log('???????????????------------', file);
+    cb(null, Math.random(100000, 9999999) + path.extname(file.originalname));
+  }),
 });
 
 const getToken = (req) => {
@@ -42,7 +47,7 @@ export const connectedUser = (req, res) => {
     User.findOne({ _id: ObjectId(decoded.id) })
       .then((result) => {
         if (result) {
-          // console.log("=========================================", result);
+          console.log("=========================================", result);
           if (!decoded.lastSeen) {
             decoded.lastSeen = [];
           }
@@ -51,7 +56,7 @@ export const connectedUser = (req, res) => {
             // console.log('de if decoded', decoded.lastSeen);
             decoded.lastSeen = result.lastSeen;
           }
-          // console.log("DECODED", decoded.lastSeen);
+          console.log("DECODED", decoded);
           return res.send({ status: true, details: decoded });
         }
         return res.send({ status: false, details: 'errors' });
@@ -82,10 +87,14 @@ export const getUserInfo = (req, res) => {
 };
 
 const userToDatabase = (req) => {
+  console.log('FILE', req.file); // undefined
+  console.log('IMG', req.body.image);
   if (!req.file) {
     req.file = {};
-    req.file.filename = 'poule.jpg';
-  }
+    req.file.originalname = 'poule.jpg';
+  } else {
+    req.file.originalname = Math.random(100000, 9999999) + path.extname(req.file.originalname);
+  };
   const passwordHash = crypto.createHash('sha512').update(req.body.password).digest('base64');
   const newUser = new User({
     username: req.body.username,
@@ -94,7 +103,7 @@ const userToDatabase = (req) => {
     email: req.body.email,
     language: req.body.language,
     password: passwordHash,
-    picture: req.file.filename,
+    picture: req.file.originalname,
     key: 0,
     lastSeen: [],
   });
@@ -109,6 +118,7 @@ export const createAccount = (req, res) => {
       return res.send({ status: false, errors: 'fillForm' });
     }
     if (err) {
+      console.log('ERROR SINGLE');
       return res.send({ status: false, errors: 'imgIssue' });
     }
     const { username, email } = req.body;
