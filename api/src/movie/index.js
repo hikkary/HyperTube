@@ -14,6 +14,7 @@ export const movie = (req, res) => {
   Movie.find({ id: data })
   .exec()
     .then((results) => {
+		if (!results || results.length === 0) { return res.send({ status: false, errors: 'noMovie' }); }
       axios.get(`http://www.omdbapi.com/?i=${results[0].imdb_code}`)
        .then((response) => {
          const compInfos = _.pick(response.data, [

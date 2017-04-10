@@ -29,6 +29,7 @@ export const getMoviePage = ({
     `${api}/movie/${id}`,
   )
   .then(({ data: movie }) => {
+	  if(movie.errors) return dispatch(error(movie))
     dispatch(fetched({ results: movie }));
   })
   .catch(console.error);

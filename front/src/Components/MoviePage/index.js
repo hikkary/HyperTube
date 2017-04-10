@@ -19,6 +19,10 @@ export default class MoviePage extends Component {
 
   componentDidMount() {
     this._mounted = true;
+	if (isNaN(Number(this.props.id)) === true) {
+		browserHistory.push('/app/movies');
+		return;
+	}
     this.props.actions.movie.getMoviePage({
       id: Number(this.props.id),
     });
@@ -36,6 +40,10 @@ export default class MoviePage extends Component {
 
   componentWillReceiveProps = (newProps) => {
     if (!this._mounted) return false;
+	if (newProps.movie && newProps.movie.errors){
+		browserHistory.push('/app/movies');
+		return;
+	  }
     if (newProps.movie.results) {
   	  if (newProps.movie.results[0].torrents[0].quality === '3D') {
   		  const hash = newProps.movie.results[0].torrents[1].hash;

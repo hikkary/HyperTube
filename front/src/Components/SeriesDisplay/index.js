@@ -12,6 +12,7 @@ import img from '../../../public/series_default.png';
 export default class SeriesDisplay extends Component {
   state = {
 	hasMore: true,
+	loader: true,
     ready: false,
     genre: '',
     year: {
@@ -64,7 +65,7 @@ export default class SeriesDisplay extends Component {
     }
     if (key === 'title') {
       if (!this._mounted) return false;
-      this.setState({ genre: '' });
+      this.setState({ genre: '', loader: false });
     }
   }
 
@@ -125,7 +126,7 @@ export default class SeriesDisplay extends Component {
           pageStart={0}
           loadMore={this.loadSeries}
           hasMore={this.state.hasMore}
-          loader={<div className="spinner">
+          loader={ this.state.loader && <div className="spinner">
             <div className="bounce1"></div>
             <div className="bounce2"></div>
             <div className="bounce3"></div>

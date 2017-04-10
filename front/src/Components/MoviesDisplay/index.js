@@ -12,6 +12,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 export default class MoviesDisplay extends Component {
   state = {
 	hasMore: true,
+	loader: true,
     ready : false,
     genres: '',
     year: {
@@ -63,7 +64,7 @@ export default class MoviesDisplay extends Component {
     }
     if (key === 'title') {
       if (!this._mounted) return false;
-      this.setState({ genre: '' });
+      this.setState({ genre: '', loader: false });
     };
   }
 
@@ -160,7 +161,7 @@ export default class MoviesDisplay extends Component {
           loadMore={this.loadMovies}
           initialLoad={false}
           hasMore={this.state.hasMore}
-          loader={<div className="spinner">
+          loader={ this.state.loader && <div className="spinner">
             <div className="bounce1"></div>
 		        <div className="bounce2"></div>
 		        <div className="bounce3"></div>
