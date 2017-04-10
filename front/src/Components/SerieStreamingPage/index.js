@@ -9,7 +9,9 @@ import axios from 'axios';
 export default class SerieStreamingPage extends Component {
   state = {
     redraw: false,
-    lang: '',
+	lang: '',
+    torrent: true,
+
   }
 
   _mounted = false;
@@ -43,7 +45,7 @@ export default class SerieStreamingPage extends Component {
       this.setState({ quality: finalSplit[0] });
       this.onPlay(newProps.serieId, newProps.user.id, newProps.serie.tvdb_id);
 	  console.log("AANT A", this.state.quality, this.state.lang);
-
+	//   this.setState({torrent:  })
       if (this.state.quality && this.state.lang) {
 		  console.log("AANT AXIOS SERIE");
         axios({
@@ -116,6 +118,7 @@ export default class SerieStreamingPage extends Component {
   }
 
   onPlay = (serieId, userId, episodeId) => {
+	  console.log("ON PLAYYYYYY =========");
     axios({
       method: 'POST',
       url: `${api}/serie/seenSerie`,
@@ -135,14 +138,29 @@ export default class SerieStreamingPage extends Component {
     browserHistory.push(`/app/user/profile/${id}`)
   }
 
+ componentDidUpdate(prevProps, prevState){
+	 console.log("UDATE HELL YEAH");
+	 console.log(prevProps);
+	 console.log(prevState);
+ }
+
   errorHandler = (error) => {
     const { translation } = this.props;
     return translation.current[error];
   }
 
+  streamLauncher = () => {
+	  console.log("STREAM LAUNCHER ==============");
+	  if(!this.state.redraw && this.state.quality && this.state.filename && this.props.serieId && this.props.id){
+		  console.log("RETURN");
+	  	return `${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`;
+	}
+  }
+
   render() {
     const { serie } = this.props;
     const { redraw } = this.state;
+	console.log("VARIABLE", redraw, this.state.quality, this.state.filename);
     let comments = [];
     if (this.props.serie && this.props.user && this.props.serie.comments) {
       comments = this.props.serie.comments.map((comment, key) =>
@@ -158,11 +176,11 @@ export default class SerieStreamingPage extends Component {
           <div className="episodeSummary">{this.props.serie.overview}</div>
         </div>}
         <div className="return"><i onClick={this.return} className="fa fa-arrow-circle-left" aria-hidden="true"></i></div>
-        {!redraw && this.state.quality && this.state.filename && <div className="videoPlayer">
+        {!redraw && this.state.quality && this.state.filename && this.props.serieId && this.props.id && <div className="videoPlayer">
           <video crossOrigin width="640" height="360" onCanPlayThrough={this.playThrough} controls style={{
             textAlign: 'center',
           }}>
-            {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={`${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`} type="video/mp4" />) ||
+            {(((!this.props.serie.path) || (this.props.serie.path && !this.props.serie.path[this.state.quality])) && <source src={this.streamLauncher()} type="video/mp4" />) ||
               (<source src={this.handleMedia()} type="video/mp4" />)}
             {this.state.filename !== "error" && <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>}
           </video>

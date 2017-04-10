@@ -53,9 +53,9 @@ export const movieTorrent = async (req, res) => {
     mime = _.last(mime);
 
 	if (finalPathFile !== '.avi') {
-      res.writeHead(206, {
-        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-        'Accept-Ranges': 'bytes',
+      res.writeHead(200, {
+        // 'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        // 'Accept-Ranges': 'bytes',
         'Content-Length': chunksize,
         'Content-Type': `video/${mime}`,
       });
@@ -101,8 +101,10 @@ export const movieTorrent = async (req, res) => {
   });
 };
 
+// =================================== SERIE ====================================
+// ==============================================================================
+
 export const serieTorrent = (req, res) => {
-	console.log("DANS SERIE TORRENT");
   const options = {
     connections: 5000,     // Max amount of peers to be connected to.
     uploads: 10,          // Number of upload slots.
@@ -125,12 +127,16 @@ export const serieTorrent = (req, res) => {
       // storage: '.'  // Use a custom storage backend rather than the default disk-backed one
 
   };
-
+  let tab = [];
   const engine = torrentStream(req.params.hash, options);
+  console.log("DANS SERIE TORRENT", req.params);
   let videoFile = '';
   let stream = '';
   let finalPathFile = '';
   engine.on('ready', () => {
+	  console.log("=====================================");
+	  console.log("DANS ENGINE READY");
+	  console.log("======================================");
     videoFile = engine.files.filter((file) => {
       const pathFile = path.extname(file.name);
       if (pathFile === '.mp4' || pathFile === '.mkv' || pathFile === '.avi') {
@@ -157,10 +163,10 @@ export const serieTorrent = (req, res) => {
     }
     // const pathSerie = `./public/Media/${videoFile[0].path}`;
     if (finalPathFile !== '.avi') {
-      res.writeHead(206, {
-        'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-        'Accept-Ranges': 'bytes',
-        'Content-Length': chunksize,
+      res.writeHead(200, {
+        // 'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+        // 'Accept-Ranges': 'bytes',
+        'Content-Length': videoLength,
         'Content-Type': `video/${mime}`,
       });
       stream = videoFile[0].createReadStream({ start, end });
@@ -170,6 +176,7 @@ export const serieTorrent = (req, res) => {
       'Content-Length': chunksize,
       'Content-Type': `video/${mime}`,
     });
+
     stream = videoFile[0].createReadStream({ start, end });
 
     new Transcoder(stream)
@@ -187,19 +194,32 @@ export const serieTorrent = (req, res) => {
 		// .channels(2)
 		// .audioBitrate(128 * 1000)
 	}
+	console.log("=====================");
+	console.log("FIN DE READY");
+	console.log("77===================");
   },
 
   );
   engine.on('download', async () => {
+
     const download = engine.swarm.downloaded;
-    console.log(Math.floor((engine.swarm.downloaded * 8) / 10000024), 'M');
+	if ((Math.floor((engine.swarm.downloaded * 8) / 10000024) % 10 === 0 )) {
+    	console.log(Math.floor((engine.swarm.downloaded * 8) / 10000024), 'M');
+	}
   });
   engine.on('idle', () => {
+	  console.log("=====================================");
+	  console.log("DANS DOWNLOAD COMPLETE");
+	  console.log("======================================");
     console.log('download Complete', videoFile[0].path);
+	// console.log("+++++++++++++++++++++++++++++++++++++++++++");
     Serie.findOne({ imdb_code: req.params.serie_id })
       .then((serie) => {
         if (serie) {
-			console.log("DANS DILE SERIE TORRENT");
+			console.log("*****************************************");
+			console.log("DANS FILE SERIE TORRENT");
+			console.log("*****************************************");
+
           let episodeInfo = serie.content.filter((episode) => {
             // console.log('tvdb', episode.tvdb_id);
             // console.log('id', req.params.id);
@@ -212,10 +232,11 @@ export const serieTorrent = (req, res) => {
         //   console.log('espisode info', episodeInfo);
           const path = { ...episodeInfo[0].path, [hash]: { path: videoFile[0].path } };
           episodeInfo = { ...episodeInfo[0], path };
-          console.log('apre perers', episodeInfo);
+        //   console.log('apre perers', episodeInfo);
           const index = _.indexOf(serie.content, _.find(serie.content, { tvdb_id: episodeInfo.tvdb_id }));
           serie.content.splice(index, 1, episodeInfo);
-          serie.save();
+          serie.save().catch();
+		  console.log("----------------------------------------");
         }
       });
   });

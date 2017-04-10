@@ -12,10 +12,14 @@ const writeJson = (allSeries) => {
   allSeries.forEach(serie =>
     axios.get(`http://eztvapi.ml/show/${serie.imdb_id}`)
       .then((content) => {
+		  console.log("content", content.status);
+		  if(content.status !== 200) {return req.end()}
         axios.get(`http://www.omdbapi.com/?i=${content.data.imdb_id}`)
           .then((response) => {
+			if(response.status !== 200) {return req.end()}
             let genres = [];
             if (response.data && response.data.Genre) { genres = response.data.Genre.split(','); }
+			if (response.data && typeof(response.data.imdbRating) !== Number ) { response.data.imdbRating = -1 }
             const newSerie = {
               images: serie.images,
               description: response.data.Plot,
@@ -34,11 +38,11 @@ const writeJson = (allSeries) => {
               provider: 'EZTV',
               content: content.data.episodes,
             };
-            log(serie.title);
-            Serie.findOrCreate({ imdb_code: serie.imdb_id }, newSerie, { upsert: true }).catch((err) => { console.log(err); });
-          });
+            // log(serie.title);
+            Serie.findOrCreate({ imdb_code: serie.imdb_id }, newSerie, { upsert: true }).catch();
+		}).catch((err) =>{});
       })
-      .catch(),
+      .catch((err) =>{}),
   );
 };
 
@@ -50,7 +54,7 @@ const recursiveEztv = (page, allSeries) => {
     }
     allSeries.push(data.data);
     if (data.data) { recursiveEztv(page + 1, allSeries); }
-  });
+  }).catch();
 };
 
 export const scrap = (req, res) => {
