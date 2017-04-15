@@ -1,0 +1,33 @@
+$break: 736px
+
+.logoTitle
+  height: 100px
+  width: 500px
+  margin-bottom: 30px
+  @media screen and (max-width: $break)
+    display: none
+
+.loginTitle
+  font-size: 40px
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+  background-color: #363637
+  color: white
+  padding: 30px
+  @media screen and (max-width: $break)
+    font-size: 30px
+
+.loginForm
+  width: 100%
+  height: 100%
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+
+.errorLogin
+	border-radius: 5px
+	width: 80%
+	line-height: 30px
+	background-color: #f2dede
+	color: #af4842
+	text-align: center

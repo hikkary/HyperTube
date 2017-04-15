@@ -1,0 +1,44 @@
+$break: 736px
+
+.Header
+  height: 50px
+  display: flex
+  flex-direction: row
+  align-items: center
+  background-color: #F44336
+  @media screen and (max-width: $break)
+    height: 40px
+
+.HeaderButton
+  position: absolute
+  display: flex
+  align-items: center
+  right: 0px
+  & .RaisedButton
+    margin-right: 5px
+    color: white !important
+
+.SubMenu
+  height: 50px
+  background-color: #363637
+  width: 100%
+
+.logo
+  cursor: pointer
+  margin-left: 10px
+  @media screen and (max-width: $break)
+    width: 160px
+    height: 25px
+
+.profilePicture
+  background-size: cover
+  width: 40px
+  height: 40px
+  border-radius: 50%
+  cursor: pointer
+  margin-right: 25px
+  display: inline-block
+  @media screen and (max-width: $break)
+    width: 30px
+    height: 30px
+    margin-right: 10px
