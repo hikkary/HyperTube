@@ -40,17 +40,11 @@ export default class MoviePage extends Component {
     browserHistory.push('/app/movies');
   }
 
-  componentWillReceiveProps = async(newProps) => {
-    if (!this._mounted) return false;
-	  if (newProps.movie && newProps.movie.errors === "noMovie") {
-		 browserHistory.push('/app/movies');
-		 return;
-
   componentWillReceiveProps = (newProps) => {
     if (!this._mounted) return false;
-	if (newProps.movie && newProps.movie.errors){
-		browserHistory.push('/app/movies');
-		return;
+	   if (newProps.movie && newProps.movie.errors) {
+		  browserHistory.push('/app/movies');
+		  return;
 	  }
     if (newProps.movie.results) {
   	  if (newProps.movie.results[0].torrents[0].quality === '3D') {
@@ -64,9 +58,9 @@ export default class MoviePage extends Component {
       if (this.props.user.id) {
         this.onPlay(newProps.movie.results[0].id, this.props.user.id);
       }
-      if (newProps.user.language === 'en') { await this.setState({ lang: 'eng' }) }
-    else if (newProps.user.language === 'fr') { await this.setState({ lang: 'fre' }) }
-      else { await this.setState({ lang: 'eng' }) };
+      if (newProps.user.language === 'en') { this.setState({ lang: 'eng' }) }
+    else if (newProps.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+      else { this.setState({ lang: 'eng' }) };
       axios({
         method: 'POST',
         url: `${api}/movie/subtitles`,
@@ -77,13 +71,11 @@ export default class MoviePage extends Component {
         }
       }).then((result) => {
         if (!this._mounted) return false;
-		if (result.data.status === false ){
-			console.log("NOM DE NOM",this.state.filename);
-			this.setState({ filename: "error" });
-			return;
-		}
+		    if (result.data.status === false ) {
+			    this.setState({ filename: "error" });
+			    return;
+		    }
         this.setState({ filename: result.data });
-		console.log("NOM DE NOM",this.state.filename);
       });
       if (newProps.movie && newProps.movie.results.path) {
         const hash = newProps.movie.results[0].torrents[0].hash;
@@ -106,7 +98,7 @@ export default class MoviePage extends Component {
     setTimeout(() => {
       if (!this._mounted) return false;
       this.setState({ redraw: false });
-    }, 0)
+    }, 0);
   }
 
   comments = (e) => {
@@ -135,7 +127,7 @@ export default class MoviePage extends Component {
     }
   }
 
-  goProfile = (id) =>{
+  goProfile = (id) => {
     browserHistory.push(`/app/user/profile/${id}`)
   }
 
@@ -160,7 +152,7 @@ export default class MoviePage extends Component {
 		return translation.current[error];
 	}
 
-  playThrough = (e) =>{
+  playThrough = (e) => {
 	  console.log(e.target);
 	  e.target.play();
   }

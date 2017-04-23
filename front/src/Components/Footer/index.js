@@ -12,8 +12,6 @@ export default class Footer extends React.Component {
 				padding: 0,
 			}}>
         <p className="footer">asalama & zkerkeb & rle-mino</p>
-      <div>
-        <p className="footer">asalama & zkerkeb @copyright 2017</p>
       </div>
 		)
 	}

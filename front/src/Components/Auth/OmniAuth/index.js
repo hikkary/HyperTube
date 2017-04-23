@@ -11,7 +11,6 @@ import GitLogo from '../../../../public/github_logo.png';
 
 export default class OmniAuth extends Component {
   componentDidMount() {
-    console.log("DID PROPS", this.props);
     window.fbAsyncInit = () => {
       FB.init({
         appId      : '1058421674304180',
