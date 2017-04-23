@@ -25,9 +25,19 @@ $break: 736px
   align-items: center
 
 .errorLogin
+	animation: error 5s
 	border-radius: 5px
 	width: 80%
 	line-height: 30px
 	background-color: #f2dede
 	color: #af4842
 	text-align: center
+	opacity: 0
+
+@keyframes error
+	0%
+		opacity: 0
+	50%
+		opacity: 1
+	100%
+		opacity: 0

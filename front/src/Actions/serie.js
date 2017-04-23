@@ -33,6 +33,7 @@ export const getSeriePage = ({
     `${api}/serie/${id}`,
   )
   .then(({ data: serie }) => {
+    console.log('serie', serie);
     if (serie.errors) return dispatch(notFound(serie));
     dispatch(fetched(serie.results));
   })
@@ -47,6 +48,7 @@ export const getEpisode = ({
     `${api}/serie/${serieId}/${id}`,
   )
   .then((response) => {
+    console.log('ACTION RETURN', response.data);
     if (response.data.errors) return dispatch(notFound(response.data));
     dispatch(fetched(response.data.details));
   })

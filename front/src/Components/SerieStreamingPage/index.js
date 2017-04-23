@@ -33,6 +33,7 @@ export default class SerieStreamingPage extends Component {
 
   componentWillReceiveProps = async(newProps) => {
     if (!this._mounted) return false;
+	console.log("USER", newProps);
     if (newProps.serie && newProps.serie[0] && newProps.serie[0].status === false) { browserHistory.push('/app/series') };
     if (newProps.serie && newProps.serie[0] && newProps.serie[0].torrents && newProps.user.id) {
       if (newProps.user.language === 'en') { this.setState({ lang: 'eng' }) }
@@ -44,6 +45,10 @@ export default class SerieStreamingPage extends Component {
       this.setState({ quality: finalSplit[0] });
       this.onPlay(newProps.serieId, newProps.user.id, newProps.serie[0].tvdb_id);
       if (this.state.quality && this.state.lang) {
+	  console.log("AANT A", this.state.quality, this.state.lang);
+	//   this.setState({torrent:  })
+      if (this.state.quality && this.state.lang) {
+		  console.log("AANT AXIOS SERIE");
         axios({
           method: 'POST',
           url: `${api}/serie/subtitles`,
@@ -54,6 +59,7 @@ export default class SerieStreamingPage extends Component {
             episode: newProps.serie[0].episode,
           }
         }).then((result) => {
+			console.log("RESULT SUBTITLES SERIE", result);
           if (!this._mounted) return false;
 		  if (result.data.status === false ){
 			  this.setState({ filename: "error" });
@@ -71,6 +77,7 @@ export default class SerieStreamingPage extends Component {
   }
 
   playThrough = (e) =>{
+	console.log(e.target);
 	e.target.play();
   }
 
@@ -112,6 +119,7 @@ export default class SerieStreamingPage extends Component {
   }
 
   onPlay = (serieId, userId, episodeId) => {
+	  console.log("ON PLAYYYYYY =========");
     axios({
       method: 'POST',
       url: `${api}/serie/seenSerie`,
@@ -131,6 +139,12 @@ export default class SerieStreamingPage extends Component {
     browserHistory.push(`/app/user/profile/${id}`)
   }
 
+ componentDidUpdate(prevProps, prevState){
+	 console.log("UDATE HELL YEAH");
+	 console.log(prevProps);
+	 console.log(prevState);
+ }
+
   errorHandler = (error) => {
     const { translation } = this.props;
     return translation.current[error];
@@ -138,6 +152,9 @@ export default class SerieStreamingPage extends Component {
 
   streamLauncher = () => {
 	  if(!this.state.redraw && this.state.quality && this.state.filename && this.props.serieId && this.props.id){
+	  console.log("STREAM LAUNCHER ==============");
+	  if(!this.state.redraw && this.state.quality && this.state.filename && this.props.serieId && this.props.id){
+		  console.log("RETURN");
 	  	return `${api}/stream/serie/${this.state.quality}/${this.props.serieId}/${this.props.id}`;
 	}
   }
@@ -145,6 +162,10 @@ export default class SerieStreamingPage extends Component {
   render() {
     const { serie } = this.props;
     const { redraw } = this.state;
+    console.log('PROPS SERIE STREAMING', this.props);
+    const { serie } = this.props;
+    const { redraw } = this.state;
+	console.log("VARIABLE", redraw, this.state.quality, this.state.filename);
     let comments = [];
     if (this.props.serie && this.props.serie[0] && this.props.user && this.props.serie[0].comments) {
       comments = this.props.serie[0].comments.map((comment, key) =>
@@ -165,6 +186,7 @@ export default class SerieStreamingPage extends Component {
             textAlign: 'center',
           }}>
             {(((this.props.serie && this.props.serie[0] && !this.props.serie[0].path) || (this.props.serie && this.props.serie[0] && this.props.serie[0].path && !this.props.serie[0].path[this.state.quality])) && <source src={this.streamLauncher()} type="video/mp4" />) ||
+            {(((!this.props.serie[0].path) || (this.props.serie[0].path && !this.props.serie[0].path[this.state.quality])) && <source src={this.streamLauncher()} type="video/mp4" />) ||
               (<source src={this.handleMedia()} type="video/mp4" />)}
             {this.state.filename !== "error" && <track src={`http://localhost:8080/public/subtitles/${this.state.filename}`} kind="subtitles" srcLang="fr" label="French" default/>}
           </video>

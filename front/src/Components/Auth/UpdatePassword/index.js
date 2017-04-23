@@ -36,6 +36,7 @@ export default class ChangePassword extends React.Component{
 				data : {
 					username: this.props.username,
 					id : this.props.id,
+					key : this.props.id,
 					password: event.target.password.value,
 					newPass: event.target.newPass.value,
 				}

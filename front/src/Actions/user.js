@@ -42,6 +42,7 @@ export const actionLogin = (data) => (dispatch) => {
       dispatch(error({results, headers}));
     }
   }).catch(() => null);
+  });
 };
 
 export const register = (data) => (dispatch) => {
@@ -60,6 +61,7 @@ export const register = (data) => (dispatch) => {
       dispatch(error(results));
     }
   }).catch(() => null);
+  });
 };
 
 export const getConnectedUser = (token) => (dispatch) => {
@@ -76,4 +78,5 @@ export const getConnectedUser = (token) => (dispatch) => {
       dispatch(error(results.details, headers));
     }
   }).catch(() => null);
+  });
 };

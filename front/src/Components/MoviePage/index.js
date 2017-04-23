@@ -28,6 +28,8 @@ export default class MoviePage extends Component {
     });
     // if (this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
     // if (this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
+    if (this.props.user.language === 'en') { this.setState({ lang: 'eng' }) }
+    if (this.props.user.language === 'fr') { this.setState({ lang: 'fre' }) }
   }
 
   componentWillUnmount() {
@@ -43,6 +45,12 @@ export default class MoviePage extends Component {
 	  if (newProps.movie && newProps.movie.errors === "noMovie") {
 		 browserHistory.push('/app/movies');
 		 return;
+
+  componentWillReceiveProps = (newProps) => {
+    if (!this._mounted) return false;
+	if (newProps.movie && newProps.movie.errors){
+		browserHistory.push('/app/movies');
+		return;
 	  }
     if (newProps.movie.results) {
   	  if (newProps.movie.results[0].torrents[0].quality === '3D') {
@@ -70,10 +78,12 @@ export default class MoviePage extends Component {
       }).then((result) => {
         if (!this._mounted) return false;
 		if (result.data.status === false ){
+			console.log("NOM DE NOM",this.state.filename);
 			this.setState({ filename: "error" });
 			return;
 		}
         this.setState({ filename: result.data });
+		console.log("NOM DE NOM",this.state.filename);
       });
       if (newProps.movie && newProps.movie.results.path) {
         const hash = newProps.movie.results[0].torrents[0].hash;
@@ -151,6 +161,7 @@ export default class MoviePage extends Component {
 	}
 
   playThrough = (e) =>{
+	  console.log(e.target);
 	  e.target.play();
   }
 

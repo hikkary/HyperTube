@@ -48,6 +48,7 @@ export default class changeLanguage extends Component {
       if (results.data.errors) {
         return this.setState({ error: results.data.errors });
       }
+	  console.log("RESULTAT CHANGE LANG",results);
       localStorage.setItem('token', results.headers['x-access-token']);
       const token = localStorage.getItem('token');
       user.getConnectedUser(token);

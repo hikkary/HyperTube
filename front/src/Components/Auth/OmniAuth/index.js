@@ -11,6 +11,7 @@ import GitLogo from '../../../../public/github_logo.png';
 
 export default class OmniAuth extends Component {
   componentDidMount() {
+    console.log("DID PROPS", this.props);
     window.fbAsyncInit = () => {
       FB.init({
         appId      : '1058421674304180',
@@ -29,12 +30,15 @@ export default class OmniAuth extends Component {
           url: `${apiURI}/users/facebook_auth`,
           data: response,
         }).then((data) => {
+          console.log('data', data);
           if (data.data.status === true) {
             localStorage.setItem('token', data.headers['x-access-token']);
             browserHistory.push('/app/homePage');
           }
         });
       });
+    } else if (response.status === 'not_authorized') {
+    } else {
     }
   }
 
