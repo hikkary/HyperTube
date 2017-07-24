@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import password from './password';
 
 const resetPassword = async (transporter, user, host) => {
   const mailOptions = {
@@ -16,7 +17,7 @@ const resetPassword = async (transporter, user, host) => {
 };
 
 const mailCenter = async (user, host) => {
-  const transporter = await nodemailer.createTransport('smtps://hikkaryfr@gmail.com:Kenshiro31@smtp.gmail.com');
+  const transporter = await nodemailer.createTransport('smtps://hikkaryfr@gmail.com:{password}@smtp.gmail.com');
   resetPassword(transporter, user, host);
 };
 
